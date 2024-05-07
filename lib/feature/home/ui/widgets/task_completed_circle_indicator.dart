@@ -10,7 +10,7 @@ class TaskCompletedCircleIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: ColorManager.darkGreyColor,
         borderRadius: BorderRadius.circular(32),
@@ -26,7 +26,7 @@ class TaskCompletedCircleIndicator extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 25,
+                height: 30,
               ),
               CustomBottom(
                   bottomHeight: 40,
@@ -41,7 +41,7 @@ class TaskCompletedCircleIndicator extends StatelessWidget {
               child: CircularPercentIndicator(
                 animation: true,
                 animationDuration: 1000,
-                radius: 100,
+                radius: 90,
                 lineWidth: 20,
                 percent: 0.7,
                 progressColor: ColorManager.darkyellowColor,
