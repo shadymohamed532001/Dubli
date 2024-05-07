@@ -1,5 +1,6 @@
 
 import 'package:dubli/feature/home/ui/widgets/task_completed_circle_indicator.dart';
+import 'package:dubli/feature/home/ui/widgets/task_group_and_new_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,6 +14,7 @@ class HomeViewBody extends StatelessWidget {
       child: Column(
         children: [
           TaskCompletedCircleIndicator(),
+          TaskGroupAndNewTask()
         ],
       ),
     );
