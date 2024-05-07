@@ -5,15 +5,19 @@ import 'package:flutter/material.dart';
 class DubliApp extends StatelessWidget {
   const DubliApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRoutes.onGenerateRoute,
       theme: ThemeData(
-        scaffoldBackgroundColor: ColorManager.primaryColor, // Set primary color
+        scaffoldBackgroundColor: ColorManager.primaryColor, 
         appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          titleTextStyle: TextStyle(
+            fontSize: 24,
+            color: ColorManager.whiteColor,
+          ),
           iconTheme: IconThemeData(
             color: ColorManager.whiteColor,
           ),
