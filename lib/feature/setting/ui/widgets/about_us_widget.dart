@@ -1,3 +1,5 @@
+import 'package:dubli/core/helper/naviagtion_extentaions.dart';
+import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:dubli/feature/setting/ui/widgets/settings_option_item.dart';
 import 'package:flutter/material.dart';
@@ -21,14 +23,20 @@ class AboutUsWidget extends StatelessWidget {
         const SizedBox(
           height: 30,
         ),
-        const SettingsOptionItem(
+        SettingsOptionItem(
           tittle: 'Privacy policy',
+          onTap: () {
+            context.navigateTo(routeName: Routes.privatepolicyViewsRoute);
+          },
         ),
         const SizedBox(
           height: 25,
         ),
-        const SettingsOptionItem(
+         SettingsOptionItem(
           tittle: 'Terms and conditions',
+          onTap: () {
+            context.navigateTo(routeName: Routes.termsAndConditionsViewsRoute);
+          },
         ),
         const SizedBox(
           height: 25,
