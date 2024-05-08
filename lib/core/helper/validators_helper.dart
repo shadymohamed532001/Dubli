@@ -40,6 +40,26 @@ class MyValidatorsHelper {
     return null;
   }
 
+  static String? tittleValidator(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter a Tittle ';
+    }
+    if (value.length < 3) {
+      return 'Tittle must be at least 6 characters long';
+    }
+    return null;
+  }
+
+  static String? noteValidator(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter a note ';
+    }
+    if (value.length < 3) {
+      return 'Note must be at least 6 characters long';
+    }
+    return null;
+  }
+
   static String? phoneValidator(String? value) {
     if (value!.isEmpty) {
       return 'Please enter a phone number';

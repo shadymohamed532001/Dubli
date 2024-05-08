@@ -114,6 +114,11 @@ class AppStyle {
     fontWeight: FontWeight.w600,
     color: Colors.white,
   );
+    static TextStyle font22Whiteregular = const TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeightHelper.regular,
+    color: Colors.white,
+  );
   static TextStyle font18Whitemedium = const TextStyle(
     fontSize: 18,
     fontWeight: FontWeightHelper.medium,

@@ -1,6 +1,8 @@
 import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
+import 'package:dubli/feature/event/logic/event_cubit.dart';
+import 'package:dubli/feature/event/ui/views/add_event_view.dart';
 import 'package:dubli/feature/intor/ui/views/intro_view.dart';
 import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dubli/feature/layout/ui/views/layout_views.dart';
@@ -31,12 +33,7 @@ class AppRoutes {
             builder: (context) => const IntroView(),
           );
         }
-      // return MaterialPageRoute(
-      //   builder: (context) => BlocProvider(
-      //     create: (context) => SplashCubit(),
-      //     child: const SplashView(),
-      //   ),
-      // );
+
       case Routes.intorViewsRoute:
         return MaterialPageRoute(
           builder: (context) => const IntroView(),
@@ -63,6 +60,15 @@ class AppRoutes {
             return BlocProvider(
               create: (context) => serviceLocator.get<LayoutCubit>(),
               child: const LayOutViews(),
+            );
+          },
+        );
+      case Routes.addEventViewsRoute:
+        return MaterialPageRoute(
+          builder: (context) {
+            return BlocProvider(
+              create: (context) => EventCubit(),
+              child: const AddEventView(),
             );
           },
         );

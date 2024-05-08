@@ -1,5 +1,5 @@
 import 'package:dubli/feature/chat/ui/views/chat_view.dart';
-import 'package:dubli/feature/focus/ui/views/focus_view.dart';
+import 'package:dubli/feature/event/ui/views/event_view.dart';
 import 'package:dubli/feature/home/ui/views/home_view.dart';
 import 'package:dubli/feature/layout/data/models/change_index_params.dart';
 import 'package:dubli/feature/layout/data/repositories/layout_repo.dart';
@@ -26,9 +26,9 @@ class LayoutRepoImpl extends LayOutRepo {
   List<Widget> getBody() {
     return const <Widget>[
       ChatView(),
-      FocusView(),
-      HomeView(),
       TasksView(),
+      HomeView(),
+      EventView(),
       SettingsView(),
     ];
   }

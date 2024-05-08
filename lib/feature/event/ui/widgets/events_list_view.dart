@@ -1,8 +1,8 @@
 import 'package:dubli/feature/home/ui/widgets/task_group_item.dart';
 import 'package:flutter/material.dart';
 
-class TaskGroupsListView extends StatelessWidget {
-  const TaskGroupsListView({super.key});
+class EventsListView extends StatelessWidget {
+  const EventsListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +10,7 @@ class TaskGroupsListView extends StatelessWidget {
       itemCount: 11,
       itemBuilder: (context, index) {
         return const Padding(
-          padding: EdgeInsets.only(
-            top: 8,
-          ),
+          padding: EdgeInsets.only(top: 8, left: 8, right: 8),
           child: TaskGroupItem(),
         );
       },

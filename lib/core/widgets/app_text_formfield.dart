@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.keyboardType,
     this.validator,
-    this.decoration,
+    this.decoration, this.hintStyle,
   });
 
   final Function(String)? onChanged;
@@ -35,6 +35,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final TextInputType? keyboardType;
   final InputDecoration? decoration;
+  final TextStyle? hintStyle ;
 
   @override
   Widget build(BuildContext context) {
@@ -61,21 +62,21 @@ class CustomTextFormField extends StatelessWidget {
                 ColorManager
                     .darkGreyColor, // Using provided fillColor or default grey color
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(15),
               borderSide: const BorderSide(
                 color: ColorManager.primaryColor,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(15),
               borderSide: const BorderSide(
                 color: ColorManager.primaryColor,
               ),
             ),
-            errorBorder: buildOutlineInputBorder(width: 2),
+            errorBorder: buildOutlineInputBorder(width: 1),
             focusedErrorBorder: buildOutlineInputBorder(width: 2),
             hintText: hintText,
-            hintStyle: AppStyle.font14Primaryregular,
+            hintStyle: hintStyle ?? AppStyle.font14Primaryregular,
           )),
     );
   }
@@ -83,7 +84,7 @@ class CustomTextFormField extends StatelessWidget {
 
 OutlineInputBorder buildOutlineInputBorder({required double width}) {
   return OutlineInputBorder(
-    borderRadius: BorderRadius.circular(18),
+    borderRadius: BorderRadius.circular(16),
     borderSide: BorderSide(
       width: width,
       color: ColorManager.primaryColor,

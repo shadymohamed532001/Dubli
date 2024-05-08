@@ -7,6 +7,8 @@ class Routes {
   static const String layOutViewsRoute = '/layOutViews';
 
   static const String homeViewsRoute = '/homeViews';
+    static const String addEventViewsRoute = '/addEventViews';
+
   static const String informationViewsRoute = '/informationViews';
   static const String informationDetailsViewsRoute = '/informationDetailsViews';
 
