@@ -24,7 +24,7 @@ class TaskGroupAndNewTask extends StatelessWidget {
           CustomBottom(
             bottomHeight: 40,
             bottomWidth: 80,
-            bottomtext: 'View All',
+            bottomtext: 'New Task',
             textBottomStyle: const TextStyle(
               fontSize: 13,
               fontFamily: 'Raleway',

@@ -6,8 +6,14 @@ class TasksView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: TasksViewBody(),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Task List',
+        ),
+      ),
+      body: const TasksViewBody(),
     );
   }
 }

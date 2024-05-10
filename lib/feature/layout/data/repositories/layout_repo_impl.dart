@@ -1,11 +1,11 @@
 import 'package:dubli/feature/chat/ui/views/chat_view.dart';
 import 'package:dubli/feature/event/ui/views/event_view.dart';
-import 'package:dubli/feature/home/ui/views/home_view.dart';
+import 'package:dubli/feature/tasks/ui/views/tasks_view.dart';
 import 'package:dubli/feature/layout/data/models/change_index_params.dart';
 import 'package:dubli/feature/layout/data/repositories/layout_repo.dart';
 import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dubli/feature/setting/ui/views/settiings_view.dart';
-import 'package:dubli/feature/tasks/ui/views/tasks_view.dart';
+import 'package:dubli/feature/reminder/ui/views/reminder_view.dart';
 import 'package:flutter/material.dart';
 
 class LayoutRepoImpl extends LayOutRepo {
@@ -26,8 +26,8 @@ class LayoutRepoImpl extends LayOutRepo {
   List<Widget> getBody() {
     return const <Widget>[
       ChatView(),
-      TasksView(),
-      HomeView(),
+      ReminderView(),
+    TasksView  (),
       EventView(),
       SettingsView(),
     ];

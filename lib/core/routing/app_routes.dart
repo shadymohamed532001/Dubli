@@ -13,6 +13,7 @@ import 'package:dubli/feature/setting/ui/views/private_policy_view.dart';
 import 'package:dubli/feature/setting/ui/views/terms_and_conditions.dart';
 import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
 import 'package:dubli/feature/signup/ui/views/signup_view.dart';
+import 'package:dubli/feature/tasks/ui/views/tasks_details_view.dart';
 
 import 'package:dubli/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,10 @@ class AppRoutes {
             create: (context) => LoginCubit(),
             child: const LoginView(),
           ),
+        );
+      case Routes.tasksViewsDetailsRoute:
+        return MaterialPageRoute(
+          builder: (context) => const TasksListViewBody(),
         );
 
       case Routes.signUpViewsRoute:

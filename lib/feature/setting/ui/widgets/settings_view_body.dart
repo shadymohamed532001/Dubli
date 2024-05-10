@@ -11,7 +11,7 @@ class SettingsViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +20,7 @@ class SettingsViewBody extends StatelessWidget {
               height: 16,
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: ColorManager.darkGreyColor,
                 borderRadius: BorderRadius.circular(24),
@@ -72,6 +72,3 @@ class SettingsViewBody extends StatelessWidget {
     );
   }
 }
-
-
-
