@@ -51,7 +51,7 @@ class AppRoutes {
         );
       case Routes.tasksViewsDetailsRoute:
         return MaterialPageRoute(
-          builder: (context) => const TasksListViewBody(),
+          builder: (context) => const TasksListView(),
         );
 
       case Routes.signUpViewsRoute:

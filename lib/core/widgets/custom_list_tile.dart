@@ -8,24 +8,29 @@ class CustomListTile extends StatelessWidget {
     required this.imageAssetName,
     required this.title,
     required this.subtitle,
+    this.onTap,
   });
 
   final String imageAssetName;
   final String title, subtitle;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: ColorManager.darkGreyColor,
-      child: ListTile(
-        leading: Image.asset(imageAssetName),
-        title: Text(
-          title,
-          style: AppStyle.font15Whiteregular,
-        ),
-        subtitle: Text(
-          subtitle,
-          style: AppStyle.font15Whiteregular,
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 0,
+        color: ColorManager.darkGreyColor,
+        child: ListTile(
+          leading: Image.asset(imageAssetName),
+          title: Text(
+            title,
+            style: AppStyle.font15Whiteregular,
+          ),
+          subtitle: Text(
+            subtitle,
+            style: AppStyle.font15Whiteregular,
+          ),
         ),
       ),
     );
