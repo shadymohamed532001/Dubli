@@ -10,6 +10,8 @@ class Routes {
   static const String informationDetailsViewsRoute = '/informationDetailsViews';
   static const String chatViewsRoute = '/chatViews';
   static const String privatepolicyViewsRoute = '/privatepolicyViews';
-
   static const String termsAndConditionsViewsRoute = '/termsAndConditionsViews';
+  
+
+  static const String editProfileViewsRoute = '/editProfileViews';
 }

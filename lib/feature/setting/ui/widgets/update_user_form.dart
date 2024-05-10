@@ -1,29 +1,29 @@
 import 'package:dubli/core/helper/validators_helper.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:dubli/core/widgets/app_text_formfield.dart';
-import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
+import 'package:dubli/feature/setting/logic/cubit/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
+class UpdateUserForm extends StatefulWidget {
+  const UpdateUserForm({super.key});
 
   @override
-  State<SignUpForm> createState() => _SignUpFormState();
+  State<UpdateUserForm> createState() => _UpdateUserFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _UpdateUserFormState extends State<UpdateUserForm> {
   String errorMessage = '';
   bool isPasswordShow = true;
 
   @override
   Widget build(BuildContext context) {
-    var signUpCubit = context.read<SignUpCubit>();
+    var settingsCubit = context.read<SettingsCubit>();
     return Form(
-      key: signUpCubit.formKey,
-      autovalidateMode: signUpCubit.autovalidateMode,
+      key: settingsCubit.formKey,
+      autovalidateMode: settingsCubit.autovalidateMode,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -38,7 +38,7 @@ class _SignUpFormState extends State<SignUpForm> {
               obscureText: false,
               hintText: 'Username',
               keyboardType: TextInputType.text,
-              controller: signUpCubit.nameController,
+              controller: settingsCubit.nameController,
               validator: (text) {
                 if (text == null || text.trim().isEmpty) {
                   return 'Please enter your name';
@@ -56,7 +56,7 @@ class _SignUpFormState extends State<SignUpForm> {
               obscureText: false,
               hintText: 'Patient@self.com',
               keyboardType: TextInputType.emailAddress,
-              controller: signUpCubit.emailController,
+              controller: settingsCubit.emailController,
               validator: (text) {
                 return MyValidatorsHelper.emailValidator(text);
               },
@@ -83,7 +83,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               hintText: 'Min 8 Cyfr',
               keyboardType: TextInputType.visiblePassword,
-              controller: signUpCubit.passwordController,
+              controller: settingsCubit.passwordController,
               validator: (text) {
                 return MyValidatorsHelper.passwordValidator(text);
               },
@@ -99,7 +99,7 @@ class _SignUpFormState extends State<SignUpForm> {
               obscureText: false,
               hintText: 'Phone Number',
               keyboardType: TextInputType.phone,
-              controller: signUpCubit.phoneController,
+              controller: settingsCubit.phoneController,
               validator: (text) {
                 return MyValidatorsHelper.phoneValidator(text);
               },

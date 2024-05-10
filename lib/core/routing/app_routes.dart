@@ -8,6 +8,7 @@ import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dubli/feature/layout/ui/views/layout_views.dart';
 import 'package:dubli/feature/login/logic/cubit/login_cubit.dart';
 import 'package:dubli/feature/login/ui/views/login_view.dart';
+import 'package:dubli/feature/setting/ui/views/edit_profile_view.dart';
 import 'package:dubli/feature/setting/ui/views/private_policy_view.dart';
 import 'package:dubli/feature/setting/ui/views/terms_and_conditions.dart';
 import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
@@ -86,6 +87,14 @@ class AppRoutes {
             return const TermsAndConditionsView();
           },
         );
+
+      case Routes.editProfileViewsRoute:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const EditProfileView();
+          },
+        );
+
       // case Routes.initialRoute:
       //   if (onBording != null) {
       //     if (usertoken != null) {
