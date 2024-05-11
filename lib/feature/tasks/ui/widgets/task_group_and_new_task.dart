@@ -1,3 +1,5 @@
+import 'package:dubli/core/helper/naviagtion_extentaions.dart';
+import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:dubli/core/widgets/app_bottom.dart';
@@ -31,7 +33,9 @@ class TaskGroupAndNewTask extends StatelessWidget {
               color: ColorManager.primaryColor,
             ),
             backgroundColor: ColorManager.darkyellowColor,
-            onPressed: () {},
+            onPressed: () {
+              context.navigateTo(routeName: Routes.addtasksViewsRoute);
+            },
           )
         ],
       ),
