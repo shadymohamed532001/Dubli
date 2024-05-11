@@ -13,6 +13,7 @@ import 'package:dubli/feature/setting/ui/views/private_policy_view.dart';
 import 'package:dubli/feature/setting/ui/views/terms_and_conditions.dart';
 import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
 import 'package:dubli/feature/signup/ui/views/signup_view.dart';
+import 'package:dubli/feature/tasks/ui/views/add_tasks_view.dart';
 import 'package:dubli/feature/tasks/ui/views/tasks_details_view.dart';
 
 import 'package:dubli/service_locator.dart';
@@ -78,6 +79,12 @@ class AppRoutes {
               create: (context) => EventCubit(),
               child: const AddEventView(),
             );
+          },
+        );
+      case Routes.addtasksViewsRoute:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const AddTasksView();
           },
         );
       case Routes.privatepolicyViewsRoute:

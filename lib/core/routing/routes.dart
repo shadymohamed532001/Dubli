@@ -13,6 +13,7 @@ class Routes {
   static const String termsAndConditionsViewsRoute = '/termsAndConditionsViews';
   
 
+static const String addtasksViewsRoute = '/tasksViews';
   static const String tasksViewsDetailsRoute = '/tasksViewsDetails';
 
   static const String editProfileViewsRoute = '/editProfileViews';
