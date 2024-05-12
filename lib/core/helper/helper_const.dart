@@ -2,7 +2,7 @@
 
 import 'dart:developer';
 
-import 'package:dubli/core/networking/local_services.dart';
+import 'package:dubli/core/helper/local_services.dart';
 import 'package:flutter/material.dart';
 
 String? usertoken;

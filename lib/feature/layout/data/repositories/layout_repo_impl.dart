@@ -1,3 +1,4 @@
+import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/chat/ui/views/chat_view.dart';
 import 'package:dubli/feature/event/ui/views/event_view.dart';
 import 'package:dubli/feature/tasks/ui/views/tasks_view.dart';
@@ -7,6 +8,7 @@ import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dubli/feature/setting/ui/views/settiings_view.dart';
 import 'package:dubli/feature/reminder/ui/views/reminder_view.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class LayoutRepoImpl extends LayOutRepo {
   LayoutRepoImpl();
@@ -27,7 +29,7 @@ class LayoutRepoImpl extends LayOutRepo {
     return const <Widget>[
       ChatView(),
       ReminderView(),
-    TasksView  (),
+      TasksView(),
       EventView(),
       SettingsView(),
     ];
@@ -36,38 +38,39 @@ class LayoutRepoImpl extends LayOutRepo {
   @override
   List<BottomNavigationBarItem> getBottomNavItems() =>
       <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/chat.png',
-            height: 33,
+        const BottomNavigationBarItem(
+          icon: Icon(
+            Iconsax.message,
+            color: ColorManager.darkyellowColor,
           ),
           label: '',
         ),
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/light.png',
-            height: 37,
+        const BottomNavigationBarItem(
+          icon: Icon(
+            Iconsax.task_square,
+            color: ColorManager.darkyellowColor,
           ),
           label: '',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           label: '',
-          icon: Image.asset(
-            'assets/images/check.png',
-            height: 33,
+          icon: Icon(
+            Icons.check,
+            size: 30,
+            color: ColorManager.darkyellowColor,
           ),
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           label: '',
-          icon: Image.asset(
-            'assets/images/bell.png',
-            height: 28,
+          icon: Icon(
+            Iconsax.calendar_edit,
+            color: ColorManager.darkyellowColor,
           ),
         ),
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            'assets/images/setting.png',
-            height: 28,
+        const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.settings,
+            color: ColorManager.darkyellowColor,
           ),
           label: '',
         ),

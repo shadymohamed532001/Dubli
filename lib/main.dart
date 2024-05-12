@@ -1,7 +1,7 @@
 import 'package:dubli/bloc_observer.dart.dart';
 import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/networking/api_services.dart';
-import 'package:dubli/core/networking/local_services.dart';
+import 'package:dubli/core/helper/local_services.dart';
 import 'package:dubli/dubli_app.dart';
 import 'package:dubli/service_locator.dart';
 import 'package:flutter/material.dart';
