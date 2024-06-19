@@ -6,8 +6,13 @@ class ReminderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ReminderViewBody(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Reminder Session',
+        ),
+      ),
+      body: const ReminderViewBody(),
     );
   }
 }

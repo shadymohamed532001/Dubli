@@ -35,12 +35,15 @@ dependencies:
   date_picker_timeline: ^1.2.5
   dio: ^5.4.3+1
   equatable: ^2.0.5
+  firebase_core: ^2.31.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
+  flutter_datetime_picker: ^1.5.1
   flutter_local_notifications: ^17.1.2
   flutter_native_splash: ^2.4.0
   flutter_screenutil: ^5.9.0
+  flutter_timezone: ^1.0.8
   fluttertoast: ^8.2.5
   get_it: ^7.7.0
   http: ^1.2.1
@@ -50,6 +53,7 @@ dependencies:
   percent_indicator: ^4.2.3
   shared_preferences: ^2.2.3
   table_calendar: ^3.0.9
+  timezone: ^0.9.3
 
 dev_dependencies:
   flutter_lints: ^3.0.0

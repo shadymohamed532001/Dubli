@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "963992434095",
+    "firebase_url": "https://firsttrialdupli-default-rtdb.firebaseio.com",
+    "project_id": "firsttrialdupli",
+    "storage_bucket": "firsttrialdupli.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963992434095:android:307b70e652459b49112b5a",
+        "android_client_info": {
+          "package_name": "com.example.dubli"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU2HsJPg0aTJ95Shh_CQV82NHXFmqHV6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
