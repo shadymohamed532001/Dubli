@@ -23,8 +23,7 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<EventCubit, EventState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var cubit = BlocProvider.of<EventCubit>(context);
         return Padding(
@@ -50,6 +49,7 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                   height: 2,
                 ),
                 CustomTextFormField(
+                  controller: cubit.titleController,
                   hintStyle: TextStyle(
                     color: Colors.grey.withOpacity(0.6),
                   ),
@@ -71,6 +71,7 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                   height: 2,
                 ),
                 CustomTextFormField(
+                  controller: cubit.noteController,
                   hintStyle: TextStyle(
                     color: Colors.grey.withOpacity(0.6),
                   ),
@@ -141,7 +142,13 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                 CustomBottom(
                   onPressed: () {
                     if (cubit.formKey.currentState!.validate()) {
-                      // cubit.addEvent();
+                      cubit.addEvent(
+                        eventDescription: cubit.noteController.text,
+                        eventName: cubit.titleController.text,
+                        eventDate:  DateFormat.yMd().format(selectedDate),
+                        eventTime: timeOfDay
+                      );
+                      print('add event');
                     } else {
                       setState(() {
                         cubit.autovalidateMode = AutovalidateMode.always;

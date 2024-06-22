@@ -8,3 +8,12 @@ sealed class EventState extends Equatable {
 }
 
 final class EventInitial extends EventState {}
+
+final class AddEventLoading extends EventState {}
+
+final class AddEventSuccess extends EventState {}
+
+final class AddEventError extends EventState {
+  final String error;
+  const AddEventError({required this.error});
+}

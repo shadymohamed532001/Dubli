@@ -12,41 +12,41 @@ class SignUpCubit extends Cubit<SignUpState> {
   String errMessage = '';
 
   Future<void> signUpUser({
-  required String username,
-  required String phone,
-  required String email,
-  required String password,
-}) async {
-  emit(SignUpLoading());
-  try {
-    const url = '$firebaseAuthUrl:signUp?key=$apiKey_2';
-    final response = await http.post(
-      Uri.parse(url),
-      body: json.encode({
-        'email': email,
-        'password': password,
-        'returnSecureToken': true,
-      }),
-    );
-    final responseData = json.decode(response.body);
-    final token = responseData['idToken'];
-    if (responseData.containsKey('error')) {
-      errMessage = responseData['error']['message'];
+    required String username,
+    required String phone,
+    required String email,
+    required String password,
+  }) async {
+    emit(SignUpLoading());
+    try {
+      const url = '$firebaseAuthUrl:signUp?key=$apiKey_2';
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode({
+          'email': email,
+          'password': password,
+          'returnSecureToken': true,
+        }),
+      );
+      final responseData = json.decode(response.body);
+      final token = responseData['idToken'];
+      if (responseData.containsKey('error')) {
+        errMessage = responseData['error']['message'];
+      }
+      await saveUserDataToFirestore(
+        token: token,
+        username: username,
+        phone: phone,
+        email: email,
+        password: password,
+      );
+      emit(SignUpSuccess());
+      log('User registered successfully!');
+    } catch (e) {
+      log(e.toString());
+      emit(SignUpFailed(error: errMessage));
     }
-    await saveUserDataToFirestore(
-      token: token,
-      username: username,
-      phone: phone,
-      email: email,
-      password: password,
-    );
-    emit(SignUpSuccess());
-    log('User registered successfully!');
-  } catch (e) {
-    log(e.toString());
-    emit(SignUpFailed(error: errMessage));
   }
-}
 
   Future<void> saveUserDataToFirestore({
     required String token,
@@ -56,7 +56,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     required String password,
   }) async {
     emit(SaveUserDataLoading());
-    final url = '$firebaseFirestoreBaseUrl?key=$apiKey_2';
+    const url = '$firebaseAuthUrl:signUp?key=$apiKey_2';
 
     final response = await http.post(
       Uri.parse(url),
