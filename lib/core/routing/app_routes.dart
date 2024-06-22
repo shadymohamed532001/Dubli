@@ -1,6 +1,8 @@
 import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
+import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
+import 'package:dubli/feature/chat/ui/views/chat_history.dart';
 import 'package:dubli/feature/event/logic/event_cubit.dart';
 import 'package:dubli/feature/event/ui/views/add_event_view.dart';
 import 'package:dubli/feature/intor/ui/views/intro_view.dart';
@@ -108,6 +110,15 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (context) {
             return const EditProfileView();
+          },
+        );
+      case Routes.chatHistoryViewsRoute:
+        return MaterialPageRoute(
+          builder: (context) {
+            return BlocProvider(
+              create: (context) => serviceLocator.get<ChatCubit>(),
+              child: const ChatHistory(),
+            );
           },
         );
 

@@ -17,4 +17,5 @@ static const String addtasksViewsRoute = '/tasksViews';
   static const String tasksViewsDetailsRoute = '/tasksViewsDetails';
 
   static const String editProfileViewsRoute = '/editProfileViews';
+  static const String chatHistoryViewsRoute = '/chatHistoryViews';
 }
