@@ -21,8 +21,7 @@ class EventCubit extends Cubit<EventState> {
       required String eventTime,
       required String eventDate,
       required String eventDescription}) async {
-    print(titleController.text);
-    print(noteController.text);
+
     emit(AddEventLoading());
     final eventsCollectionUrl = constructUserEvents(useridHelper);
 

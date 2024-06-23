@@ -56,3 +56,6 @@ final class GetResposeMessageErrorState extends ChatState {
   final String error;
   const GetResposeMessageErrorState({required this.error});
 }
+
+final class SendUserMassMessageLoading extends ChatState {
+}

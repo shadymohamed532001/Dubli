@@ -33,25 +33,36 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+    final TextEditingController chatController = TextEditingController();
+
+
   List<Map<String, dynamic>> messages = [];
 
   String formatTimestamp(DateTime timestamp) {
     return DateFormat.jm().format(timestamp);
   }
 
-  final TextEditingController chatController = TextEditingController();
+  List<String> suggestionQuestions = [
+    "How can I help you today?",
+    "What are your operating hours?",
+    "Do you provide support for product X?",
+    "Can I return a product I bought?",
+    "How can I track my order?",
+  ];
 
-  Future sendMessage(String message) async {
+Future sendMessage(String message) async {
     try {
       var timestamp = DateTime.now();
 
+      // Add the user message to the list
       messages.add({
         "sender": "user",
         "message": message,
-        "timestamp": formatTimestamp(timestamp)
+        "timestamp": formatTimestamp(timestamp),
       });
 
-      emit(SendUserMassMessage());
+      // Emit loading state for sending message
+      emit(SendUserMassMessageLoading());
 
       var response = await ApiServices.postData(
         endpoint: chatendpoint,
@@ -64,16 +75,54 @@ class ChatCubit extends Cubit<ChatState> {
       var data = ChatbotResponse.fromJson(response);
       timestamp = DateTime.now();
 
+      // Add the bot response message to the list
       messages.add({
         "sender": "bot",
         "message": data.message,
-        "timestamp": formatTimestamp(timestamp)
+        "timestamp": formatTimestamp(timestamp),
       });
-      emit(GetResposeMessage(message: data.message));
 
+      // Emit success state with the bot response
+      emit(GetResposeMessage(message: data.message));
       return data.message;
     } catch (e) {
-      return emit(GetResposeMessage(message: e.toString()));
+      // Emit error state with the error message
+      emit(GetResposeMessage(message: e.toString()));
     }
   }
+  // Future sendMessage(String message) async {
+  //   try {
+  //     var timestamp = DateTime.now();
+
+  //     messages.add({
+  //       "sender": "user",
+  //       "message": message,
+  //       "timestamp": formatTimestamp(timestamp)
+  //     });
+
+  //     emit(SendUserMassMessage());
+
+  //     var response = await ApiServices.postData(
+  //       endpoint: chatendpoint,
+  //       data: {
+  //         'message': message,
+  //         'user_id': '3',
+  //       },
+  //     );
+
+  //     var data = ChatbotResponse.fromJson(response);
+  //     timestamp = DateTime.now();
+
+  //     messages.add({
+  //       "sender": "bot",
+  //       "message": data.message,
+  //       "timestamp": formatTimestamp(timestamp)
+  //     });
+  //     emit(GetResposeMessage(message: data.message));
+
+  //     return data.message;
+  //   } catch (e) {
+  //     return emit(GetResposeMessage(message: e.toString()));
+  //   }
+  // }
 }

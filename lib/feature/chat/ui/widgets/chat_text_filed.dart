@@ -14,6 +14,12 @@ class ChatTextFiled extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter some text';
+          }
+          return null;
+        },
         controller: _controller,
         decoration: InputDecoration(
           hintText: 'Write a message..',
