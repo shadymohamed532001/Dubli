@@ -1,4 +1,4 @@
-import 'package:dubli/feature/reminder/ui/widgets/reminder_view_body.dart';
+import 'package:dubli/feature/reminder/ui/widgets/reminder2_view_body.dart';
 import 'package:flutter/material.dart';
 
 class ReminderView extends StatelessWidget {
@@ -8,6 +8,7 @@ class ReminderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           'Reminder Session',
         ),

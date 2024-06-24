@@ -9,11 +9,14 @@ class CustomListTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.onTap,
+    this.trailing,
   });
 
   final String imageAssetName;
   final String title, subtitle;
   final void Function()? onTap;
+  final Widget? trailing; 
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -31,6 +34,7 @@ class CustomListTile extends StatelessWidget {
             subtitle,
             style: AppStyle.font15Whiteregular,
           ),
+          trailing: trailing, // Add trailing widget to the ListTile
         ),
       ),
     );

@@ -46,7 +46,7 @@ class EventCubit extends Cubit<EventState> {
       eventId = responseData['name'].split('/').last;
       emit(AddEventSuccess());
 
-      print('event added $eventId ');
+      debugPrint('event added $eventId ');
     } else {
       emit(const AddEventError(error: 'Error adding event'));
     }
@@ -73,9 +73,9 @@ class EventCubit extends Cubit<EventState> {
     );
 
     if (response2.statusCode == 200) {
-      print('Event edited successfully!');
+      debugPrint('Event edited successfully!');
     } else {
-      print('Error editing event');
+      debugPrint('Error editing event');
     }
   }
 
@@ -99,9 +99,9 @@ class EventCubit extends Cubit<EventState> {
     );
 
     if (response3.statusCode == 200) {
-      print('Event deleted successfully!');
+      debugPrint('Event deleted successfully!');
     } else {
-      print('Error deleting event');
+      debugPrint('Error deleting event');
     }
   }
 }

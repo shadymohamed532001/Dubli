@@ -20,6 +20,11 @@ class AppStyle {
     fontWeight: FontWeightHelper.semibold,
     color: Colors.black,
   );
+    static TextStyle font50blacksemibold = const TextStyle(
+    fontSize: 50,
+    fontWeight: FontWeightHelper.semibold,
+    color: Colors.black,
+  );
   static TextStyle font14blacksemibold = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeightHelper.semibold,

@@ -1,8 +1,8 @@
-import 'package:dubli/feature/tasks/ui/widgets/tasks_view_body.dart';
+import 'package:dubli/feature/tasks/ui/widgets/tasks_group_view_body.dart';
 import 'package:flutter/material.dart';
 
-class TasksView extends StatelessWidget {
-  const TasksView({super.key});
+class TasksGroupView extends StatelessWidget {
+  const TasksGroupView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class TasksView extends StatelessWidget {
           'Task List',
         ),
       ),
-      body: const TasksViewBody(),
+      body: const TasksGroupViewBody(),
     );
   }
 }

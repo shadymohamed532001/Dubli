@@ -148,7 +148,7 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                         eventDate:  DateFormat.yMd().format(selectedDate),
                         eventTime: timeOfDay
                       );
-                      print('add event');
+                      debugPrint('add event');
                     } else {
                       setState(() {
                         cubit.autovalidateMode = AutovalidateMode.always;

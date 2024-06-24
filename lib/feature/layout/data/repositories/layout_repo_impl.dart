@@ -1,7 +1,7 @@
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/chat/ui/views/chat_view.dart';
 import 'package:dubli/feature/event/ui/views/event_view.dart';
-import 'package:dubli/feature/tasks/ui/views/tasks_view.dart';
+import 'package:dubli/feature/tasks/ui/views/tasks_group_view.dart';
 import 'package:dubli/feature/layout/data/models/change_index_params.dart';
 import 'package:dubli/feature/layout/data/repositories/layout_repo.dart';
 import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
@@ -29,7 +29,7 @@ class LayoutRepoImpl extends LayOutRepo {
     return const <Widget>[
       ChatView(),
       ReminderView(),
-      TasksView(),
+      TasksGroupView(),
       EventView(),
       SettingsView(),
     ];

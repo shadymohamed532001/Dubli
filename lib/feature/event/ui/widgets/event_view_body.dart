@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:dubli/feature/event/ui/widgets/event_and_add_event.dart';
-import 'package:dubli/feature/event/ui/widgets/events_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -50,7 +48,7 @@ class _EventViewBodyState extends State<EventViewBody> {
           const SliverToBoxAdapter(
             child: EventAndAddEvent(),
           ),
-          const EventsListView()
+          // const EventsListView()
         ],
       ),
     );
