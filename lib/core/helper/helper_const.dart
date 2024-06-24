@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:dubli/core/helper/local_services.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,7 @@ String constructUserTask(String userId, String taskListId, String taskId) {
 }
 
 Future<Map<String, dynamic>> fetchDataFromLocalStorage() async {
-  usertoken = await LocalServices.getData(key: 'token');
+  usertoken = await LocalServices.getData(key: 'userId');
   log('UserToken : $usertoken');
   return {'token': usertoken};
 }
@@ -54,4 +53,8 @@ void showCustomSnackBar(BuildContext context, String message) {
       content: Text(message),
     ),
   );
+}
+
+String modifyUserTasks(String userId, String taskListId) {
+  return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/users/$userId/Tasks/$taskListId';
 }

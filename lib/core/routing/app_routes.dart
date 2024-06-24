@@ -15,10 +15,11 @@ import 'package:dubli/feature/setting/ui/views/private_policy_view.dart';
 import 'package:dubli/feature/setting/ui/views/terms_and_conditions.dart';
 import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
 import 'package:dubli/feature/signup/ui/views/signup_view.dart';
+import 'package:dubli/feature/tasks/data/models/all_tasks_name_model.dart';
 import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:dubli/feature/tasks/ui/views/add_tasks_view.dart';
 import 'package:dubli/feature/tasks/ui/views/tasks_details_view.dart';
-
+import 'package:dubli/feature/tasks/ui/views/tasks_group_details_view.dart';
 import 'package:dubli/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,6 +98,14 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (context) {
             return const PrivatePolicyView();
+          },
+        );
+      case Routes.tasksGroupViewsDetailsRoute:
+        return MaterialPageRoute(
+          builder: (context) {
+            return TaskGroupDetailsView(
+              taskModel: routeSettings.arguments as TaskGroupModel,
+            );
           },
         );
       case Routes.termsAndConditionsViewsRoute:

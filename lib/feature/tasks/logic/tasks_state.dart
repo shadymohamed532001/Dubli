@@ -27,7 +27,7 @@ final class GetTaskListNameError extends TasksState {
 
 
 final class GetTaskListNameSuccess extends TasksState {
-  final List<Task> tasks;
+  final List<TaskGroupModel> tasks;
   const GetTaskListNameSuccess(this.tasks);
 }
 
@@ -40,3 +40,26 @@ final class GetTaskListNameSuccess extends TasksState {
   const AddTaskListError(this.errorMessage);
 }
 final class AddTaskListSuccess extends TasksState {}  
+
+
+final class GetAllTasksSuccessState extends TasksState {
+  final List<AllTaskModel> tasks;
+  const GetAllTasksSuccessState(this.tasks);
+}
+
+final class GetAllTasksLoading extends TasksState {}
+
+final class GetAllTasksErrorState extends TasksState {
+  final String errorMessage;
+  const GetAllTasksErrorState(this.errorMessage);
+}
+
+final class AddTaskLoading extends TasksState {}
+
+final class AddTaskError extends TasksState {
+  final String errorMessage;
+  const AddTaskError(this.errorMessage);
+}
+
+final class AddTaskSuccess extends TasksState {}
+

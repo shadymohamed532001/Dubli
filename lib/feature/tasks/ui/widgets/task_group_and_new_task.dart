@@ -114,11 +114,9 @@ class TaskGroupAndNewTask extends StatelessWidget {
                 }
 
                 BlocProvider.of<TasksCubit>(context).addTask(
-                  '123', // Replace with actual taskListId if needed
+                  '123',
                   name,
                   date,
-                  priority,
-                  note,
                 );
                 Navigator.of(context).pop();
               },

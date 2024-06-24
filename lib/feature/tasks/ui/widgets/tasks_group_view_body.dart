@@ -1,11 +1,10 @@
+import 'package:dubli/feature/tasks/ui/widgets/build_add_tasks_drop_down.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_group_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_completed_circle_indicator.dart';
-import 'package:dubli/core/widgets/app_bottom.dart';
 import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/utils/app_colors.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class TasksGroupViewBody extends StatefulWidget {
@@ -31,6 +30,7 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
         }
       },
       builder: (context, state) {
+        var cubit = BlocProvider.of<TasksCubit>(context);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: CustomScrollView(
@@ -50,7 +50,14 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      _buildAddDropdown(context),
+                      BuildAddTasksDropdown(
+                        addController: cubit.addTaskGroupNameController,
+                        onPressed: () {
+                          cubit.addTaskListWithName(
+                            name: cubit.addTaskGroupNameController.text.trim(),
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -81,56 +88,6 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                     ),
                   ),
                 ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAddDropdown(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
-
-    return CustomBottom(
-      bottomHeight: 40,
-      bottomWidth: 70,
-      bottomtext: 'Add',
-      textBottomStyle: const TextStyle(
-        fontSize: 13,
-        fontFamily: 'Raleway',
-        color: ColorManager.primaryColor,
-      ),
-      backgroundColor: ColorManager.darkyellowColor,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Add Task Group'),
-            content: TextField(
-              controller: controller,
-              decoration: const InputDecoration(
-                hintText: 'Enter group name',
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  String groupName = controller.text.trim();
-                  if (groupName.isNotEmpty) {
-                    BlocProvider.of<TasksCubit>(context)
-                        .addTaskListWithName(name: groupName);
-                    controller.clear();
-                  }
-                },
-                child: const Text('Add'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Cancel'),
-              ),
             ],
           ),
         );

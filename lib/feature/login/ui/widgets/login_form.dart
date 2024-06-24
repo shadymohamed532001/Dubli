@@ -38,7 +38,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             CustomTextFormField(
               obscureText: false,
-              hintText: 'Patient@self.com',
+              hintText: 'please enter your email',
               keyboardType: TextInputType.emailAddress,
               controller: logincubite.emailController,
               validator: (text) {
@@ -56,7 +56,6 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             CustomTextFormField(
-              
               obscureText: ispassword,
               suffixIcon: InkWell(
                 splashColor: Colors.transparent,
@@ -75,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                         color: ColorManager.primaryColor,
                       ),
               ),
-              hintText: 'Min 6 Cyfr',
+              hintText: 'please enter your password',
               keyboardType: TextInputType.visiblePassword,
               controller: logincubite.passwordController,
               validator: (text) {

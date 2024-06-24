@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+
 import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/helper/local_services.dart';
 import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';
@@ -42,15 +42,9 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             massage: 'Login Success',
             state: ToustState.SUCCESS,
           );
-          LocalServices.saveData(
-            key: 'token',
-            value: 'true',
-          ).then(
-            (value) {
-              context.navigateAndRemoveUntil(
-                newRoute: Routes.layOutViewsRoute,
-              );
-            },
+
+          context.navigateAndRemoveUntil(
+            newRoute: Routes.layOutViewsRoute,
           );
         } else if (state is LoginFailure) {
           Navigator.pop(context);

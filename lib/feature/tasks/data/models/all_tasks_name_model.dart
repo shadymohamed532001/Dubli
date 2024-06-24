@@ -1,16 +1,16 @@
-class Task {
+class TaskGroupModel {
   final String name;
   final String id;
   final int count;
 
-  Task({
+  TaskGroupModel({
     required this.name,
     required this.id,
     required this.count,
   });
 
-  factory Task.fromJson(Map<String, dynamic> json) {
-    return Task(
+  factory TaskGroupModel.fromJson(Map<String, dynamic> json) {
+    return TaskGroupModel(
       name: json['fields']['name']['stringValue'] as String,
       id: json['fields']['id']['stringValue'] as String,
       count: json['fields']['count'] as int,
