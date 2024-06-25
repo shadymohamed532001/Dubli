@@ -183,7 +183,7 @@ class TasksCubit extends Cubit<TasksState> {
       Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
 
-      debugPrint(response.reasonPhrase);
+      debugPrint(response.body);
 
       allTasks.clear(); // Clear previous tasks before adding new ones
       var tasksResponse = TasksResponse.fromJson(data);
@@ -199,50 +199,11 @@ class TasksCubit extends Cubit<TasksState> {
           headers: {'Content-Type': 'application/json'});
     } catch (error) {
       emit(GetAllTasksErrorState(error.toString()));
+      print(error.toString());
       return http.Response(
           jsonEncode({'error': 'An error occurred: $error'}), 500,
           headers: {'Content-Type': 'application/json'});
     }
-  }
-
-//-------------------------------------------------------------------------------------------------
-  Future<List<Map<String, dynamic>>> getTasksByDate(String date) async {
-    final DateTime targetDate = DateTime.parse(date).toUtc();
-    List<Map<String, dynamic>> events = [];
-    String targetDateString = targetDate
-        .toIso8601String()
-        .split('T')
-        .first; // Extract only the date part
-
-    await getSubCollectionFromTasks(targetDateString, events);
-
-    return events;
-  }
-
-  Future<List<Map<String, dynamic>>> getTasksByDateDone(String date) async {
-    final DateTime targetDate = DateTime.parse(date).toUtc();
-    List<Map<String, dynamic>> events = [];
-    String targetDateString = targetDate
-        .toIso8601String()
-        .split('T')
-        .first; // Extract only the date part
-
-    await getSubCollectionFromTasksDone(targetDateString, events);
-
-    return events;
-  }
-
-  Future<List<Map<String, dynamic>>> getTasksByDateUndone(String date) async {
-    final DateTime targetDate = DateTime.parse(date).toUtc();
-    List<Map<String, dynamic>> events = [];
-    String targetDateString = targetDate
-        .toIso8601String()
-        .split('T')
-        .first; // Extract only the date part
-
-    await getSubCollectionFromTasksUndone(targetDateString, events);
-
-    return events;
   }
 
   Future<List<Map<String, dynamic>>> getSubCollectionFromTasks(
@@ -300,120 +261,6 @@ class TasksCubit extends Cubit<TasksState> {
     return tasks;
   }
 
-  Future<List<Map<String, dynamic>>> getSubCollectionFromTasksDone(
-      String targetDateString, List<Map<String, dynamic>> tasks) async {
-    var userId = await LocalServices.getData(key: 'userId');
-
-    String url = constructUserTaskLists(userId);
-    http.Response response = await http.get(Uri.parse(url));
-
-    if (response.statusCode != 200) {
-      debugPrint(
-          'Failed to retrieve collection. Status code: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
-    }
-
-    Map<String, dynamic> data =
-        jsonDecode(response.body) as Map<String, dynamic>;
-
-    if (data.containsKey('documents')) {
-      for (var document in data['documents'] as List<dynamic>) {
-        String documentId = document['name'] as String;
-        String subCollectionURL =
-            'https://firestore.googleapis.com/v1/$documentId/tasks';
-        http.Response subCollectionResponse =
-            await http.get(Uri.parse(subCollectionURL));
-        Map<String, dynamic> subCollectionData =
-            jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
-
-        if (subCollectionData.containsKey('documents')) {
-          for (var nestedCollection
-              in subCollectionData['documents'] as List<dynamic>) {
-            Map<String, dynamic> fields =
-                nestedCollection['fields'] as Map<String, dynamic>;
-            String taskId = document['name'].split('/').last as String;
-
-            if (fields.containsKey('date') &&
-                fields['date']['timestampValue'].startsWith(targetDateString)
-                    as bool &&
-                fields.containsKey('done') &&
-                fields['done']['booleanValue'] == true) {
-              Map<String, dynamic> task = {
-                'fields': {
-                  'name': fields['name']['stringValue'],
-                  'id': taskId,
-                  'date': fields['date']['timestampValue'],
-                  'done': fields['done']['booleanValue'],
-                }
-              };
-              tasks.add(task);
-            } else {}
-          }
-        }
-      }
-    } else {
-      debugPrint('No documents found in collection.');
-    }
-    return tasks;
-  }
-
-  Future<List<Map<String, dynamic>>> getSubCollectionFromTasksUndone(
-      String targetDateString, List<Map<String, dynamic>> tasks) async {
-    var userId = await LocalServices.getData(key: 'userId');
-
-    String url = constructUserTaskLists(userId);
-    http.Response response = await http.get(Uri.parse(url));
-
-    if (response.statusCode != 200) {
-      print(
-          'Failed to retrieve collection. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    }
-
-    Map<String, dynamic> data =
-        jsonDecode(response.body) as Map<String, dynamic>;
-
-    if (data.containsKey('documents')) {
-      for (var document in data['documents'] as List<dynamic>) {
-        String documentId = document['name'] as String;
-        String subCollectionURL =
-            'https://firestore.googleapis.com/v1/$documentId/tasks';
-        http.Response subCollectionResponse =
-            await http.get(Uri.parse(subCollectionURL));
-        Map<String, dynamic> subCollectionData =
-            jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
-
-        if (subCollectionData.containsKey('documents')) {
-          for (var nestedCollection
-              in subCollectionData['documents'] as List<dynamic>) {
-            Map<String, dynamic> fields =
-                nestedCollection['fields'] as Map<String, dynamic>;
-            String taskId = document['name'].split('/').last as String;
-
-            if (fields.containsKey('date') &&
-                fields['date']['timestampValue'].startsWith(targetDateString)
-                    as bool &&
-                fields.containsKey('done') &&
-                fields['done']['booleanValue'] == false) {
-              Map<String, dynamic> task = {
-                'fields': {
-                  'name': fields['name']['stringValue'],
-                  'id': taskId,
-                  'date': fields['date']['timestampValue'],
-                  'done': fields['done']['booleanValue'],
-                }
-              };
-              tasks.add(task);
-            } else {}
-          }
-        }
-      }
-    } else {
-      print('No documents found in collection.');
-    }
-    return tasks;
-  }
-
 //-------------------------------------------------------------------------------------------------
   Future<void> addTask(String taskListId, String name, String dateTime) async {
     emit(AddTaskLoading());
@@ -454,62 +301,12 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
 //-------------------------------------------------------------------------------------------------
-  Future<void> addTaskWithNameAndDate(
-      String taskListId, String name, String date) async {
-    var userId = await LocalServices.getData(key: 'userId');
-
-    final DateTime taskDate = DateTime.parse(date).toUtc();
-    final Map<String, dynamic> data = {
-      'fields': {
-        'name': {'stringValue': name},
-        'date': {'timestampValue': taskDate.toIso8601String()},
-        'done': {'booleanValue': 'false'}
-      }
-    };
-
-    final String jsonData = json.encode(data);
-
-    final response = await http.post(
-      Uri.parse(constructUserTasks(userId, taskListId)),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonData,
-    );
-
-    if (response.statusCode == 200) {
-      print('Document added successfully.');
-    } else {
-      print('Failed to add document. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    }
-  }
-
-  Future<Map<String, dynamic>> getTask(String taskListId, String taskId) async {
-    var userId = await LocalServices.getData(key: 'userId');
-
-    final response = await http.get(
-      Uri.parse(constructUserTask(userId, taskListId, taskId)),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(response.body) as Map<String, dynamic>;
-      data = await data['fields'] as Map<String, dynamic>;
-      return data;
-    } else {
-      print('Failed to retrieve task. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      return {};
-    }
-  }
-
-//-------------------------------------------------------------------------------------------------
   Future<void> updateTask(
-      String taskListId, String taskId, String name, String date) async {
+      {required String taskListId,
+      required String taskId,
+      required String name,
+      required String date,
+      required bool done}) async {
     var userId = await LocalServices.getData(key: 'userId');
 
     final DateTime taskDate = DateTime.parse(date).toUtc();
@@ -517,6 +314,7 @@ class TasksCubit extends Cubit<TasksState> {
       'fields': {
         'name': {'stringValue': name},
         'date': {'timestampValue': taskDate.toIso8601String()},
+        'done': {'booleanValue': done}
       }
     };
 
@@ -532,6 +330,7 @@ class TasksCubit extends Cubit<TasksState> {
 
     if (response.statusCode == 200) {
       print('Task updated successfully.');
+      getTasks(taskListId);
     } else {
       print('Failed to update task. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -539,7 +338,8 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
 //-------------------------------------------------------------------------------------------------
-  Future<void> deleteTask(String taskListId, String taskId) async {
+  Future<void> deleteTask(
+      {required String taskListId, required String taskId}) async {
     var userId = await LocalServices.getData(key: 'userId');
 
     final response = await http.delete(
@@ -548,7 +348,11 @@ class TasksCubit extends Cubit<TasksState> {
 
     if (response.statusCode == 200) {
       print('Document deleted successfully.');
+      getTasks(taskListId);
     } else {
+      emit(DeleteTaskFromListError(
+        'Failed to delete document. Status code: ${response.statusCode}',
+      ));
       print('Failed to delete document. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
     }
@@ -588,6 +392,7 @@ class TasksCubit extends Cubit<TasksState> {
     );
 
     if (updateResponse.statusCode == 200) {
+      getTasks(taskListId);
       return true;
     } else {
       print('Failed to update task. Status code: ${updateResponse.statusCode}');
@@ -597,8 +402,8 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
 //-------------------------------------------------------------------------------------------------
-  Future<List<Map<String, dynamic>>> getTodaysTasks() async {
-    final DateTime targetDate = DateTime.now().toUtc();
+  Future<List<Map<String, dynamic>>> getTasksByDate(String date) async {
+    final DateTime targetDate = DateTime.parse(date).toUtc();
     List<Map<String, dynamic>> events = [];
     String targetDateString = targetDate
         .toIso8601String()
@@ -607,6 +412,216 @@ class TasksCubit extends Cubit<TasksState> {
 
     await getSubCollectionFromTasks(targetDateString, events);
 
+    print(events);
+
+    print('All events: $events');
+    print('---------------------------');
+
     return events;
   }
+
+  Future<List<Map<String, dynamic>>> getTasksByDateDone(String date) async {
+    final DateTime targetDate = DateTime.parse(date).toUtc();
+    List<Map<String, dynamic>> events = [];
+    String targetDateString = targetDate
+        .toIso8601String()
+        .split('T')
+        .first; // Extract only the date part
+
+    await getSubCollectionFromTasksDone(targetDateString, events);
+
+    print('Done events: $events');
+    print('---------------------------');
+    return events;
+  }
+
+  Future<List<Map<String, dynamic>>> getTasksByDateUndone(String date) async {
+    final DateTime targetDate = DateTime.parse(date).toUtc();
+    List<Map<String, dynamic>> events = [];
+    String targetDateString = targetDate
+        .toIso8601String()
+        .split('T')
+        .first; // Extract only the date part
+
+    await getSubCollectionFromTasksUndone(targetDateString, events);
+  print('Todo events: $events');
+    print('---------------------------');
+    return events;
+  }
+}
+
+Future<List<Map<String, dynamic>>> getSubCollectionFromTasks(
+    String targetDateString, List<Map<String, dynamic>> tasks) async {
+  var userId = await LocalServices.getData(key: 'userId');
+
+  String url = constructUserTaskLists(userId);
+  http.Response response = await http.get(Uri.parse(url));
+
+  if (response.statusCode != 200) {
+    print('Failed to retrieve collection. Status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
+  Map<String, dynamic> data = jsonDecode(response.body) as Map<String, dynamic>;
+
+  if (data.containsKey('documents')) {
+    for (var document in data['documents'] as List<dynamic>) {
+      String documentId = document['name'] as String;
+      String subCollectionURL =
+          'https://firestore.googleapis.com/v1/$documentId/tasks';
+      http.Response subCollectionResponse =
+          await http.get(Uri.parse(subCollectionURL));
+      Map<String, dynamic> subCollectionData =
+          jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
+
+      if (subCollectionData.containsKey('documents')) {
+        for (var nestedCollection
+            in subCollectionData['documents'] as List<dynamic>) {
+          Map<String, dynamic> fields =
+              nestedCollection['fields'] as Map<String, dynamic>;
+          String taskId = document['name'].split('/').last as String;
+
+          if (fields.containsKey('date') &&
+              fields['date']['timestampValue'].startsWith(targetDateString)
+                  as bool) {
+            Map<String, dynamic> task = {
+              'fields': {
+                'name': fields['name']['stringValue'],
+                'id': taskId,
+                'date': fields['date']['timestampValue'],
+                'done': fields['done']['booleanValue'],
+              }
+            };
+            tasks.add(task);
+          } else {}
+        }
+      }
+    }
+  } else {
+    print('No documents found in collection.');
+  }
+  return tasks;
+}
+
+Future<List<Map<String, dynamic>>> getSubCollectionFromTasksDone(
+    String targetDateString, List<Map<String, dynamic>> tasks) async {
+  var userId = await LocalServices.getData(key: 'userId');
+
+  String url = constructUserTaskLists(userId);
+  http.Response response = await http.get(Uri.parse(url));
+
+  if (response.statusCode != 200) {
+    print('Failed to retrieve collection. Status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
+  Map<String, dynamic> data = jsonDecode(response.body) as Map<String, dynamic>;
+
+  if (data.containsKey('documents')) {
+    for (var document in data['documents'] as List<dynamic>) {
+      String documentId = document['name'] as String;
+      String subCollectionURL =
+          'https://firestore.googleapis.com/v1/$documentId/tasks';
+      http.Response subCollectionResponse =
+          await http.get(Uri.parse(subCollectionURL));
+      Map<String, dynamic> subCollectionData =
+          jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
+
+      if (subCollectionData.containsKey('documents')) {
+        for (var nestedCollection
+            in subCollectionData['documents'] as List<dynamic>) {
+          Map<String, dynamic> fields =
+              nestedCollection['fields'] as Map<String, dynamic>;
+          String taskId = document['name'].split('/').last as String;
+
+          if (fields.containsKey('date') &&
+              fields['date']['timestampValue'].startsWith(targetDateString)
+                  as bool &&
+              fields.containsKey('done') &&
+              fields['done']['booleanValue'] == true) {
+            Map<String, dynamic> task = {
+              'fields': {
+                'name': fields['name']['stringValue'],
+                'id': taskId,
+                'date': fields['date']['timestampValue'],
+                'done': fields['done']['booleanValue'],
+              }
+            };
+            tasks.add(task);
+          } else {}
+        }
+      }
+    }
+  } else {
+    print('No documents found in collection.');
+  }
+  return tasks;
+}
+
+Future<List<Map<String, dynamic>>> getSubCollectionFromTasksUndone(
+    String targetDateString, List<Map<String, dynamic>> tasks) async {
+  var userId = await LocalServices.getData(key: 'userId');
+
+  String url = constructUserTaskLists(userId);
+  http.Response response = await http.get(Uri.parse(url));
+
+  if (response.statusCode != 200) {
+    print('Failed to retrieve collection. Status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
+  Map<String, dynamic> data = jsonDecode(response.body) as Map<String, dynamic>;
+
+  if (data.containsKey('documents')) {
+    for (var document in data['documents'] as List<dynamic>) {
+      String documentId = document['name'] as String;
+      String subCollectionURL =
+          'https://firestore.googleapis.com/v1/$documentId/tasks';
+      http.Response subCollectionResponse =
+          await http.get(Uri.parse(subCollectionURL));
+      Map<String, dynamic> subCollectionData =
+          jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
+
+      if (subCollectionData.containsKey('documents')) {
+        for (var nestedCollection
+            in subCollectionData['documents'] as List<dynamic>) {
+          Map<String, dynamic> fields =
+              nestedCollection['fields'] as Map<String, dynamic>;
+          String taskId = document['name'].split('/').last as String;
+
+          if (fields.containsKey('date') &&
+              fields['date']['timestampValue'].startsWith(targetDateString)
+                  as bool &&
+              fields.containsKey('done') &&
+              fields['done']['booleanValue'] == false) {
+            Map<String, dynamic> task = {
+              'fields': {
+                'name': fields['name']['stringValue'],
+                'id': taskId,
+                'date': fields['date']['timestampValue'],
+                'done': fields['done']['booleanValue'],
+              }
+            };
+            tasks.add(task);
+          } else {}
+        }
+      }
+    }
+  } else {
+    print('No documents found in collection.');
+  }
+  return tasks;
+}
+
+Future<List<Map<String, dynamic>>> getTodaysTasks() async {
+  final DateTime targetDate = DateTime.now().toUtc();
+  List<Map<String, dynamic>> events = [];
+  String targetDateString = targetDate
+      .toIso8601String()
+      .split('T')
+      .first; // Extract only the date part
+
+  await getSubCollectionFromTasks(targetDateString, events);
+
+  return events;
 }

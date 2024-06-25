@@ -27,7 +27,9 @@ class TaskGroupItem extends StatelessWidget {
       height: 80,
       child: CustomListTile(
         onTap: () {
-          context.navigateTo(routeName: Routes.tasksGroupViewsDetailsRoute,arguments: taskModel);
+          context.navigateTo(
+              routeName: Routes.tasksGroupViewsDetailsRoute,
+              arguments: taskModel);
         },
         imageAssetName: ImagesAssetsManager.applogoImage,
         subtitle: count.toString(),
@@ -74,25 +76,30 @@ class TaskGroupItem extends StatelessWidget {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                final newName = controller.text;
-                if (newName.isNotEmpty) {
-                  BlocProvider.of<TasksCubit>(context).updateTaskListName(
-                    newName: newName,
-                    taskListId: taskModel.id,
-                  );
-                }
-                Navigator.of(context).pop();
-              },
-              child: const Text('Update'),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final newName = controller.text;
+                    if (newName.isNotEmpty) {
+                      BlocProvider.of<TasksCubit>(context).updateTaskListName(
+                        newName: newName,
+                        taskListId: taskModel.id,
+                      );
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Update'),
+                ),
+              ],
+            )
           ],
         );
       },
@@ -107,20 +114,25 @@ class TaskGroupItem extends StatelessWidget {
           title: const Text('Delete Task'),
           content: const Text('Are you sure you want to delete this task?'),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                BlocProvider.of<TasksCubit>(context)
-                    .deleteTaskList(taskListId: taskModel.id);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Delete'),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    BlocProvider.of<TasksCubit>(context)
+                        .deleteTaskList(taskListId: taskModel.id);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Delete'),
+                ),
+              ],
+            )
           ],
         );
       },

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dubli/core/helper/validators_helper.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';
@@ -18,187 +17,359 @@ class AddEventViewBody extends StatefulWidget {
 }
 
 class _AddEventViewBodyState extends State<AddEventViewBody> {
-  DateTime selectedDate = DateTime.now();
-  String timeOfDay = DateFormat("hh:mm a").format(DateTime.now()).toString();
+  TimeOfDay starttimeOfDay = TimeOfDay.now();
+  TimeOfDay endtimeOfDay = TimeOfDay.now();
+  DateTime? startDate;
+  DateTime? endDate;
+  String? selectedReminder = 'Never';
+  final List<String> reminderItem = ["Daily", "Weekly", "Monthly", "Never"];
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EventCubit, EventState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = BlocProvider.of<EventCubit>(context);
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Form(
-            key: cubit.formKey,
-            autovalidateMode: cubit.autovalidateMode,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Add Event',
-                  style: AppStyle.font22Whiteregular,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Title',
-                  style: AppStyle.font18Whitemedium,
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                CustomTextFormField(
-                  controller: cubit.titleController,
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: BlocConsumer<EventCubit, EventState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = BlocProvider.of<EventCubit>(context);
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              key: cubit.formKey,
+              autovalidateMode: cubit.autovalidateMode,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Add Event',
+                    style: AppStyle.font22Whiteregular,
                   ),
-                  obscureText: false,
-                  hintText: 'Enter Title here',
-                  fillColor: ColorManager.whiteColor,
-                  validator: (text) {
-                    return MyValidatorsHelper.tittleValidator(text);
-                  },
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Note',
-                  style: AppStyle.font18Whitemedium,
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                CustomTextFormField(
-                  controller: cubit.noteController,
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  obscureText: false,
-                  hintText: 'Enter Note here',
-                  fillColor: ColorManager.whiteColor,
-                  validator: (text) {
-                    return MyValidatorsHelper.noteValidator(text);
-                  },
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Date',
-                  style: AppStyle.font18Whitemedium,
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                CustomTextFormField(
-                  obscureText: false,
-                  hintText: DateFormat.yMd().format(selectedDate),
-                  fillColor: ColorManager.whiteColor,
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
+                  Text(
+                    'Title',
+                    style: AppStyle.font18Whitemedium,
                   ),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      getDateFormUser();
-                    },
-                    child: Icon(
-                      Icons.calendar_month,
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  CustomTextFormField(
+                    controller: cubit.titleController,
+                    hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(0.6),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Time',
-                  style: AppStyle.font18Whitemedium,
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                CustomTextFormField(
-                  obscureText: false,
-                  hintText: timeOfDay,
-                  fillColor: ColorManager.whiteColor,
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.6),
-                  ),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      getTimeFromUser();
+                    obscureText: false,
+                    hintText: 'Enter Title here',
+                    fillColor: ColorManager.whiteColor,
+                    validator: (text) {
+                      return MyValidatorsHelper.tittleValidator(text);
                     },
-                    child: Icon(
-                      Icons.schedule,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Note',
+                    style: AppStyle.font18Whitemedium,
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  CustomTextFormField(
+                    controller: cubit.noteController,
+                    hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(0.6),
                     ),
+                    obscureText: false,
+                    hintText: 'Enter Note here',
+                    fillColor: ColorManager.whiteColor,
+                    validator: (text) {
+                      return MyValidatorsHelper.noteValidator(text);
+                    },
                   ),
-                ),
-                const Spacer(
-                  flex: 3,
-                ),
-                CustomBottom(
-                  onPressed: () {
-                    if (cubit.formKey.currentState!.validate()) {
-                      cubit.addEvent(
-                        eventDescription: cubit.noteController.text,
-                        eventName: cubit.titleController.text,
-                        eventDate:  DateFormat.yMd().format(selectedDate),
-                        eventTime: timeOfDay
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Start Date',
+                              style: AppStyle.font18Whitemedium,
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            CustomTextFormField(
+                              obscureText: false,
+                              hintText: startDate != null
+                                  ? DateFormat('dd/MM/yyyy').format(startDate!)
+                                  : 'Select Date',
+                              fillColor: ColorManager.whiteColor,
+                              hintStyle: TextStyle(
+                                color: Colors.grey.withOpacity(0.6),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  getDateFromUser(isStartDate: true);
+                                },
+                                child: Icon(
+                                  Icons.calendar_month,
+                                  color: Colors.grey.withOpacity(0.6),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'End Date',
+                              style: AppStyle.font18Whitemedium,
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            CustomTextFormField(
+                              obscureText: false,
+                              hintText: endDate != null
+                                  ? DateFormat('dd/MM/yyyy').format(endDate!)
+                                  : 'Select Date',
+                              fillColor: ColorManager.whiteColor,
+                              hintStyle: TextStyle(
+                                color: Colors.grey.withOpacity(0.6),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  getDateFromUser(isStartDate: false);
+                                },
+                                child: Icon(
+                                  Icons.calendar_month,
+                                  color: Colors.grey.withOpacity(0.6),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Start Time',
+                              style: AppStyle.font18Whitemedium,
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            CustomTextFormField(
+                              obscureText: false,
+                              hintText: starttimeOfDay.format(context),
+                              fillColor: ColorManager.whiteColor,
+                              hintStyle: TextStyle(
+                                color: Colors.grey.withOpacity(0.6),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  getStartTimeFromUser();
+                                },
+                                child: Icon(
+                                  Icons.schedule,
+                                  color: Colors.grey.withOpacity(0.6),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'End Time',
+                              style: AppStyle.font18Whitemedium,
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            CustomTextFormField(
+                              obscureText: false,
+                              hintText: endtimeOfDay.format(context),
+                              fillColor: ColorManager.whiteColor,
+                              hintStyle: TextStyle(
+                                color: Colors.grey.withOpacity(0.6),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  getEndTimeFromUser();
+                                },
+                                child: Icon(
+                                  Icons.schedule,
+                                  color: Colors.grey.withOpacity(0.6),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Reminder',
+                    style: AppStyle.font18Whitemedium,
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: selectedReminder,
+                    items: reminderItem.map((String item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: AppStyle.font16Greyregular,
+                        ),
                       );
-                      debugPrint('add event');
-                    } else {
+                    }).toList(),
+                    onChanged: (newValue) {
                       setState(() {
-                        cubit.autovalidateMode = AutovalidateMode.always;
+                        selectedReminder = newValue;
                       });
-                    }
-                  },
-                  bottomtext: 'Add Event',
-                  backgroundColor: ColorManager.darkyellowColor,
-                  textBottomStyle: AppStyle.font18Whitemedium,
-                ),
-                const Spacer(
-                  flex: 2,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  getDateFormUser() async {
-    DateTime? pickerDate = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2025),
-      initialDate: DateTime.now(),
-    );
-
-    if (pickerDate != null) {
-      setState(() {
-        selectedDate = pickerDate;
-      });
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          16,
+                        ),
+                      ),
+                      fillColor: ColorManager.whiteColor,
+                      filled: true,
+                      hintText: 'Select Frequency',
+                      hintStyle: TextStyle(
+                        color: Colors.grey.withOpacity(0.1),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 8,
+                  ),
+              CustomBottom(
+  onPressed: () {
+    if (cubit.formKey.currentState!.validate()) {
+      final String startDateTime = '${DateFormat('yyyy-MM-dd').format(startDate!)}T${formatTime(starttimeOfDay)}';
+      final String endDateTime = '${DateFormat('yyyy-MM-dd').format(endDate!)}T${formatTime(endtimeOfDay)}';
+      
+      cubit.addEvent(
+        endEventTime: endDateTime,
+        eventDescription: cubit.noteController.text,
+        eventName: cubit.titleController.text,
+        reminder: selectedReminder!,
+        startEventTime: startDateTime,
+      );
     } else {
-      log('Date is not selected');
+      setState(() {
+        cubit.autovalidateMode = AutovalidateMode.always;
+      });
     }
-  }
+  },
+  bottomtext: 'Add Event',
+  backgroundColor: ColorManager.darkyellowColor,
+  textBottomStyle: AppStyle.font18Whitemedium,
+),
 
-  getTimeFromUser() async {
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+String formatTime(TimeOfDay timeOfDay) {
+  final now = DateTime.now();
+  final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+  final formattedTime = DateFormat('HH:mm:ss').format(dateTime);
+  return formattedTime;
+}
+  Future<void> getStartTimeFromUser() async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 10, minute: 21),
+      initialTime: starttimeOfDay,
     );
 
     if (pickedTime != null) {
       setState(() {
-        timeOfDay = pickedTime.format(context);
+        starttimeOfDay = pickedTime;
       });
     } else {
       log('Time is not selected');
+    }
+  }
+
+  Future<void> getEndTimeFromUser() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: endtimeOfDay,
+    );
+
+    if (pickedTime != null) {
+      setState(() {
+        endtimeOfDay = pickedTime;
+      });
+    } else {
+      log('Time is not selected');
+    }
+  }
+
+  Future<void> getDateFromUser({required bool isStartDate}) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: isStartDate
+          ? (startDate ?? DateTime.now())
+          : (endDate ?? DateTime.now()),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        if (isStartDate) {
+          startDate = pickedDate;
+        } else {
+          endDate = pickedDate;
+        }
+      });
+    } else {
+      log('Date is not selected');
     }
   }
 }

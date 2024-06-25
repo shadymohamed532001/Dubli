@@ -1,4 +1,4 @@
-import 'package:dubli/feature/tasks/ui/widgets/build_add_tasks_drop_down.dart';
+import 'package:dubli/feature/tasks/ui/widgets/build_add_tasks_group_name.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_group_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +50,7 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      BuildAddTasksDropdown(
+                      BuildAddTasksGroupNameDropdown(
                         addController: cubit.addTaskGroupNameController,
                         onPressed: () {
                           cubit.addTaskListWithName(

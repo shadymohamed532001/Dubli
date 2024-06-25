@@ -1,17 +1,34 @@
-
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class TodoTasksView extends StatelessWidget {
-  const TodoTasksView({super.key});
+  const TodoTasksView({super.key, required this.tasks});
+
+  final List<Map<String, dynamic>> tasks;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Todo Screen",
-        style: AppStyle.font22Whiteregular,
-      ),
-    );
+    return tasks.isEmpty
+        ? Center(
+            child: Text(
+              "No Todo Tasks",
+              style: AppStyle.font22Whiteregular,
+            ),
+          )
+        : ListView.builder(
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                 title: Text(
+                  tasks[index]['fields']['name'] ?? 'No Title',
+                  style: AppStyle.font22Whitesemibold,
+                ),
+                subtitle: Text(
+                  tasks[index]['fields']['date'] ?? 'No Description',
+                  style: AppStyle.font30Whitesemibold,
+                ),
+              );
+            },
+          );
   }
 }

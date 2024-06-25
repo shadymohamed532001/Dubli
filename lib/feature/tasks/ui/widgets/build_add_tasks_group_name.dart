@@ -1,11 +1,9 @@
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BuildAddTasksDropdown extends StatelessWidget {
-  const BuildAddTasksDropdown({
+class BuildAddTasksGroupNameDropdown extends StatelessWidget {
+  const BuildAddTasksGroupNameDropdown({
     super.key,
     required this.onPressed,
     required this.addController,
@@ -30,8 +28,7 @@ class BuildAddTasksDropdown extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
-            var cubit = BlocProvider.of<TasksCubit>(context);
-            return AlertDialog(
+         return AlertDialog(
               title: const Text('Add Task Group'),
               content: TextField(
                 controller: addController,

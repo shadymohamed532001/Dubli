@@ -30,7 +30,7 @@ class TaskGroupDetailsView extends StatelessWidget {
         ),
       ),
       body: TasksGroupDetailsViewBody(
-        taskModel: taskModel,
+        taskGroupModel: taskModel,
       ),
     );
   }

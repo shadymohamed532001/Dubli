@@ -63,3 +63,11 @@ final class AddTaskError extends TasksState {
 
 final class AddTaskSuccess extends TasksState {}
 
+
+
+final class DeleteTaskFromListError extends TasksState {
+  final String errorMessage;
+  const DeleteTaskFromListError(this.errorMessage);
+}
+
+final class DeleteTaskFromListSuccess extends TasksState {}
