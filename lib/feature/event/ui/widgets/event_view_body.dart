@@ -18,12 +18,11 @@ class EventViewBody extends StatefulWidget {
 }
 
 class _EventViewBodyState extends State<EventViewBody> {
-  DateTime today = DateTime.now();
-
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<EventCubit>(context).getEventsWithDate(today.toString());
+    var cubit = BlocProvider.of<EventCubit>(context);
+    cubit.getEventsWithDate(cubit.today.toString());
   }
 
   @override
@@ -31,6 +30,8 @@ class _EventViewBodyState extends State<EventViewBody> {
     return BlocConsumer<EventCubit, EventState>(
       listener: (context, state) {},
       builder: (context, state) {
+        var cubit = BlocProvider.of<EventCubit>(context);
+
         return SafeArea(
           child: CustomScrollView(
             slivers: [
@@ -38,8 +39,8 @@ class _EventViewBodyState extends State<EventViewBody> {
                 child: TableCalendar(
                   firstDay: DateTime.utc(2020, 10, 16),
                   lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: today,
-                  selectedDayPredicate: (day) => isSameDay(day, today),
+                  focusedDay: cubit.today,
+                  selectedDayPredicate: (day) => isSameDay(day, cubit.today),
                   calendarStyle: const CalendarStyle(
                     defaultTextStyle: TextStyle(color: Colors.white),
                     todayTextStyle: TextStyle(color: Colors.white),
@@ -50,11 +51,11 @@ class _EventViewBodyState extends State<EventViewBody> {
                   ),
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
-                      today = selectedDay;
-                      log(today.toString());
+                      cubit.today = selectedDay;
+                      log(cubit.today.toString());
                     });
-                    BlocProvider.of<EventCubit>(context)
-                        .getEventsWithDate(today.toIso8601String());
+                    // BlocProvider.of<EventCubit>(context)
+                    //     .getEventsWithDate(today.toIso8601String());
                   },
                   availableGestures: AvailableGestures.all,
                   headerStyle: const HeaderStyle(

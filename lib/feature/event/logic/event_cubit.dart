@@ -193,6 +193,7 @@ class EventCubit extends Cubit<EventState> {
   }
 
   List<Map<String, dynamic>> eventDocuments = [];
+  DateTime today = DateTime.now();
 
   Future<http.Response> getEventsWithDate(String date) async {
     final DateTime today = DateTime.parse(date).toUtc();
@@ -275,6 +276,7 @@ class EventCubit extends Cubit<EventState> {
 
           // Emit success state
           emit(GetEventsSuccess(events: eventDocuments));
+
 
           // Return the JSON response
           return http.Response(jsonEncode(jsonResponse), 200,
