@@ -1,8 +1,5 @@
 import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/feature/tasks/data/models/all_tasks_name_model.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
@@ -12,11 +9,11 @@ class BuildAddTasksDropdown extends StatefulWidget {
       {super.key,
       this.onPressed,
       required this.addController,
-      required this.taskModel});
+      required this.id});
 
   final void Function()? onPressed;
   final TextEditingController addController;
-  final TaskGroupModel taskModel;
+  final String id;
 
   @override
   State<BuildAddTasksDropdown> createState() => _MyWidgetState();
@@ -123,11 +120,11 @@ Future<void> _selectTime(BuildContext context) async {
                             taskDate.isNotEmpty &&
                             taskTime.isNotEmpty) {
                           final taskDateTime = '$taskDate $taskTime';
-                          BlocProvider.of<TasksCubit>(context).addTask(
-                            widget.taskModel.id,
-                            taskName,
-                            taskDateTime,
-                          );
+                        //   BlocProvider.of<TasksCubit>(context).addTask(
+                        //  widget.id,
+                        //     taskName,
+                        //     taskDateTime,
+                        //   );
                           widget.onPressed!();
                           widget.addController.clear();
                           _dateController.clear();

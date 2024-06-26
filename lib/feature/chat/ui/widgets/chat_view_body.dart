@@ -4,13 +4,19 @@ import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:dubli/feature/chat/ui/widgets/chat_text_filed.dart';
 import 'package:dubli/feature/chat/ui/widgets/messages_widget.dart';
+import 'package:dubli/feature/chat/ui/widgets/add_task_bottom_sheet.dart'; // Import the AddTaskBottomSheet widget
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class ChatViewBody extends StatelessWidget {
+class ChatViewBody extends StatefulWidget {
   const ChatViewBody({super.key});
 
+  @override
+  State<ChatViewBody> createState() => _ChatViewBodyState();
+}
+
+class _ChatViewBodyState extends State<ChatViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatState>(
@@ -21,10 +27,11 @@ class ChatViewBody extends StatelessWidget {
             centerTitle: true,
             title: const Text('Dupli Chat Bot'),
             leading: GestureDetector(
-                onTap: () {
-                  context.navigateTo(routeName: Routes.chatHistoryViewsRoute);
-                },
-                child: const Icon(Icons.history)),
+              onTap: () {
+                context.navigateTo(routeName: Routes.chatHistoryViewsRoute);
+              },
+              child: const Icon(Icons.history),
+            ),
           ),
           body: Stack(
             children: [
@@ -64,8 +71,21 @@ class ChatViewBody extends StatelessWidget {
                           ),
                           onPressed: () {
                             if (cubit.chatController.text.isNotEmpty) {
-                              cubit.sendMessage(cubit.chatController.text);
+                              String userMessage =
+                                  cubit.chatController.text.toLowerCase();
+                              cubit.sendMessage(userMessage);
                               cubit.chatController.clear();
+                              if (userMessage.contains('tasks') ||
+                                  userMessage.contains('make a task') ||
+                                  userMessage.contains('generate task') ||
+                                  userMessage.contains('task')) {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddTaskBottomSheet();
+                                  },
+                                );
+                              }
                             }
                           },
                         ),

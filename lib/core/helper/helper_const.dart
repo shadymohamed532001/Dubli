@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, unused_local_variable
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dubli/core/helper/local_services.dart';
@@ -19,8 +21,8 @@ const String firebaseAuthUrl =
 //info helper
 dynamic useridHelper ;
 dynamic useremailHelper ='dupli@gmail.com';
-dynamic majorHelper= null ;
-dynamic yearHelper = null;
+dynamic majorHelper ;
+dynamic yearHelper;
 dynamic eventIdHelper ;
 dynamic phoneHelper='01010284536';
 dynamic passwordHelper;
@@ -118,7 +120,7 @@ Future<void>  checkUserEmailInUniHelper(String userId,String email) async {
     print('Error checking email: $e');
   }
 
-  return null;
+  return;
 }
 
 

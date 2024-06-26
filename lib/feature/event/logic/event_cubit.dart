@@ -1,13 +1,10 @@
 import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/helper/local_services.dart';
-import 'package:dubli/feature/event/data/models/get_all_event_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 part 'event_state.dart';
 
 class EventCubit extends Cubit<EventState> {
@@ -21,9 +18,8 @@ class EventCubit extends Cubit<EventState> {
   var noteController = TextEditingController();
   var dateController = TextEditingController();
   dynamic eventId;
-
 // Function to add an event
-  Future<void> addEvent({
+ Future<void> addEvent({
     required String eventName,
     required String startEventTime,
     required String endEventTime,
@@ -36,35 +32,38 @@ class EventCubit extends Cubit<EventState> {
     final eventsCollectionUrl = constructUserEvents(userId);
     final DateTime startEventDate = DateTime.parse(startEventTime).toUtc();
     final DateTime endEventDate = DateTime.parse(endEventTime).toUtc();
-    // Create the event document with Firestore-generated document ID
-    final response = await http.post(
-      Uri.parse(eventsCollectionUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'fields': {
-          'name': {'stringValue': eventName},
-          'startTime': {'timestampValue': startEventDate.toIso8601String()},
-          'endTime': {'timestampValue': endEventDate.toIso8601String()},
-          'description': {'stringValue': eventDescription},
-          'reminder': {'stringValue': reminder},
-        },
-      }),
-    );
 
-    if (response.statusCode == 200) {
-      // Parse the response to extract the document ID
-      final responseData = json.decode(response.body);
-      eventId = responseData['name'].split('/').last;
-      eventIdHelper = eventId;
-      print('event added succesfully+$eventId');
-      remindUser(eventIdHelper);
-      emit(AddEventSuccess());
-    } else {
+    try {
+      final response = await http.post(
+        Uri.parse(eventsCollectionUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'fields': {
+            'name': {'stringValue': eventName},
+            'startTime': {'timestampValue': startEventDate.toIso8601String()},
+            'endTime': {'timestampValue': endEventDate.toIso8601String()},
+            'description': {'stringValue': eventDescription},
+            'reminder': {'stringValue': reminder},
+          },
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        eventId = responseData['name'].split('/').last;
+        emit(AddEventSuccess());
+        remindUser(eventId);
+        getEventsWithDate(today.toString());
+      } else {
+        emit(const AddEventError(error: 'Error adding event'));
+      }
+    } catch (e) {
       emit(const AddEventError(error: 'Error adding event'));
     }
   }
+
 
 // Function to get event details by event ID from Firestore
   Future<Map<String, dynamic>?> getEventById(dynamic eventId) async {
@@ -106,7 +105,6 @@ class EventCubit extends Cubit<EventState> {
       return response;
     }
   }
-
 // Helper function to parse Firestore document fields
   Map<String, dynamic> _parseFields(Map<String, dynamic> fields) {
     final Map<String, dynamic> parsedData = {};
@@ -192,116 +190,204 @@ class EventCubit extends Cubit<EventState> {
     }
   }
 
-  List<Map<String, dynamic>> eventDocuments = [];
   DateTime today = DateTime.now();
 
-  Future<http.Response> getEventsWithDate(String date) async {
-    final DateTime today = DateTime.parse(date).toUtc();
+  Future<http.Response> getEventsWithDate(String Date) async {
+    emit(GetEventsLoading());
+    final DateTime today = DateTime.parse(Date).toUtc();
     final startOfDay = DateTime(today.year, today.month, today.day);
     final endOfDay = startOfDay.add(const Duration(days: 1));
 
-    emit(GetEventsLoading());
+    final http.Response eventsResponse = await getAllEventsByResponse();
 
-    try {
-      final http.Response eventsResponse = await getAllEventsByResponse();
-
-      if (eventsResponse.statusCode != 200) {
-        emit(GetEventsError(
-            error:
-                'Failed to fetch events. Status code: ${eventsResponse.statusCode}'));
-        return http.Response(
-            jsonEncode({
-              'error':
-                  'Failed to fetch events. Status code: ${eventsResponse.statusCode}'
-            }),
-            eventsResponse.statusCode,
-            headers: {'Content-Type': 'application/json'});
-      }
-
-      final Map<String, dynamic> data = jsonDecode(eventsResponse.body);
-
-      if (data.containsKey('documents') && data['documents'] is List) {
-        final List<dynamic> documents = data['documents'];
-
-        // Parse events
-        final events =
-            documents.map((event) => _parseFields(event['fields'])).toList();
-
-        if (events.isNotEmpty) {
-          // Filter and sort events by time
-          final todayEvents = events.where((event) {
-            final startEventTime = event['startTime'] as String;
-            final startEventTimestamp = DateTime.parse(startEventTime);
-            final endEventTime = event['endTime'] as String;
-            final endEventTimestamp = DateTime.parse(endEventTime);
-            return ((startEventTimestamp.isAfter(startOfDay) &&
-                    startEventTimestamp.isBefore(endOfDay)) ||
-                (endEventTimestamp.isAfter(startOfDay) &&
-                    endEventTimestamp.isBefore(endOfDay)));
-          }).toList();
-
-          final dateString = date.split('T').first;
-          print('You have reminders $dateString for the following events:');
-
-          for (var event in todayEvents) {
-            final eventName = event['name'] as String;
-            final startEventTime = event['startTime'] as String;
-            final starttime = DateTime.parse(startEventTime);
-            final endEventTime = event['endTime'] as String;
-            final endtime = DateTime.parse(endEventTime);
-            final eventDescription = event['description'] as String;
-            final reminder = event['reminder'] as String;
-
-            Map<String, dynamic> documentItem = {
-              'name': eventName,
-              'fields': {
-                'startTime': starttime.toIso8601String(),
-                'endTime': endtime.toIso8601String(),
-                'description': eventDescription,
-                'reminder': reminder,
-              },
-            };
-
-            eventDocuments.add(documentItem);
-          }
-
-          print(eventDocuments[0]['fields']['startTime']);
-          print(eventDocuments[0]['fields']['endTime']);
-          print(eventDocuments[0]['fields']['description']);
-          print(eventDocuments[0]['fields']['reminder']);
-
-          Map<String, dynamic> jsonResponse = {
-            'documents': eventDocuments,
-          };
-
-          // Emit success state
-          emit(GetEventsSuccess(events: eventDocuments));
-
-
-          // Return the JSON response
-          return http.Response(jsonEncode(jsonResponse), 200,
-              headers: {'Content-Type': 'application/json'});
-        } else {
-          // Emit success state with empty list
-          emit(GetEventsSuccess(events: eventDocuments));
-
-          // Return an empty JSON response if there are no events
-          return http.Response(jsonEncode({'documents': []}), 200,
-              headers: {'Content-Type': 'application/json'});
-        }
-      } else {
-        // Handle case where 'documents' key is not found or is not a list
-        emit(const GetEventsError(error: 'No documents found'));
-        return http.Response(jsonEncode({'error': 'No documents found'}), 200,
-            headers: {'Content-Type': 'application/json'});
-      }
-    } catch (error) {
-      emit(GetEventsError(error: 'An error occurred: $error'));
+    if (eventsResponse.statusCode != 200) {
+      emit(GetEventsError(
+          error:
+              'Failed to fetch events. Status code: ${eventsResponse.statusCode}'));
       return http.Response(
-          jsonEncode({'error': 'An error occurred: $error'}), 500,
+          jsonEncode({
+            'error':
+                'Failed to fetch events. Status code: ${eventsResponse.statusCode}'
+          }),
+          eventsResponse.statusCode,
           headers: {'Content-Type': 'application/json'});
     }
+
+    if (eventsResponse.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(eventsResponse.body)['documents'];
+
+
+      // Parse events
+      final events =
+          data.map((event) => _parseFields(event['fields'])).toList();
+
+      if (events.isNotEmpty) {
+        // Filter and sort events by time
+        final todayEvents = events.where((event) {
+          final startEventTime = event['startTime'] as String;
+          final startEventTimestamp = DateTime.parse(startEventTime);
+          final endEventTime = event['endTime'] as String;
+          final endEventTimestamp = DateTime.parse(endEventTime);
+          return ((startEventTimestamp.isAfter(startOfDay) &&
+                  startEventTimestamp.isBefore(endOfDay)) ||
+              (endEventTimestamp.isAfter(startOfDay) &&
+                  endEventTimestamp.isBefore(endOfDay)));
+        }).toList();
+
+        final date = Date.split('T').first;
+        print('You have reminders $date for the following events:');
+
+        List<Map<String, dynamic>> documents = [];
+        for (var event in todayEvents) {
+          final eventName = event['name'] as String;
+          final startEventTime = event['startTime'] as String;
+          final starttime = DateTime.parse(startEventTime);
+          final endEventTime = event['endTime'] as String;
+          final endtime = DateTime.parse(endEventTime);
+          final eventDescription = event['description'] as String;
+          final reminder = event['reminder'] as String;
+
+          Map<String, dynamic> documentItem = {
+            'name': eventName,
+            'fields': {
+              'startTime': starttime.toIso8601String(),
+              'endTime': endtime.toIso8601String(),
+              'description': eventDescription,
+              'reminder': reminder,
+            },
+          };
+
+          documents.add(documentItem);
+      print(documents);
+
+          print('lengthh');
+          print(documents.length);
+        }
+
+        Map<String, dynamic> jsonResponse = {
+          'documents': documents,
+        };
+        emit(GetEventsSuccess(events: documents));
+
+        // Return the JSON response
+        return http.Response(jsonEncode(jsonResponse), 200,
+            headers: {'Content-Type': 'application/json'});
+      } else {
+        // Return an empty JSON response if there are no events
+        return http.Response(jsonEncode({'documents': []}), 200,
+            headers: {'Content-Type': 'application/json'});
+      }
+    } else {
+      emit(const GetEventsError(error: 'No documents found'));
+      return eventsResponse;
+    }
   }
+
+  // Future<http.Response> getEventsWithDate(String date) async {
+  //   final DateTime today = DateTime.parse(date).toUtc();
+  //   final startOfDay = DateTime(today.year, today.month, today.day);
+  //   final endOfDay = startOfDay.add(const Duration(days: 1));
+
+  //   emit(GetEventsLoading());
+
+  //   try {
+  //     final http.Response eventsResponse = await getAllEventsByResponse();
+
+  //     if (eventsResponse.statusCode != 200) {
+  //       emit(GetEventsError(
+  //           error:
+  //               'Failed to fetch events. Status code: ${eventsResponse.statusCode}'));
+  //       return http.Response(
+  //           jsonEncode({
+  //             'error':
+  //                 'Failed to fetch events. Status code: ${eventsResponse.statusCode}'
+  //           }),
+  //           eventsResponse.statusCode,
+  //           headers: {'Content-Type': 'application/json'});
+  //     }
+
+  //     final Map<String, dynamic> data = jsonDecode(eventsResponse.body);
+
+  //     if (data.containsKey('documents') && data['documents'] is List) {
+  //       final List<dynamic> documents = data['documents'];
+
+  //       // Parse events
+  //       final events =
+  //           documents.map((event) => _parseFields(event['fields'])).toList();
+
+  //       if (events.isNotEmpty) {
+  //         // Filter and sort events by time
+  //         final todayEvents = events.where((event) {
+  //           final startEventTime = event['startTime'] as String;
+  //           final startEventTimestamp = DateTime.parse(startEventTime);
+  //           final endEventTime = event['endTime'] as String;
+  //           final endEventTimestamp = DateTime.parse(endEventTime);
+  //           return ((startEventTimestamp.isAfter(startOfDay) &&
+  //                   startEventTimestamp.isBefore(endOfDay)) ||
+  //               (endEventTimestamp.isAfter(startOfDay) &&
+  //                   endEventTimestamp.isBefore(endOfDay)));
+  //         }).toList();
+
+  //         final dateString = date.split('T').first;
+  //         print('You have reminders $dateString for the following events:');
+
+  //         for (var event in todayEvents) {
+  //           final eventName = event['name'] as String;
+  //           final startEventTime = event['startTime'] as String;
+  //           final starttime = DateTime.parse(startEventTime);
+  //           final endEventTime = event['endTime'] as String;
+  //           final endtime = DateTime.parse(endEventTime);
+  //           final eventDescription = event['description'] as String;
+  //           final reminder = event['reminder'] as String;
+
+  //           Map<String, dynamic> documentItem = {
+  //             'name': eventName,
+  //             'fields': {
+  //               'startTime': starttime.toIso8601String(),
+  //               'endTime': endtime.toIso8601String(),
+  //               'description': eventDescription,
+  //               'reminder': reminder,
+  //             },
+  //           };
+
+  //           eventDocuments.add(documentItem);
+  //         }
+  //         print(eventDocuments.length);
+
+  //         print(eventDocuments[0]['fields']['startTime']);
+  //         print(eventDocuments[0]['fields']['endTime']);
+  //         print(eventDocuments[0]['fields']['description']);
+  //         print(eventDocuments[0]['fields']['reminder']);
+
+  //         Map<String, dynamic> jsonResponse = {
+  //           'documents': eventDocuments,
+  //         };
+
+  //         // Emit success state
+
+  //         // Return the JSON response
+  //         return http.Response(jsonEncode(jsonResponse), 200,
+  //             headers: {'Content-Type': 'application/json'});
+  //       } else {
+  //         // Emit success state with empty list
+  //         emit(GetEventsSuccess(events: eventDocuments));
+
+  //         // Return an empty JSON response if there are no events
+  //         return http.Response(jsonEncode({'documents': []}), 200,
+  //             headers: {'Content-Type': 'application/json'});
+  //       }
+  //     } else {
+  //       // Handle case where 'documents' key is not found or is not a list
+  //       return http.Response(jsonEncode({'error': 'No documents found'}), 200,
+  //           headers: {'Content-Type': 'application/json'});
+  //     }
+  //   } catch (error) {
+  //     emit(GetEventsError(error: 'An error occurred: $error'));
+  //     return http.Response(
+  //         jsonEncode({'error': 'An error occurred: $error'}), 500,
+  //         headers: {'Content-Type': 'application/json'});
+  //   }
+  // }
 
 //Function to edit an event
   Future<void> editEvent(

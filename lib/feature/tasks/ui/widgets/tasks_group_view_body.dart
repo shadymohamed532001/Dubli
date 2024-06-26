@@ -19,6 +19,8 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
   void initState() {
     super.initState();
     BlocProvider.of<TasksCubit>(context).getTasksListName();
+    BlocProvider.of<TasksCubit>(context)
+        .calculateDoneTasksPercentage(DateTime.now().toString());
   }
 
   @override
@@ -54,7 +56,7 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                         addController: cubit.addTaskGroupNameController,
                         onPressed: () {
                           cubit.addTaskListWithName(
-                            name: cubit.addTaskGroupNameController.text.trim(),
+                             cubit.addTaskGroupNameController.text.trim(),
                           );
                         },
                       )

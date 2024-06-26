@@ -82,6 +82,9 @@ class _TasksDetailsViewBodyState extends State<TasksDetailsViewBody> {
             onDateChange: (selectedDate) {
               setState(() {
                 today = selectedDate;
+
+                print(today);
+                
                 fetchTasksForCurrentIndex();
               });
             },

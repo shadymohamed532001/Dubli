@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:dubli/core/helper/naviagtion_extentaions.dart';
 import 'package:dubli/core/helper/validators_helper.dart';
 import 'package:dubli/core/utils/app_colors.dart';
@@ -31,16 +30,7 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: BlocConsumer<EventCubit, EventState>(
-        listener: (context, state) {
-          if (state is AddEventLoading) {
-            // Handle loading state
-            // You can update UI or show a loading indicator here if needed
-          } else if (state is AddEventSuccess) {
-
-
-            context.pop();
-          }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           var cubit = BlocProvider.of<EventCubit>(context);
           return SingleChildScrollView(
@@ -351,6 +341,9 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                           reminder: selectedReminder!,
                           startEventTime: startDateTime,
                         );
+                        context.pop();
+
+                    
                       } else {
                         setState(() {
                           cubit.autovalidateMode = AutovalidateMode.always;

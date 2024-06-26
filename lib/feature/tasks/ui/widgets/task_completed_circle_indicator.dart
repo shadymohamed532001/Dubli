@@ -3,7 +3,9 @@ import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:dubli/core/widgets/app_bottom.dart';
+import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class TaskCompletedCircleIndicator extends StatelessWidget {
@@ -50,7 +52,8 @@ class TaskCompletedCircleIndicator extends StatelessWidget {
                   animationDuration: 1000,
                   radius: 90,
                   lineWidth: 20,
-                  percent: 0.7,
+                  percent:
+                      BlocProvider.of<TasksCubit>(context).precentNum / 100,
                   progressColor: ColorManager.darkyellowColor,
                   backgroundColor: ColorManager.darkGreyColor,
                   circularStrokeCap: CircularStrokeCap.round,
@@ -62,7 +65,7 @@ class TaskCompletedCircleIndicator extends StatelessWidget {
                         style: AppStyle.font18Whitemedium,
                       ),
                       Text(
-                        '70%',
+                        '${BlocProvider.of<TasksCubit>(context).precentNum}%',
                         style: AppStyle.font40Whitesemibold
                             .copyWith(fontWeight: FontWeight.bold),
                       ),

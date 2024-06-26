@@ -37,7 +37,7 @@ class _TasksGroupDetailsViewBodyState extends State<TasksGroupDetailsViewBody> {
               BuildAddTasksDropdown(
                 addController: cubit.addTaskController,
                 onPressed: () {},
-                taskModel: widget.taskGroupModel,
+                id: widget.taskGroupModel.id,
               )
             ],
           ),

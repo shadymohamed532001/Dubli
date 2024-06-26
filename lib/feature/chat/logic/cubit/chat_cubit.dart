@@ -16,6 +16,7 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatRepo chatRepo;
 
   List<HistoryChatModel> historyChatResult = <HistoryChatModel>[];
+  var addTaskController = TextEditingController();
 
   Future<void> getChatss() async {
     emit(GetChatsDataLoadingState());
