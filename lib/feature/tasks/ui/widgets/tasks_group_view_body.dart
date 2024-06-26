@@ -17,8 +17,8 @@ class TasksGroupViewBody extends StatefulWidget {
 class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
   @override
   void initState() {
-    BlocProvider.of<TasksCubit>(context).getTasksListName();
     super.initState();
+    BlocProvider.of<TasksCubit>(context).getTasksListName();
   }
 
   @override
@@ -63,21 +63,31 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                 ),
               ),
               if (state is GetTaskListNameSuccess)
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: TaskGroupItem(
-                          title: state.tasks[index].name,
-                          count: state.tasks[index].count,
-                          taskModel: state.tasks[index],
+                state.tasks.isNotEmpty
+                    ? SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: TaskGroupItem(
+                                title: state.tasks[index].name,
+                                count: state.tasks[index].count,
+                                taskModel: state.tasks[index],
+                              ),
+                            );
+                          },
+                          childCount: state.tasks.length,
                         ),
-                      );
-                    },
-                    childCount: state.tasks.length,
-                  ),
-                )
+                      )
+                    : SliverToBoxAdapter(
+                        child: Center(
+                          child: Text(
+                            'No task groups found. Please add some tasks.',
+                            style: AppStyle.font22Whitesemibold,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
               else if (state is GetTaskListNameLoading)
                 const SliverToBoxAdapter(
                   child: Align(
@@ -85,6 +95,20 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                     child: SpinKitThreeBounce(
                       color: Colors.white,
                       size: 30.0,
+                    ),
+                  ),
+                )
+              else if (state is GetTaskListNameError)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.width / 2.2,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'NO Task Found. Please Add Some TaskGroup.',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),

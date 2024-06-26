@@ -104,23 +104,35 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                             const SizedBox(
                               height: 2,
                             ),
-                            CustomTextFormField(
-                              obscureText: false,
-                              hintText: startDate != null
-                                  ? DateFormat('dd/MM/yyyy').format(startDate!)
-                                  : 'Select Date',
-                              fillColor: ColorManager.whiteColor,
-                              hintStyle: TextStyle(
-                                color: Colors.grey.withOpacity(0.6),
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  getDateFromUser(isStartDate: true);
-                                },
-                                child: Icon(
-                                  Icons.calendar_month,
-                                  color: Colors.grey.withOpacity(0.6),
-                                ),
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.whiteColor,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    startDate != null
+                                        ? DateFormat('dd/MM/yyyy')
+                                            .format(startDate!)
+                                        : 'Select Date',
+                                    style: TextStyle(
+                                      color: Colors.grey.withOpacity(0.6),
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      getDateFromUser(isStartDate: true);
+                                    },
+                                    child: Icon(
+                                      Icons.calendar_month,
+                                      color: Colors.grey.withOpacity(0.6),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -140,23 +152,35 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                             const SizedBox(
                               height: 2,
                             ),
-                            CustomTextFormField(
-                              obscureText: false,
-                              hintText: endDate != null
-                                  ? DateFormat('dd/MM/yyyy').format(endDate!)
-                                  : 'Select Date',
-                              fillColor: ColorManager.whiteColor,
-                              hintStyle: TextStyle(
-                                color: Colors.grey.withOpacity(0.6),
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  getDateFromUser(isStartDate: false);
-                                },
-                                child: Icon(
-                                  Icons.calendar_month,
-                                  color: Colors.grey.withOpacity(0.6),
-                                ),
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.whiteColor,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    endDate != null
+                                        ? DateFormat('dd/MM/yyyy')
+                                            .format(endDate!)
+                                        : 'Select Date',
+                                    style: TextStyle(
+                                      color: Colors.grey.withOpacity(0.6),
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      getDateFromUser(isStartDate: false);
+                                    },
+                                    child: Icon(
+                                      Icons.calendar_month,
+                                      color: Colors.grey.withOpacity(0.6),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -180,21 +204,32 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                             const SizedBox(
                               height: 2,
                             ),
-                            CustomTextFormField(
-                              obscureText: false,
-                              hintText: starttimeOfDay.format(context),
-                              fillColor: ColorManager.whiteColor,
-                              hintStyle: TextStyle(
-                                color: Colors.grey.withOpacity(0.6),
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  getStartTimeFromUser();
-                                },
-                                child: Icon(
-                                  Icons.schedule,
-                                  color: Colors.grey.withOpacity(0.6),
-                                ),
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.whiteColor,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    starttimeOfDay.format(context),
+                                    style: TextStyle(
+                                      color: Colors.grey.withOpacity(0.6),
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      getStartTimeFromUser();
+                                    },
+                                    child: Icon(
+                                      Icons.schedule,
+                                      color: Colors.grey.withOpacity(0.6),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -214,21 +249,32 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                             const SizedBox(
                               height: 2,
                             ),
-                            CustomTextFormField(
-                              obscureText: false,
-                              hintText: endtimeOfDay.format(context),
-                              fillColor: ColorManager.whiteColor,
-                              hintStyle: TextStyle(
-                                color: Colors.grey.withOpacity(0.6),
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  getEndTimeFromUser();
-                                },
-                                child: Icon(
-                                  Icons.schedule,
-                                  color: Colors.grey.withOpacity(0.6),
-                                ),
+                            Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: ColorManager.whiteColor,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    endtimeOfDay.format(context),
+                                    style: TextStyle(
+                                      color: Colors.grey.withOpacity(0.6),
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      getEndTimeFromUser();
+                                    },
+                                    child: Icon(
+                                      Icons.schedule,
+                                      color: Colors.grey.withOpacity(0.6),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -279,30 +325,31 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 8,
                   ),
-              CustomBottom(
-  onPressed: () {
-    if (cubit.formKey.currentState!.validate()) {
-      final String startDateTime = '${DateFormat('yyyy-MM-dd').format(startDate!)}T${formatTime(starttimeOfDay)}';
-      final String endDateTime = '${DateFormat('yyyy-MM-dd').format(endDate!)}T${formatTime(endtimeOfDay)}';
-      
-      cubit.addEvent(
-        endEventTime: endDateTime,
-        eventDescription: cubit.noteController.text,
-        eventName: cubit.titleController.text,
-        reminder: selectedReminder!,
-        startEventTime: startDateTime,
-      );
-    } else {
-      setState(() {
-        cubit.autovalidateMode = AutovalidateMode.always;
-      });
-    }
-  },
-  bottomtext: 'Add Event',
-  backgroundColor: ColorManager.darkyellowColor,
-  textBottomStyle: AppStyle.font18Whitemedium,
-),
+                  CustomBottom(
+                    onPressed: () {
+                      if (cubit.formKey.currentState!.validate()) {
+                        final String startDateTime =
+                            '${DateFormat('yyyy-MM-dd').format(startDate!)}T${formatTime(starttimeOfDay)}';
+                        final String endDateTime =
+                            '${DateFormat('yyyy-MM-dd').format(endDate!)}T${formatTime(endtimeOfDay)}';
 
+                        cubit.addEvent(
+                          endEventTime: endDateTime,
+                          eventDescription: cubit.noteController.text,
+                          eventName: cubit.titleController.text,
+                          reminder: selectedReminder!,
+                          startEventTime: startDateTime,
+                        );
+                      } else {
+                        setState(() {
+                          cubit.autovalidateMode = AutovalidateMode.always;
+                        });
+                      }
+                    },
+                    bottomtext: 'Add Event',
+                    backgroundColor: ColorManager.darkyellowColor,
+                    textBottomStyle: AppStyle.font18Whitemedium,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -314,12 +361,15 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
       ),
     );
   }
-String formatTime(TimeOfDay timeOfDay) {
-  final now = DateTime.now();
-  final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
-  final formattedTime = DateFormat('HH:mm:ss').format(dateTime);
-  return formattedTime;
-}
+
+  String formatTime(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dateTime = DateTime(
+        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    final formattedTime = DateFormat('HH:mm:ss').format(dateTime);
+    return formattedTime;
+  }
+
   Future<void> getStartTimeFromUser() async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -356,7 +406,7 @@ String formatTime(TimeOfDay timeOfDay) {
       initialDate: isStartDate
           ? (startDate ?? DateTime.now())
           : (endDate ?? DateTime.now()),
-      firstDate: DateTime(2000),
+      firstDate: isStartDate ? DateTime.now() : DateTime(DateTime.now().year),
       lastDate: DateTime(2101),
     );
 
@@ -364,8 +414,18 @@ String formatTime(TimeOfDay timeOfDay) {
       setState(() {
         if (isStartDate) {
           startDate = pickedDate;
+          // Ensure end date is not before start date
+          if (endDate != null && endDate!.isBefore(startDate!)) {
+            endDate = startDate; // Reset end date if it's before start date
+          }
         } else {
-          endDate = pickedDate;
+          // Ensure start date is not after end date
+          if (startDate != null && startDate!.isAfter(pickedDate)) {
+            // Show an error message or handle as needed
+            log('End date cannot be before start date.');
+          } else {
+            endDate = pickedDate;
+          }
         }
       });
     } else {

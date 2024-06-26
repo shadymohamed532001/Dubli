@@ -27,34 +27,50 @@ class TasksCubit extends Cubit<TasksState> {
   Future<List<TaskGroupModel>> getTasksListName() async {
     emit(GetTaskListNameLoading());
 
-    String userId = await LocalServices.getData(key: 'userId');
-    print(userId);
+    try {
+      String userId = await LocalServices.getData(key: 'userId');
+      print(userId);
 
-    http.Response response =
-        await http.get(Uri.parse(constructUserTaskLists(userId)));
-    Map<String, dynamic> data =
-        jsonDecode(response.body) as Map<String, dynamic>;
+      http.Response response =
+          await http.get(Uri.parse(constructUserTaskLists(userId)));
 
-    List<TaskGroupModel> tasks = [];
+      if (response.statusCode != 200) {
+        emit(GetTaskListNameError(
+            'Failed to fetch task lists. Status code: ${response.statusCode}'));
+        return [];
+      }
 
-    for (var document in data['documents'] as List<dynamic>) {
-      Map<String, dynamic> fields = document['fields'] as Map<String, dynamic>;
-      String taskListId = document['name'].split('/').last as String;
-      int taskCount = await getTasksCount(userId, taskListId);
+      Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
 
-      TaskGroupModel task = TaskGroupModel(
-        name: fields['name']['stringValue'],
-        id: taskListId,
-        count: taskCount,
-      );
-      tasks.add(task);
+      List<TaskGroupModel> tasks = [];
 
-      print(tasks.length);
-      print(tasks);
+      if (data.containsKey('documents') && data['documents'] is List) {
+        for (var document in data['documents'] as List<dynamic>) {
+          Map<String, dynamic> fields =
+              document['fields'] as Map<String, dynamic>;
+          String taskListId = document['name'].split('/').last as String;
+          int taskCount = await getTasksCount(userId, taskListId);
+
+          TaskGroupModel task = TaskGroupModel(
+            name: fields['name']['stringValue'],
+            id: taskListId,
+            count: taskCount,
+          );
+          tasks.add(task);
+        }
+      } else {
+        emit(const GetTaskListNameError('No task lists found'));
+        return [];
+      }
+
+      emit(GetTaskListNameSuccess(tasks));
+      return tasks;
+    } catch (error) {
+      emit(GetTaskListNameError('An error occurred: $error'));
+      print(error);
+      return [];
     }
-
-    emit(GetTaskListNameSuccess(tasks));
-    return tasks;
   }
 
   Future<int> getTasksCount(String userId, String taskListId) async {
@@ -161,7 +177,6 @@ class TasksCubit extends Cubit<TasksState> {
 
 //-------------------------------------------------------------------------------------------------
   List<AllTaskModel> allTasks = [];
-
   Future<http.Response> getTasks(String taskListId) async {
     emit(GetAllTasksLoading());
     var userId = await LocalServices.getData(key: 'userId');
@@ -172,6 +187,8 @@ class TasksCubit extends Cubit<TasksState> {
 
       if (response.statusCode != 200) {
         // Handle non-200 status codes
+        emit(GetAllTasksErrorState(
+            'Failed to fetch tasks, status code: ${response.statusCode}'));
         return http.Response(
             jsonEncode({
               'error':
@@ -188,12 +205,15 @@ class TasksCubit extends Cubit<TasksState> {
       allTasks.clear(); // Clear previous tasks before adding new ones
       var tasksResponse = TasksResponse.fromJson(data);
 
-      allTasks.addAll(tasksResponse.documents);
+      if (tasksResponse.documents.isNotEmpty) {
+        allTasks.addAll(tasksResponse.documents);
+        emit(GetAllTasksSuccessState(allTasks));
+      } else {
+        emit(const GetAllTasksErrorState('No tasks found'));
+      }
 
       List<Map<String, dynamic>> tasksJson =
           allTasks.map((task) => task.toJson()).toList();
-
-      emit(GetAllTasksSuccessState(allTasks));
 
       return http.Response(jsonEncode(tasksJson), 200,
           headers: {'Content-Type': 'application/json'});
@@ -444,7 +464,7 @@ class TasksCubit extends Cubit<TasksState> {
         .first; // Extract only the date part
 
     await getSubCollectionFromTasksUndone(targetDateString, events);
-  print('Todo events: $events');
+    print('Todo events: $events');
     print('---------------------------');
     return events;
   }

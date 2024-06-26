@@ -163,7 +163,7 @@ String constructUserfocusStreak(String userId) {
 
 
 Future<Map<String, dynamic>> fetchDataFromLocalStorage() async {
-  usertoken = await LocalServices.getData(key: 'token');
+  usertoken = await LocalServices.getData(key: 'userId');
   log('UserToken : $usertoken');
   return {'token': usertoken};
 }

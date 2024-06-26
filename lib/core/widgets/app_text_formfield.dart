@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.keyboardType,
     this.validator,
-    this.decoration, this.hintStyle,
+    this.decoration, this.hintStyle,  this.endable,
   });
 
   final Function(String)? onChanged;
@@ -37,9 +37,12 @@ class CustomTextFormField extends StatelessWidget {
   final InputDecoration? decoration;
   final TextStyle? hintStyle ;
 
+  final bool  ?endable  ;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled:endable ,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -53,6 +56,7 @@ class CustomTextFormField extends StatelessWidget {
       onSaved: onSaved,
       validator: validator,
       decoration: (decoration ??
+      
           InputDecoration(
             suffixIcon: suffixIcon,
             suffixIconColor: const Color.fromARGB(255, 101, 98, 98),
