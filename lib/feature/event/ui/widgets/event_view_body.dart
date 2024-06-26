@@ -85,7 +85,10 @@ class _EventViewBodyState extends State<EventViewBody> {
                   itemCount: state.events.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
@@ -111,8 +114,8 @@ class _EventViewBodyState extends State<EventViewBody> {
                                 children: [
                                   Image.asset(
                                     ImagesAssetsManager.applogoImage,
-                                    width: 60,
-                                    height: 60,
+                                    width: 50,
+                                    height: 50,
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -136,7 +139,22 @@ class _EventViewBodyState extends State<EventViewBody> {
                                     ],
                                   )
                                 ],
-                              )
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    state.events[index]['fields']['reminder'],
+                                    style: AppStyle.font14Greyregular,
+                                  ),
+                                     Text(
+                                        '${state.events[index]['fields']['startTime'].toString().split('T')[0].toString()} | ${state.events[index]['fields']['endTime'].toString().split('T')[0].toString()}',
+                                        style: AppStyle.font14Greyregular,
+                                      ),
+                                ],
+                              ),
                             ],
                           ),
                           const Spacer(),
