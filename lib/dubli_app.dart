@@ -2,6 +2,7 @@ import 'package:dubli/core/routing/app_routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:dubli/feature/event/logic/event_cubit.dart';
+import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dubli/feature/reminder/logic/reminder_cubit.dart';
 import 'package:dubli/feature/setting/logic/cubit/settings_cubit.dart';
 import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
@@ -30,6 +31,9 @@ class DubliApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EventCubit(),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator.get<LayoutCubit>(),
         ),
       ],
       child: MaterialApp(

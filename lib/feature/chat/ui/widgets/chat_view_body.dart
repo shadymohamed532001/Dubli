@@ -1,3 +1,4 @@
+import 'package:dubli/feature/chat/ui/widgets/add_event_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -72,16 +73,32 @@ class _ChatViewBodyState extends State<ChatViewBody> {
                           onPressed: () {
                             if (cubit.chatController.text.isNotEmpty) {
                               String userMessage = cubit.chatController.text.toLowerCase();
-                              cubit.sendMessage(userMessage);
-                              cubit.chatController.clear();
-                              if (userMessage.contains('tasks') ||
+                              bool containsTaskKeyword = userMessage.contains('tasks') ||
                                   userMessage.contains('make a task') ||
                                   userMessage.contains('generate task') ||
-                                  userMessage.contains('task')) {
+                                  userMessage.contains('task');
+                              bool containsEventKeyword = userMessage.contains('event') ||
+                                  userMessage.contains('create event') ||
+                                  userMessage.contains('schedule event');
+
+                              if (!containsTaskKeyword && !containsEventKeyword) {
+                                cubit.sendMessage(userMessage);
+                              }
+                              
+                              cubit.chatController.clear();
+
+                              if (containsTaskKeyword) {
                                 showModalBottomSheet<void>(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return const AddTaskBottomSheet();
+                                  },
+                                );
+                              } else if (containsEventKeyword) {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddEventBottomSheet();
                                   },
                                 );
                               }

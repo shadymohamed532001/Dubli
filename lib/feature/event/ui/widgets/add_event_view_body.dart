@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
 import 'package:dubli/core/helper/validators_helper.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';
@@ -27,341 +26,337 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: BlocConsumer<EventCubit, EventState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = BlocProvider.of<EventCubit>(context);
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: cubit.formKey,
-              autovalidateMode: cubit.autovalidateMode,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Add Event',
-                    style: AppStyle.font22Whiteregular,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Title',
-                    style: AppStyle.font18Whitemedium,
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  CustomTextFormField(
-                    controller: cubit.titleController,
-                    hintStyle: TextStyle(
-                      color: Colors.grey.withOpacity(0.6),
-                    ),
-                    obscureText: false,
-                    hintText: 'Enter Title here',
-                    fillColor: ColorManager.whiteColor,
-                    validator: (text) {
-                      return MyValidatorsHelper.tittleValidator(text);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Note',
-                    style: AppStyle.font18Whitemedium,
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  CustomTextFormField(
-                    controller: cubit.noteController,
-                    hintStyle: TextStyle(
-                      color: Colors.grey.withOpacity(0.6),
-                    ),
-                    obscureText: false,
-                    hintText: 'Enter Note here',
-                    fillColor: ColorManager.whiteColor,
-                    validator: (text) {
-                      return MyValidatorsHelper.noteValidator(text);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Start Date',
-                              style: AppStyle.font18Whitemedium,
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: ColorManager.whiteColor,
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    startDate != null
-                                        ? DateFormat('dd/MM/yyyy')
-                                            .format(startDate!)
-                                        : 'Select Date',
-                                    style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.6),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      getDateFromUser(isStartDate: true);
-                                    },
-                                    child: Icon(
-                                      Icons.calendar_month,
-                                      color: Colors.grey.withOpacity(0.6),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'End Date',
-                              style: AppStyle.font18Whitemedium,
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: ColorManager.whiteColor,
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    endDate != null
-                                        ? DateFormat('dd/MM/yyyy')
-                                            .format(endDate!)
-                                        : 'Select Date',
-                                    style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.6),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      getDateFromUser(isStartDate: false);
-                                    },
-                                    child: Icon(
-                                      Icons.calendar_month,
-                                      color: Colors.grey.withOpacity(0.6),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Start Time',
-                              style: AppStyle.font18Whitemedium,
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: ColorManager.whiteColor,
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    starttimeOfDay.format(context),
-                                    style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.6),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      getStartTimeFromUser();
-                                    },
-                                    child: Icon(
-                                      Icons.schedule,
-                                      color: Colors.grey.withOpacity(0.6),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'End Time',
-                              style: AppStyle.font18Whitemedium,
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: ColorManager.whiteColor,
-                                  borderRadius: BorderRadius.circular(16)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    endtimeOfDay.format(context),
-                                    style: TextStyle(
-                                      color: Colors.grey.withOpacity(0.6),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      getEndTimeFromUser();
-                                    },
-                                    child: Icon(
-                                      Icons.schedule,
-                                      color: Colors.grey.withOpacity(0.6),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Reminder',
-                    style: AppStyle.font18Whitemedium,
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  DropdownButtonFormField<String>(
-                    value: selectedReminder,
-                    items: reminderItem.map((String item) {
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: AppStyle.font16Greyregular,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedReminder = newValue;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                          16,
-                        ),
-                      ),
-                      fillColor: ColorManager.whiteColor,
-                      filled: true,
-                      hintText: 'Select Frequency',
-                      hintStyle: TextStyle(
-                        color: Colors.grey.withOpacity(0.1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 8,
-                  ),
-                  CustomBottom(
-                    onPressed: () {
-                      if (cubit.formKey.currentState!.validate()) {
-                        final String startDateTime =
-                            '${DateFormat('yyyy-MM-dd').format(startDate!)}T${formatTime(starttimeOfDay)}';
-                        final String endDateTime =
-                            '${DateFormat('yyyy-MM-dd').format(endDate!)}T${formatTime(endtimeOfDay)}';
+    return BlocConsumer<EventCubit, EventState>(
+      listener: (context, state) {
 
-                        cubit.addEvent(
-                          endEventTime: endDateTime,
-                          eventDescription: cubit.noteController.text,
-                          eventName: cubit.titleController.text,
-                          reminder: selectedReminder!,
-                          startEventTime: startDateTime,
-                        );
-                        context.pop();
-                      } else {
-                        setState(() {
-                          cubit.autovalidateMode = AutovalidateMode.always;
-                        });
-                      }
-                    },
-                    bottomtext:
-                        state is AddEventLoading ? 'Loading...' : 'Add Event',
-                    backgroundColor: ColorManager.darkyellowColor,
-                    textBottomStyle: AppStyle.font18Whitemedium,
+        BlocProvider.of<EventCubit>(context).getEventsWithDate(
+            BlocProvider.of<EventCubit>(context).today.toString());
+      },
+      builder: (context, state) {
+        var cubit = BlocProvider.of<EventCubit>(context);
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: cubit.formKey,
+            autovalidateMode: cubit.autovalidateMode,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Add Event',
+                  style: AppStyle.font22Whiteregular,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Title',
+                  style: AppStyle.font18Whitemedium,
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                CustomTextFormField(
+                  controller: cubit.titleController,
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(0.6),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  obscureText: false,
+                  hintText: 'Enter Title here',
+                  fillColor: ColorManager.whiteColor,
+                  validator: (text) {
+                    return MyValidatorsHelper.tittleValidator(text);
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Note',
+                  style: AppStyle.font18Whitemedium,
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                CustomTextFormField(
+                  controller: cubit.noteController,
+                  hintStyle: TextStyle(
+                    color: Colors.grey.withOpacity(0.6),
                   ),
-                ],
-              ),
+                  obscureText: false,
+                  hintText: 'Enter Note here',
+                  fillColor: ColorManager.whiteColor,
+                  validator: (text) {
+                    return MyValidatorsHelper.noteValidator(text);
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Start Date',
+                            style: AppStyle.font18Whitemedium,
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: ColorManager.whiteColor,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  startDate != null
+                                      ? DateFormat('dd/MM/yyyy')
+                                          .format(startDate!)
+                                      : 'Select Date',
+                                  style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.6),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    getDateFromUser(isStartDate: true);
+                                  },
+                                  child: Icon(
+                                    Icons.calendar_month,
+                                    color: Colors.grey.withOpacity(0.6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'End Date',
+                            style: AppStyle.font18Whitemedium,
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: ColorManager.whiteColor,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  endDate != null
+                                      ? DateFormat('dd/MM/yyyy')
+                                          .format(endDate!)
+                                      : 'Select Date',
+                                  style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.6),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    getDateFromUser(isStartDate: false);
+                                  },
+                                  child: Icon(
+                                    Icons.calendar_month,
+                                    color: Colors.grey.withOpacity(0.6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Start Time',
+                            style: AppStyle.font18Whitemedium,
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: ColorManager.whiteColor,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  starttimeOfDay.format(context),
+                                  style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.6),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    getStartTimeFromUser();
+                                  },
+                                  child: Icon(
+                                    Icons.schedule,
+                                    color: Colors.grey.withOpacity(0.6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'End Time',
+                            style: AppStyle.font18Whitemedium,
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: ColorManager.whiteColor,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  endtimeOfDay.format(context),
+                                  style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.6),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    getEndTimeFromUser();
+                                  },
+                                  child: Icon(
+                                    Icons.schedule,
+                                    color: Colors.grey.withOpacity(0.6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Reminder',
+                  style: AppStyle.font18Whitemedium,
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                DropdownButtonFormField<String>(
+                  value: selectedReminder,
+                  items: reminderItem.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: AppStyle.font16Greyregular,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedReminder = newValue;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        16,
+                      ),
+                    ),
+                    fillColor: ColorManager.whiteColor,
+                    filled: true,
+                    hintText: 'Select Frequency',
+                    hintStyle: TextStyle(
+                      color: Colors.grey.withOpacity(0.1),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 8,
+                ),
+                CustomBottom(
+                  onPressed: () {
+                    if (cubit.formKey.currentState!.validate()) {
+                      final String startDateTime =
+                          '${DateFormat('yyyy-MM-dd').format(startDate!)}T${formatTime(starttimeOfDay)}';
+                      final String endDateTime =
+                          '${DateFormat('yyyy-MM-dd').format(endDate!)}T${formatTime(endtimeOfDay)}';
+
+                      cubit.addEvent(
+                        endEventTime: endDateTime,
+                        eventDescription: cubit.noteController.text,
+                        eventName: cubit.titleController.text,
+                        reminder: selectedReminder!,
+                        startEventTime: startDateTime,
+                      );
+                    } else {
+                      setState(() {
+                        cubit.autovalidateMode = AutovalidateMode.always;
+                      });
+                    }
+                  },
+                  bottomtext:
+                      state is AddEventLoading ? 'Loading...' : 'Add Event',
+                  backgroundColor: ColorManager.darkyellowColor,
+                  textBottomStyle: AppStyle.font18Whitemedium,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

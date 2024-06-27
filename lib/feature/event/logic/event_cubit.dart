@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/helper/local_services.dart';
 import 'package:dubli/feature/event/data/models/get_all_event_model.dart';
@@ -18,10 +20,8 @@ class EventCubit extends Cubit<EventState> {
   var timeController = TextEditingController();
   var noteController = TextEditingController();
   var dateController = TextEditingController();
-
   var editTitleController = TextEditingController();
   var editNoteController = TextEditingController();
-
   dynamic eventId;
 // Function to add an event
   Future<void> addEvent({
@@ -31,6 +31,11 @@ class EventCubit extends Cubit<EventState> {
     required String eventDescription,
     required String reminder,
   }) async {
+    if (isClosed) {
+      log('Cubit is closed, cannot emit new states');
+      return;
+    }
+
     emit(AddEventLoading());
     var userId = await LocalServices.getData(key: 'userId');
 
@@ -58,14 +63,13 @@ class EventCubit extends Cubit<EventState> {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         eventId = responseData['name'].split('/').last;
-        emit(AddEventSuccess());
+        if (!isClosed) emit(AddEventSuccess());
         remindUser(eventId);
-        getEventsWithDate(today.toString());
       } else {
-        emit(const AddEventError(error: 'Error adding event'));
+        if (!isClosed) emit(const AddEventError(error: 'Error adding event'));
       }
     } catch (e) {
-      emit(const AddEventError(error: 'Error adding event'));
+      if (!isClosed) emit(const AddEventError(error: 'Error adding event'));
     }
   }
 
@@ -74,7 +78,8 @@ class EventCubit extends Cubit<EventState> {
     var userId = await LocalServices.getData(key: 'userId');
 
     final url = getUserEvents(userId, eventId);
-    final response = await http.get(url as Uri);
+    final response =
+        await http.get(Uri.parse(url)); // Convert the url to Uri here
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -250,7 +255,6 @@ class EventCubit extends Cubit<EventState> {
               eventName == null ||
               startEventTimestamp == null ||
               endEventTimestamp == null) {
-            print('Event data missing for one or more fields: $event');
             continue;
           }
 
@@ -264,15 +268,6 @@ class EventCubit extends Cubit<EventState> {
           );
 
           events.add(newEvent);
-
-          // Print each event's ID and details
-          print('Event ID: $eventId');
-          print('Event Name: $eventName');
-          print('Start Time: ${newEvent.startTime}');
-          print('End Time: $endEventTimestamp');
-          print('Description: ${eventDescription ?? 'No description'}');
-          print('Reminder: ${reminder ?? 'No reminder'}');
-          print('------');
         }
       }
     } else {
@@ -281,6 +276,7 @@ class EventCubit extends Cubit<EventState> {
 
     if (events.isNotEmpty) {
       emit(GetEventsSuccess(events: events));
+      print('get event success');
     } else {
       emit(const GetEventsError(
           error: 'No events found for the specified date.'));
@@ -321,7 +317,6 @@ class EventCubit extends Cubit<EventState> {
 
     if (response.statusCode == 200) {
       print('Event updated successfully');
-      getEventsWithDate(today.toString());
     } else {
       print('Error updating event');
     }

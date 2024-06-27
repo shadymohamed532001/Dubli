@@ -1,2 +1,2 @@
-const baseUrl = 'https://a2da-156-203-246-167.ngrok-free.app';
+const baseUrl = 'https://91d1-156-203-182-32.ngrok-free.app';
 const chatendpoint = '/chatbot';

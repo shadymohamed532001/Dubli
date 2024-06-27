@@ -38,8 +38,8 @@ class LayoutCubit extends Cubit<LayoutState> {
       // BlocProvider.of<ExplorCubit>(context).getPlants();
     }
 
-    if (currentIndex == 1) {
-      // BlocProvider.of<StoreCubit>(context).getProducts();
+    if (currentIndex == 2) {
+      // BlocProvider.of<EventCubit>(context).getEventsWithDate( BlocProvider.of<EventCubit>(context).today.toString() );
       // BlocProvider.of<FavoritesCubit>(context).getFavorites();
     }
     if (currentIndex == 3) {
