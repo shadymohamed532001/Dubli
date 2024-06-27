@@ -494,11 +494,11 @@ class TasksCubit extends Cubit<TasksState> {
     print('---------------------------');
     return events;
   }
-
-  Future<void> addTaskBychatbot(String name, String date) async {
+Future<void> addTaskBychatbot(String name, String date) async {
     String taskListId = '';
     var userId = await LocalServices.getData(key: 'userId');
-
+    String taskListIdFromBD = '';
+    List<String> names = [];
     http.Response response =
         await http.get(Uri.parse(constructUserTaskLists(userId)));
     Map<String, dynamic> data =
@@ -507,22 +507,20 @@ class TasksCubit extends Cubit<TasksState> {
       for (var document in data['documents'] as List<dynamic>) {
         Map<String, dynamic> fields =
             document['fields'] as Map<String, dynamic>;
-        String taskListIdFromBD = document['name'].split('/').last as String;
+        taskListIdFromBD = document['name'].split('/').last as String;
         String tasklistname = fields['name']['stringValue'] as String;
-
-        if (tasklistname == 'tasks added by chatbot') {
-          taskListId = taskListIdFromBD;
-          break;
-        } else {
-          String? id = await addTaskListWithName('tasks added by chatbot');
-          taskListId = id!.split('/').last;
-          break;
-        }
+        names.add(tasklistname);
       }
+    }
+    if (names.contains('tasks added by chatbot')) {
+      taskListId = taskListIdFromBD;
+      print('yes');
     } else {
+      print('no');
       String? id = await addTaskListWithName('tasks added by chatbot');
       taskListId = id!.split('/').last;
     }
+
     await addTask(taskListId, name, date);
   }
 

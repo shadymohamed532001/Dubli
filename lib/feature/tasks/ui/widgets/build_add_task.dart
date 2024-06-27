@@ -1,5 +1,7 @@
 import 'package:dubli/core/widgets/app_bottom.dart';
+import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
@@ -36,23 +38,24 @@ class _MyWidgetState extends State<BuildAddTasksDropdown> {
       });
     }
   }
-Future<void> _selectTime(BuildContext context) async {
-  final TimeOfDay? picked = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-    builder: (BuildContext context, Widget? child) {
-      return MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-        child: child!,
-      );
-    },
-  );
-  if (picked != null) {
-    setState(() {
-      _timeController.text = picked.format(context);
-    });
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() {
+        _timeController.text = picked.format(context);
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +123,11 @@ Future<void> _selectTime(BuildContext context) async {
                             taskDate.isNotEmpty &&
                             taskTime.isNotEmpty) {
                           final taskDateTime = '$taskDate $taskTime';
-                        //   BlocProvider.of<TasksCubit>(context).addTask(
-                        //  widget.id,
-                        //     taskName,
-                        //     taskDateTime,
-                        //   );
+                          BlocProvider.of<TasksCubit>(context).addTask(
+                            widget.id,
+                            taskName,
+                            taskDateTime,
+                          );
                           widget.onPressed!();
                           widget.addController.clear();
                           _dateController.clear();

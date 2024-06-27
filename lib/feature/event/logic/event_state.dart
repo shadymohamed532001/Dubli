@@ -24,7 +24,7 @@ final class GetEventsError extends EventState {
 }
 
 final class GetEventsSuccess extends EventState {
-  final List<Map<String, dynamic>> events;
+  final List<Event> events;
 
   const GetEventsSuccess({required this.events});
 }

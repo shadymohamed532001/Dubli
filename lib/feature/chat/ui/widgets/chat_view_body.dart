@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:dubli/core/helper/naviagtion_extentaions.dart';
 import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
@@ -5,9 +8,6 @@ import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:dubli/feature/chat/ui/widgets/chat_text_filed.dart';
 import 'package:dubli/feature/chat/ui/widgets/messages_widget.dart';
 import 'package:dubli/feature/chat/ui/widgets/add_task_bottom_sheet.dart'; // Import the AddTaskBottomSheet widget
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChatViewBody extends StatefulWidget {
   const ChatViewBody({super.key});
@@ -71,8 +71,7 @@ class _ChatViewBodyState extends State<ChatViewBody> {
                           ),
                           onPressed: () {
                             if (cubit.chatController.text.isNotEmpty) {
-                              String userMessage =
-                                  cubit.chatController.text.toLowerCase();
+                              String userMessage = cubit.chatController.text.toLowerCase();
                               cubit.sendMessage(userMessage);
                               cubit.chatController.clear();
                               if (userMessage.contains('tasks') ||

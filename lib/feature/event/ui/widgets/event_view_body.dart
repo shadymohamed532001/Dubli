@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_image_assets.dart';
 import 'package:dubli/core/utils/app_styles.dart';
+import 'package:dubli/feature/event/data/models/get_all_event_model.dart';
 import 'package:dubli/feature/event/logic/event_cubit.dart';
 import 'package:dubli/feature/event/ui/widgets/event_and_add_event.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class EventViewBody extends StatefulWidget {
-  const EventViewBody({Key? key}) : super(key: key);
+  const EventViewBody({super.key});
 
   @override
   _EventViewBodyState createState() => _EventViewBodyState();
@@ -26,20 +26,201 @@ class _EventViewBodyState extends State<EventViewBody> {
     cubit.getEventsWithDate(cubit.today.toString());
   }
 
+  void _showUpdateDialog(int index, List<Event> events) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Center(
+            child: Text('Update ${events[index].name}'),
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width, // Adjust width as needed
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: events[index].name,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      'Description',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: events[index].description,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 4),
+                              child: Text(
+                                'Start Time',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: '12:00 AM',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 4),
+                              child: Text(
+                                'End Time',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: '3:00 PM',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xff072247),
+                  ),
+                  onPressed: () {
+                    // Add logic to update the event
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Update',
+                    style: TextStyle(color: ColorManager.whiteColor),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(int index, List<Event> events) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Event'),
+          content: const Text('Are you sure you want to delete this event?'),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    BlocProvider.of<EventCubit>(context)
+                        .deleteEvent(eventId: events[index].id);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Delete'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<EventCubit, EventState>(
       listener: (context, state) {
         if (state is AddEventSuccess) {
-          BlocProvider.of<EventCubit>(context)
-              .getEventsWithDate(BlocProvider.of<EventCubit>(context).today.toString());
+          BlocProvider.of<EventCubit>(context).getEventsWithDate(
+              BlocProvider.of<EventCubit>(context).today.toString());
         }
       },
       builder: (context, state) {
         var cubit = BlocProvider.of<EventCubit>(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text('Event View'),
+            title: const Text('Event View'),
           ),
           body: SafeArea(
             child: CustomScrollView(
@@ -74,7 +255,7 @@ class _EventViewBodyState extends State<EventViewBody> {
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: EventAndAddEvent(),
                 ),
                 if (state is GetEventsLoading)
@@ -95,18 +276,22 @@ class _EventViewBodyState extends State<EventViewBody> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final startTime =
-                            DateTime.parse(state.events[index]['fields']['startTime']);
-                        final endTime =
-                            DateTime.parse(state.events[index]['fields']['endTime']);
+                        final startTime = DateTime.parse(
+                            state.events[index].startTime.toString());
+                        final endTime = DateTime.parse(
+                            state.events[index].endTime.toString());
 
-                        final startTimeFormatted = DateFormat.Hm().format(startTime);
-                        final endTimeFormatted = DateFormat.Hm().format(endTime);
+                        final startTimeFormatted =
+                            DateFormat.Hm().format(startTime);
+                        final endTimeFormatted =
+                            DateFormat.Hm().format(endTime);
 
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 4),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
@@ -122,7 +307,7 @@ class _EventViewBodyState extends State<EventViewBody> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      state.events[index]['name'],
+                                      state.events[index].name,
                                       style: AppStyle.font16Whitesemibold,
                                     ),
                                     const SizedBox(height: 5),
@@ -135,16 +320,18 @@ class _EventViewBodyState extends State<EventViewBody> {
                                         ),
                                         const SizedBox(width: 10),
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '${state.events[index]['fields']['startTime'].toString().split('T')[0].toString()} | ${state.events[index]['fields']['endTime'].toString().split('T')[0].toString()}',
+                                              '${state.events[index].startTime.toString().split(' ')[0].toString()} | ${state.events[index].endTime.toString().split(' ')[0].toString()}',
                                               style: AppStyle.font14Greyregular,
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
-                                              state.events[index]['fields']['description'],
-                                              style: AppStyle.font16Whitesemibold,
+                                              state.events[index].description,
+                                              style:
+                                                  AppStyle.font16Whitesemibold,
                                             ),
                                           ],
                                         ),
@@ -154,7 +341,7 @@ class _EventViewBodyState extends State<EventViewBody> {
                                     Row(
                                       children: [
                                         Text(
-                                          state.events[index]['fields']['reminder'],
+                                          state.events[index].reminder,
                                           style: AppStyle.font14Greyregular,
                                         ),
                                         const SizedBox(width: 10),
@@ -168,15 +355,15 @@ class _EventViewBodyState extends State<EventViewBody> {
                                 ),
                                 const Spacer(),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 10),
                                   child: Column(
                                     children: [
                                       GestureDetector(
-                                        // onTap: () => _showUpdateDialog(
-                                        //   context,
-                                        //   widget.taskGroupModel,
-                                        //   widget.allTaskModel,
-                                        // ),
+                                        onTap: () {
+                                          _showUpdateDialog(
+                                              index, state.events);
+                                        },
                                         child: const Icon(
                                           Icons.edit,
                                           color: ColorManager.whiteColor,
@@ -185,7 +372,10 @@ class _EventViewBodyState extends State<EventViewBody> {
                                       ),
                                       const SizedBox(height: 10),
                                       GestureDetector(
-                                        // onTap: () => _showDeleteConfirmationDialog(context),
+                                        onTap: () {
+                                          _showDeleteDialog(
+                                              index, state.events);
+                                        },
                                         child: const Icon(
                                           Icons.delete,
                                           color: ColorManager.whiteColor,
