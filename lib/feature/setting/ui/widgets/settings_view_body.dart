@@ -1,3 +1,6 @@
+import 'package:dubli/core/helper/local_services.dart';
+import 'package:dubli/core/helper/naviagtion_extentaions.dart';
+import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:dubli/feature/setting/ui/widgets/about_us_widget.dart';
@@ -53,7 +56,12 @@ class SettingsViewBody extends StatelessWidget {
                       height: 30,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        LocalServices.removeData(key: 'token').then((value) {
+                          context.navigateAndRemoveUntil(
+                              newRoute: Routes.intorViewsRoute);
+                        });
+                      },
                       child: Text(
                         'Logout',
                         style: AppStyle.font22Whitesemibold.copyWith(

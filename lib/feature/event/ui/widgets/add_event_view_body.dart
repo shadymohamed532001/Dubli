@@ -342,8 +342,6 @@ class _AddEventViewBodyState extends State<AddEventViewBody> {
                           startEventTime: startDateTime,
                         );
                         context.pop();
-
-                    
                       } else {
                         setState(() {
                           cubit.autovalidateMode = AutovalidateMode.always;

@@ -1,4 +1,5 @@
 
+import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/utils/app_image_assets.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class UserImageAndName extends StatelessWidget {
           width: 16,
         ),
         Text(
-          'Shady Mohamed',
+          nameHelper,
           style: AppStyle.font18Whitemedium,
         ),
       ],

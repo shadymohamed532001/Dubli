@@ -18,6 +18,10 @@ class EventCubit extends Cubit<EventState> {
   var timeController = TextEditingController();
   var noteController = TextEditingController();
   var dateController = TextEditingController();
+
+  var editTitleController = TextEditingController();
+  var editNoteController = TextEditingController();
+
   dynamic eventId;
 // Function to add an event
   Future<void> addEvent({
@@ -317,6 +321,7 @@ class EventCubit extends Cubit<EventState> {
 
     if (response.statusCode == 200) {
       print('Event updated successfully');
+      getEventsWithDate(today.toString());
     } else {
       print('Error updating event');
     }

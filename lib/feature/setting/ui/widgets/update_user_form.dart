@@ -1,3 +1,4 @@
+import 'package:dubli/core/helper/helper_const.dart';
 import 'package:dubli/core/helper/validators_helper.dart';
 import 'package:dubli/core/utils/app_styles.dart';
 import 'package:dubli/core/widgets/app_text_formfield.dart';
@@ -36,7 +37,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
             ),
             CustomTextFormField(
               obscureText: false,
-              hintText: 'Username',
+              hintText: nameHelper,
               keyboardType: TextInputType.text,
               controller: settingsCubit.nameController,
               validator: (text) {
@@ -54,7 +55,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                 )),
             CustomTextFormField(
               obscureText: false,
-              hintText: 'Patient@self.com',
+              hintText: useremailHelper,
               keyboardType: TextInputType.emailAddress,
               controller: settingsCubit.emailController,
               validator: (text) {
@@ -97,7 +98,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
             ),
             CustomTextFormField(
               obscureText: false,
-              hintText: 'Phone Number',
+              hintText: phoneHelper,
               keyboardType: TextInputType.phone,
               controller: settingsCubit.phoneController,
               validator: (text) {
