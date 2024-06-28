@@ -301,6 +301,7 @@ class TasksCubit extends Cubit<TasksState> {
     var userId = await LocalServices.getData(key: 'userId');
 
     final DateTime taskDate = DateTime.parse(date).toUtc();
+    
     final Map<String, dynamic> data = {
       'fields': {
         'name': {'stringValue': name},

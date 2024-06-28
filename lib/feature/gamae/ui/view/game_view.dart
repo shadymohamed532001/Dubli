@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 import 'dart:math';
 
@@ -100,14 +102,9 @@ class _GameScreenState extends State<GameScreen> {
               child: const Text("Home"),
               onPressed: () {
                 // Fucntion send to firebase
-
                 context.navigateAndRemoveUntil(
-                    newRoute: Routes.layOutViewsRoute);
-                // Navigator.of(context).pop();
-                // setState(() {
-                //   level = 1;
-                //   startNewLevel();
-                // });
+                  newRoute: Routes.layOutViewsRoute,
+                );
               },
             )
           ],

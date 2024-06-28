@@ -71,8 +71,11 @@ class TaskGroupItem extends StatelessWidget {
           title: const Text('Update Task Name'),
           content: TextField(
             controller: controller,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Enter new task name',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
           ),
           actions: [

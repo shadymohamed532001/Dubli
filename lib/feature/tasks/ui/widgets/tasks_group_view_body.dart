@@ -2,7 +2,6 @@ import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/tasks/ui/widgets/build_add_tasks_group_name.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_group_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_completed_circle_indicator.dart';

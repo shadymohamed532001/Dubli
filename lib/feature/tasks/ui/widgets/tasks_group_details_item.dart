@@ -75,7 +75,8 @@ class _TasksGroupDetailsItemState extends State<TasksGroupDetailsItem> {
               children: [
                 GestureDetector(
                   onTap: () => _showUpdateDialog(
-                      context, widget.taskGroupModel, widget.allTaskModel),
+                    context,
+                  ),
                   child: const Icon(
                     Icons.edit,
                     color: ColorManager.whiteColor,
@@ -99,23 +100,84 @@ class _TasksGroupDetailsItemState extends State<TasksGroupDetailsItem> {
     );
   }
 
-  void _showUpdateDialog(
-    BuildContext context,
-    TaskGroupModel taskGroupModel,
-    AllTaskModel allTaskModel,
-  ) {
+  void _showUpdateDialog(BuildContext context) {
     final TextEditingController controller = TextEditingController();
+    final TextEditingController dateController = TextEditingController();
+    final TextEditingController timeController = TextEditingController();
+
+    Future<void> selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2101),
+      );
+      if (picked != null) {
+        setState(() {
+          dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+        });
+      }
+    }
+
+    Future<void> selectTime(BuildContext context) async {
+      final TimeOfDay? picked = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child!,
+          );
+        },
+      );
+      if (picked != null) {
+        setState(() {
+          final now = DateTime.now();
+          final selectedTime = DateTime(
+              now.year, now.month, now.day, picked.hour, picked.minute);
+          timeController.text = DateFormat('HH:mm:ss').format(selectedTime);
+        });
+      }
+    }
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Update Task Name'),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              hintText: 'Enter new task name',
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: controller,
+                decoration: const InputDecoration(
+                  hintText: 'Enter new task name',
+                ),
+              ),
+              TextField(
+                controller: dateController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  hintText: 'Select Date',
+                ),
+                onTap: () => selectDate(context),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: timeController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  hintText: 'Select Time',
+                ),
+                onTap: () => selectTime(context),
+              ),
+            ],
           ),
           actions: [
             Row(
@@ -129,21 +191,34 @@ class _TasksGroupDetailsItemState extends State<TasksGroupDetailsItem> {
                 ),
                 TextButton(
                   onPressed: () {
+                    String taskDate = dateController.text.trim();
+                    String taskTime = timeController.text.trim();
                     final newName = controller.text;
-                    if (newName.isNotEmpty) {
-                      BlocProvider.of<TasksCubit>(context).updateTask(
-                        taskListId: taskGroupModel.id,
-                        taskId: allTaskModel.id,
-                        name: controller.text,
-                        date: allTaskModel.date.toString(),
 
-                        // Todo: update date
-                      );
+                    if (newName.isNotEmpty &&
+                        taskDate.isNotEmpty &&
+                        taskTime.isNotEmpty) {
+                      final taskDateTime = taskTime;
+                      try {
+                        final parsedDate = DateTime.parse(taskDateTime);
+                        BlocProvider.of<TasksCubit>(context).updateTask(
+                          date: parsedDate.toIso8601String(),
+                          name: newName,
+                          taskListId: widget.allTaskModel.id,
+                          taskId: widget
+                              .allTaskModel.id, // Use the correct taskId here
+                        );
+                        controller.clear();
+                        dateController.clear();
+                        timeController.clear();
+                      } catch (e) {
+                        print('Error parsing date: $e');
+                      }
                     }
                     Navigator.of(context).pop();
                   },
                   child: const Text('Update'),
-                )
+                ),
               ],
             )
           ],

@@ -32,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
             Padding(
               padding: const EdgeInsets.only(left: 4, bottom: 4),
               child: Text(
-                'Username',
+                'Email',
                 style: AppStyle.font18Primaryregular,
               ),
             ),

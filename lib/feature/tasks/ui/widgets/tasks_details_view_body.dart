@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/core/utils/app_styles.dart';

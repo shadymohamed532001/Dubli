@@ -40,7 +40,7 @@ class _SignUpFormState extends State<SignUpForm> {
               keyboardType: TextInputType.text,
               controller: signUpCubit.nameController,
               validator: (text) {
-                if (text == null || text.trim().isEmpty) {
+                if (text == null || text.trim().isEmpty || text.length < 20) {
                   return 'Please enter your name';
                 }
                 return null;

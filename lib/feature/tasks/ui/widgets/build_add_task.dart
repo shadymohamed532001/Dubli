@@ -80,14 +80,20 @@ class _MyWidgetState extends State<BuildAddTasksDropdown> {
                 children: [
                   TextField(
                     controller: widget.addController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter task name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                   ),
                   TextField(
                     controller: _dateController,
                     readOnly: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       hintText: 'Select Date',
                     ),
                     onTap: () => _selectDate(context),
@@ -95,7 +101,10 @@ class _MyWidgetState extends State<BuildAddTasksDropdown> {
                   TextField(
                     controller: _timeController,
                     readOnly: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       hintText: 'Select Time',
                     ),
                     onTap: () => _selectTime(context),
