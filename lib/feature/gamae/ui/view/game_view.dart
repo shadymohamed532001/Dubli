@@ -101,7 +101,8 @@ class _GameScreenState extends State<GameScreen> {
               onPressed: () {
                 // Fucntion send to firebase
 
-                context.navigateAndRemoveUntil(newRoute: Routes.homeViewsRoute);
+                context.navigateAndRemoveUntil(
+                    newRoute: Routes.layOutViewsRoute);
                 // Navigator.of(context).pop();
                 // setState(() {
                 //   level = 1;
