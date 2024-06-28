@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:dubli/core/helper/local_notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -53,10 +52,7 @@ class ReminderCubit extends Cubit<ReminderState> {
           duration.inSeconds) {
         addLaps();
         stop();
-        LocalNotificationService.showBasicNotification(
-          title: eventController.text,
-          body: 'Time is up and your event has been Finished',
-        );
+        
         eventController.clear();
       }
     });

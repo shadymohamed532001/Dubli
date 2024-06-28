@@ -55,6 +55,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       email: email,
       password: password,
     );
+    
     emit(SignUpSuccess());
     print('User registered successfully! $useridHelper');
     nameHelper = username;

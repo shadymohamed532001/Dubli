@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:dubli/core/helper/helper_const.dart';
+import 'package:dubli/core/helper/local_notification_services.dart';
 import 'package:dubli/core/helper/local_services.dart';
 import 'package:dubli/feature/event/data/models/get_all_event_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 part 'event_state.dart';
@@ -63,6 +65,25 @@ class EventCubit extends Cubit<EventState> {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         eventId = responseData['name'].split('/').last;
+        if (responseData['fields']['reminder'] == 'daily') {
+          LocalNotificationService.showRepeatedNotification(
+              title: 'Dupil',
+              body: 'You have a Reminder for $eventName',
+              repeatInterval: RepeatInterval.daily);
+        }
+        if (responseData['fields']['reminder'] == 'daily') {
+          LocalNotificationService.showRepeatedNotification(
+              title: 'Dupil',
+              body: 'You have a Reminder for $eventName',
+              repeatInterval: RepeatInterval.daily);
+        }
+        if (responseData['fields']['reminder'] == 'weekly') {
+          LocalNotificationService.showRepeatedNotification(
+              title: 'Dupil',
+              body: 'You have a Reminder for $eventName',
+              repeatInterval: RepeatInterval.weekly);
+        }
+
         if (!isClosed) emit(AddEventSuccess());
         remindUser(eventId);
       } else {

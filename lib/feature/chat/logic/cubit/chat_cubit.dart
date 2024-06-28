@@ -51,6 +51,9 @@ class ChatCubit extends Cubit<ChatState> {
     "How can I track my order?",
   ];
 
+  var titleController = TextEditingController();
+  var descriptionController = TextEditingController();
+
 Future sendMessage(String message) async {
     try {
       var timestamp = DateTime.now();

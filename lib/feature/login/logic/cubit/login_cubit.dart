@@ -38,8 +38,8 @@ class LoginCubit extends Cubit<LoginState> {
         key: 'userId',
         value: responseData['localId'],
       );
-
-
+      checkUserEmailInUniHelper(useridHelper, useremailHelper);
+       await getUserNameById(useridHelper, useremailHelper);
       emit(LoginSuccess());
     } else {
       if (responseData['error']['message'] == "INVALID_LOGIN_CREDENTIALS") {
@@ -51,52 +51,3 @@ class LoginCubit extends Cubit<LoginState> {
   }
 }
 
-
-//   Future<void> loginUser ({
-//     required String email,
-//     required String password,
-//   }) async {
-//     emit(LoginLoading());
-//     const url = '$firebaseUrl:signInWithPassword?key=$apiKey_2';
-//     final response = await http.post(
-//       Uri.parse(url),
-//       body: json.encode({
-//         'email': email,
-//         'password': password,
-//         'returnSecureToken': true,
-//       }),
-//     );
-
-//     final responseData = json.decode(response.body);
-//     dynamic uid = responseData['localId'];
-//     useridHelper = uid;
-//     useremailHelper = email;
-//     print(useridHelper+ useremailHelper);
-//     checkUserEmailInUniHelper(useridHelper,useremailHelper) ;
-//     final userDetails = await getUserNameById(useridHelper, useremailHelper);
-
-//   if (userDetails != null) {
-//       nameHelper = userDetails['name'];
-//      phoneHelper = userDetails['phone'];
-//      passwordHelper = userDetails['password'];
-//      useremailHelper = userDetails['email'];
-
-//     print('User Name: $nameHelper');
-//     print('User Phone: $phoneHelper');
-//     print('User Password: $passwordHelper');
-//   } else {
-//     print('User details not found or incomplete.');
-//   }
-    
-    
-    
-    
-//     if (response.statusCode == 200) {
-//       emit(LoginSuccess());
-//     } else {
-//       emit(LoginFailure(
-//         error: responseData['error']['message'],
-//       ));
-//     }
-//   }
-// }
