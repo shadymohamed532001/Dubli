@@ -3,8 +3,7 @@ import 'package:dubli/core/routing/routes.dart';
 import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:dubli/feature/chat/ui/views/chat_history.dart';
-import 'package:dubli/feature/event/logic/event_cubit.dart';
-import 'package:dubli/feature/event/ui/views/add_event_view.dart';
+import 'package:dubli/feature/gamae/ui/view/game_view.dart';
 import 'package:dubli/feature/intor/ui/views/intro_view.dart';
 import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dubli/feature/layout/ui/views/layout_views.dart';
@@ -76,13 +75,11 @@ class AppRoutes {
             );
           },
         );
-      case Routes.addEventViewsRoute:
+
+      case Routes.gameViewsRoute:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) => EventCubit(),
-              child: const AddEventView(),
-            );
+            return const GameScreen();
           },
         );
       case Routes.addtasksViewsRoute:

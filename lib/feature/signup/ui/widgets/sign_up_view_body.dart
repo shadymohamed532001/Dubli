@@ -50,7 +50,7 @@ class _SignUpViewBodyState extends State<SignupViewBody> {
           ).then(
             (value) {
               context.navigateAndRemoveUntil(
-                newRoute: Routes.layOutViewsRoute,
+                newRoute: Routes.gameViewsRoute,
               );
             },
           );

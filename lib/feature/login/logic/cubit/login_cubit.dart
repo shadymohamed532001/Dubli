@@ -38,8 +38,7 @@ class LoginCubit extends Cubit<LoginState> {
         key: 'userId',
         value: responseData['localId'],
       );
-      checkUserEmailInUniHelper(useridHelper, useremailHelper);
-       await getUserNameById(useridHelper, useremailHelper);
+
       emit(LoginSuccess());
     } else {
       if (responseData['error']['message'] == "INVALID_LOGIN_CREDENTIALS") {

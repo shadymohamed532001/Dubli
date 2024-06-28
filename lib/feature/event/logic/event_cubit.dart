@@ -85,6 +85,7 @@ class EventCubit extends Cubit<EventState> {
         }
 
         if (!isClosed) emit(AddEventSuccess());
+        getEventsWithDate(today.toString());
         remindUser(eventId);
       } else {
         if (!isClosed) emit(const AddEventError(error: 'Error adding event'));
@@ -338,6 +339,7 @@ class EventCubit extends Cubit<EventState> {
 
     if (response.statusCode == 200) {
       print('Event updated successfully');
+      getEventsWithDate(today.toString());
     } else {
       print('Error updating event');
     }
@@ -367,16 +369,6 @@ class EventCubit extends Cubit<EventState> {
           return 'sunday';
         default:
           return '';
-      }
-    }
-
-    Future<Map<String, dynamic>?> getDocument(String url) async {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        print('Failed to fetch document: ${response.statusCode}');
-        return null;
       }
     }
 

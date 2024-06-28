@@ -72,19 +72,24 @@ class _ChatViewBodyState extends State<ChatViewBody> {
                           ),
                           onPressed: () {
                             if (cubit.chatController.text.isNotEmpty) {
-                              String userMessage = cubit.chatController.text.toLowerCase();
-                              bool containsTaskKeyword = userMessage.contains('tasks') ||
-                                  userMessage.contains('make a task') ||
-                                  userMessage.contains('generate task') ||
-                                  userMessage.contains('task');
-                              bool containsEventKeyword = userMessage.contains('event') ||
-                                  userMessage.contains('create event') ||
-                                  userMessage.contains('schedule event');
+                              String userMessage =
+                                  cubit.chatController.text.toLowerCase();
+                              bool containsTaskKeyword =
+                                  userMessage.contains('tasks') ||
+                                      userMessage.contains('make a task') ||
+                                      userMessage.contains('generate task') ||
+                                      userMessage.contains('task');
+                              bool containsEventKeyword =
+                                  userMessage.contains('event') ||
+                                      userMessage.contains('create event') ||
+                                      userMessage.contains('schedule event');
 
-                              if (!containsTaskKeyword && !containsEventKeyword) {
+                              if (!containsTaskKeyword &&
+                                  !containsEventKeyword &&
+                                  cubit.chatController.text.trim().isNotEmpty) {
                                 cubit.sendMessage(userMessage);
                               }
-                              
+
                               cubit.chatController.clear();
 
                               if (containsTaskKeyword) {

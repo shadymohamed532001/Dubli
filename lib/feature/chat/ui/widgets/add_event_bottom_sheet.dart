@@ -24,19 +24,6 @@ class _AddEventBottomSheetState extends State<AddEventBottomSheet> {
   String? selectedReminder = 'Never';
   final List<String> reminderItem = ["Daily", "Weekly", "Monthly", "Never"];
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        dateController.text = DateFormat('dd/MM/yyyy').format(picked);
-      });
-    }
-  }
 
   String formatTime(TimeOfDay timeOfDay) {
     final now = DateTime.now();

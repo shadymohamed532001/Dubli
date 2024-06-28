@@ -136,7 +136,8 @@ class _TasksGroupDetailsItemState extends State<TasksGroupDetailsItem> {
                         taskId: allTaskModel.id,
                         name: controller.text,
                         date: allTaskModel.date.toString(),
-                        done: allTaskModel.done,
+
+                        // Todo: update date
                       );
                     }
                     Navigator.of(context).pop();

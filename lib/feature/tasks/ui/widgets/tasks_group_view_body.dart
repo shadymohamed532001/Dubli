@@ -1,6 +1,8 @@
+import 'package:dubli/core/utils/app_colors.dart';
 import 'package:dubli/feature/tasks/ui/widgets/build_add_tasks_group_name.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_group_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:dubli/feature/tasks/ui/widgets/task_completed_circle_indicator.dart';
@@ -56,7 +58,7 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                         addController: cubit.addTaskGroupNameController,
                         onPressed: () {
                           cubit.addTaskListWithName(
-                             cubit.addTaskGroupNameController.text.trim(),
+                            cubit.addTaskGroupNameController.text.trim(),
                           );
                         },
                       )
@@ -108,8 +110,11 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                     ),
                     child: const Center(
                       child: Text(
-                        'NO Task Found. Please Add Some TaskGroup.',
+                        'NO Task Group Found',
                         textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: ColorManager.whiteColor,
+                        ),
                       ),
                     ),
                   ),

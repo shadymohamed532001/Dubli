@@ -59,7 +59,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(SignUpSuccess());
     print('User registered successfully! $useridHelper');
     nameHelper = username;
-    checkUserEmailInUniHelper(useridHelper,useremailHelper);
+    // checkUserEmailInUniHelper(useridHelper,useremailHelper);
     
   } catch (e) {
     log(e.toString());

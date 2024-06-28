@@ -57,7 +57,7 @@ class SettingsViewBody extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        LocalServices.removeData(key: 'token').then((value) {
+                        LocalServices.removeData(key: 'userId').then((value) {
                           context.navigateAndRemoveUntil(
                               newRoute: Routes.intorViewsRoute);
                         });

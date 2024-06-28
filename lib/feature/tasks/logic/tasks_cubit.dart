@@ -252,61 +252,6 @@ class TasksCubit extends Cubit<TasksState> {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getSubCollectionFromTasks(
-      String targetDateString, List<Map<String, dynamic>> tasks) async {
-    var userId = await LocalServices.getData(key: 'userId');
-
-    String url = constructUserTaskLists(userId);
-    http.Response response = await http.get(Uri.parse(url));
-
-    if (response.statusCode != 200) {
-      debugPrint(
-          'Failed to retrieve collection. Status code: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
-    }
-
-    Map<String, dynamic> data =
-        jsonDecode(response.body) as Map<String, dynamic>;
-
-    if (data.containsKey('documents')) {
-      for (var document in data['documents'] as List<dynamic>) {
-        String documentId = document['name'] as String;
-        String subCollectionURL =
-            'https://firestore.googleapis.com/v1/$documentId/tasks';
-        http.Response subCollectionResponse =
-            await http.get(Uri.parse(subCollectionURL));
-        Map<String, dynamic> subCollectionData =
-            jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
-
-        if (subCollectionData.containsKey('documents')) {
-          for (var nestedCollection
-              in subCollectionData['documents'] as List<dynamic>) {
-            Map<String, dynamic> fields =
-                nestedCollection['fields'] as Map<String, dynamic>;
-            String taskId = document['name'].split('/').last as String;
-
-            if (fields.containsKey('date') &&
-                fields['date']['timestampValue'].startsWith(targetDateString)
-                    as bool) {
-              Map<String, dynamic> task = {
-                'fields': {
-                  'name': fields['name']['stringValue'],
-                  'id': taskId,
-                  'date': fields['date']['timestampValue'],
-                  'done': fields['done']['booleanValue'],
-                }
-              };
-              tasks.add(task);
-            } else {}
-          }
-        }
-      }
-    } else {
-      debugPrint('No documents found in collection.');
-    }
-    return tasks;
-  }
-
 //-------------------------------------------------------------------------------------------------
   Future<void> addTask(String taskListId, String name, String dateTime) async {
     emit(AddTaskLoading());
@@ -347,12 +292,12 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
 //-------------------------------------------------------------------------------------------------
-  Future<void> updateTask(
-      {required String taskListId,
-      required String taskId,
-      required String name,
-      required String date,
-      required bool done}) async {
+  Future<void> updateTask({
+    required String taskListId,
+    required String taskId,
+    required String name,
+    required String date,
+  }) async {
     var userId = await LocalServices.getData(key: 'userId');
 
     final DateTime taskDate = DateTime.parse(date).toUtc();
@@ -360,7 +305,6 @@ class TasksCubit extends Cubit<TasksState> {
       'fields': {
         'name': {'stringValue': name},
         'date': {'timestampValue': taskDate.toIso8601String()},
-        'done': {'booleanValue': done}
       }
     };
 
@@ -447,54 +391,7 @@ class TasksCubit extends Cubit<TasksState> {
     }
   }
 
-//-------------------------------------------------------------------------------------------------
-  Future<List<Map<String, dynamic>>> getTasksByDate(String date) async {
-    final DateTime targetDate = DateTime.parse(date).toUtc();
-    List<Map<String, dynamic>> events = [];
-    String targetDateString = targetDate
-        .toIso8601String()
-        .split('T')
-        .first; // Extract only the date part
-
-    await getSubCollectionFromTasks(targetDateString, events);
-
-    print(events);
-
-    print('All events: $events');
-    print('---------------------------');
-
-    return events;
-  }
-
-  Future<List<Map<String, dynamic>>> getTasksByDateDone(String date) async {
-    final DateTime targetDate = DateTime.parse(date).toUtc();
-    List<Map<String, dynamic>> events = [];
-    String targetDateString = targetDate
-        .toIso8601String()
-        .split('T')
-        .first; // Extract only the date part
-
-    await getSubCollectionFromTasksDone(targetDateString, events);
-
-    print('Done events: $events');
-    print('---------------------------');
-    return events;
-  }
-
-  Future<List<Map<String, dynamic>>> getTasksByDateUndone(String date) async {
-    final DateTime targetDate = DateTime.parse(date).toUtc();
-    List<Map<String, dynamic>> events = [];
-    String targetDateString = targetDate
-        .toIso8601String()
-        .split('T')
-        .first; // Extract only the date part
-
-    await getSubCollectionFromTasksUndone(targetDateString, events);
-    print('Todo events: $events');
-    print('---------------------------');
-    return events;
-  }
-Future<void> addTaskBychatbot(String name, String date) async {
+  Future<void> addTaskBychatbot(String name, String date) async {
     String taskListId = '';
     var userId = await LocalServices.getData(key: 'userId');
     String taskListIdFromBD = '';
@@ -524,10 +421,57 @@ Future<void> addTaskBychatbot(String name, String date) async {
     await addTask(taskListId, name, date);
   }
 
+//-------------------------------------------------------------------------------------------------
+  Future<List<Map<String, dynamic>>> getTasksByDate(String date) async {
+    final DateTime targetDate = DateTime.parse('2024-06-30T01:59:44').toUtc();
+    List<Map<String, dynamic>> tasks = [];
+    String targetDateString = targetDate
+        .toIso8601String()
+        .split('T')
+        .first; // Extract only the date part
+
+    await getSubCollectionFromTasks(targetDateString, tasks);
+
+    print(tasks);
+
+    print('All tasks: $tasks');
+    print('---------------------------');
+
+    return tasks;
+  }
+
+  Future<List<Map<String, dynamic>>> getTasksByDateDone(String date) async {
+    final DateTime targetDate = DateTime.parse(date).toUtc();
+    List<Map<String, dynamic>> tasks = [];
+    String targetDateString = targetDate
+        .toIso8601String()
+        .split('T')
+        .first; // Extract only the date part
+
+    await getSubCollectionFromTasksDone(targetDateString, tasks);
+
+    print('Done tasks: $tasks');
+    print('---------------------------');
+    return tasks;
+  }
+
+  Future<List<Map<String, dynamic>>> getTasksByDateUndone(String date) async {
+    final DateTime targetDate = DateTime.parse(date).toUtc();
+    List<Map<String, dynamic>> tasks = [];
+    String targetDateString = targetDate
+        .toIso8601String()
+        .split('T')
+        .first; // Extract only the date part
+
+    await getSubCollectionFromTasksUndone(targetDateString, tasks);
+    print('Todo tasks: $tasks');
+    print('---------------------------');
+    return tasks;
+  }
+
   Future<List<Map<String, dynamic>>> getSubCollectionFromTasksDone(
       String targetDateString, List<Map<String, dynamic>> tasks) async {
     var userId = await LocalServices.getData(key: 'userId');
-
     String url = constructUserTaskLists(userId);
     http.Response response = await http.get(Uri.parse(url));
 
@@ -555,7 +499,7 @@ Future<void> addTaskBychatbot(String name, String date) async {
               in subCollectionData['documents'] as List<dynamic>) {
             Map<String, dynamic> fields =
                 nestedCollection['fields'] as Map<String, dynamic>;
-            String taskId = document['name'].split('/').last as String;
+            String taskId = nestedCollection['name'].split('/').last as String;
 
             if (fields.containsKey('date') &&
                 fields['date']['timestampValue'].startsWith(targetDateString)
@@ -566,7 +510,9 @@ Future<void> addTaskBychatbot(String name, String date) async {
                 'fields': {
                   'name': fields['name']['stringValue'],
                   'id': taskId,
-                  'date': fields['date']['timestampValue'],
+                  'date':
+                      DateTime.parse(fields['date']['timestampValue'] as String)
+                          .add(const Duration(hours: 3)),
                   'done': fields['done']['booleanValue'],
                 }
               };
@@ -584,7 +530,6 @@ Future<void> addTaskBychatbot(String name, String date) async {
   Future<List<Map<String, dynamic>>> getSubCollectionFromTasksUndone(
       String targetDateString, List<Map<String, dynamic>> tasks) async {
     var userId = await LocalServices.getData(key: 'userId');
-
     String url = constructUserTaskLists(userId);
     http.Response response = await http.get(Uri.parse(url));
 
@@ -612,7 +557,7 @@ Future<void> addTaskBychatbot(String name, String date) async {
               in subCollectionData['documents'] as List<dynamic>) {
             Map<String, dynamic> fields =
                 nestedCollection['fields'] as Map<String, dynamic>;
-            String taskId = document['name'].split('/').last as String;
+            String taskId = nestedCollection['name'].split('/').last as String;
 
             if (fields.containsKey('date') &&
                 fields['date']['timestampValue'].startsWith(targetDateString)
@@ -623,7 +568,65 @@ Future<void> addTaskBychatbot(String name, String date) async {
                 'fields': {
                   'name': fields['name']['stringValue'],
                   'id': taskId,
-                  'date': fields['date']['timestampValue'],
+                  'date':
+                      DateTime.parse(fields['date']['timestampValue'] as String)
+                          .add(const Duration(hours: 3)),
+                  'done': fields['done']['booleanValue'],
+                }
+              };
+              tasks.add(task);
+            } else {}
+          }
+        }
+      }
+    } else {
+      print('No documents found in collection.');
+    }
+    return tasks;
+  }
+
+  Future<List<Map<String, dynamic>>> getSubCollectionFromTasks(
+      String targetDateString, List<Map<String, dynamic>> tasks) async {
+    var userId = await LocalServices.getData(key: 'userId');
+    String url = constructUserTaskLists(userId);
+    http.Response response = await http.get(Uri.parse(url));
+
+    if (response.statusCode != 200) {
+      print(
+          'Failed to retrieve collection. Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+
+    Map<String, dynamic> data =
+        jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (data.containsKey('documents')) {
+      for (var document in data['documents'] as List<dynamic>) {
+        String documentId = document['name'] as String;
+        String subCollectionURL =
+            'https://firestore.googleapis.com/v1/$documentId/tasks';
+        http.Response subCollectionResponse =
+            await http.get(Uri.parse(subCollectionURL));
+        Map<String, dynamic> subCollectionData =
+            jsonDecode(subCollectionResponse.body) as Map<String, dynamic>;
+
+        if (subCollectionData.containsKey('documents')) {
+          for (var nestedCollection
+              in subCollectionData['documents'] as List<dynamic>) {
+            Map<String, dynamic> fields =
+                nestedCollection['fields'] as Map<String, dynamic>;
+            String taskId = nestedCollection['name'].split('/').last as String;
+
+            if (fields.containsKey('date') &&
+                fields['date']['timestampValue'].startsWith(targetDateString)
+                    as bool) {
+              Map<String, dynamic> task = {
+                'fields': {
+                  'name': fields['name']['stringValue'],
+                  'id': taskId,
+                  'date':
+                      DateTime.parse(fields['date']['timestampValue'] as String)
+                          .add(const Duration(hours: 3)),
                   'done': fields['done']['booleanValue'],
                 }
               };
