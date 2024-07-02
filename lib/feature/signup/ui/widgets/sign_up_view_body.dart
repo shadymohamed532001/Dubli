@@ -1,15 +1,14 @@
-// ignore_for_file: must_be_immutable, use_build_context_synchronously
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/helper/local_services.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/core/widgets/app_logo_and_app_name.dart';
-import 'package:dubli/core/widgets/shows_toust_color.dart';
-import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
-import 'package:dubli/feature/signup/ui/widgets/have_an_acount_and_sign_in.dart';
-import 'package:dubli/feature/signup/ui/widgets/sign_up_form.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
+import 'package:dupli/core/widgets/app_logo_and_app_name.dart';
+import 'package:dupli/core/widgets/shows_toust_color.dart';
+import 'package:dupli/feature/signup/logic/cubit/sign_up_cubit.dart';
+import 'package:dupli/feature/signup/ui/widgets/have_an_acount_and_sign_in.dart';
+import 'package:dupli/feature/signup/ui/widgets/sign_up_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,7 +49,7 @@ class _SignUpViewBodyState extends State<SignupViewBody> {
           ).then(
             (value) {
               context.navigateAndRemoveUntil(
-                newRoute: Routes.gameViewsRoute,
+                newRoute: Routes.welcomeViewsRoute,
               );
             },
           );
@@ -62,8 +61,7 @@ class _SignUpViewBodyState extends State<SignupViewBody> {
         }
       },
       builder: (context, state) {
-        var cubit =
-            BlocProvider.of<SignUpCubit>(context); 
+        var cubit = BlocProvider.of<SignUpCubit>(context);
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: SafeArea(
@@ -106,6 +104,8 @@ class _SignUpViewBodyState extends State<SignupViewBody> {
                           password: cubit.passwordController.text,
                           phone: cubit.phoneController.text,
                           username: cubit.nameController.text,
+                          age: cubit.ageController.text,
+                          gender: cubit.genderController.text,
                         );
                       } else {
                         context.read<SignUpCubit>().autovalidateMode =

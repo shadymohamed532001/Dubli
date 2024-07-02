@@ -1,8 +1,8 @@
-import 'package:dubli/core/networking/api_services.dart';
-import 'package:dubli/core/networking/end_boint.dart';
-import 'package:dubli/feature/chat/data/models/chat_model.dart';
-import 'package:dubli/feature/chat/data/models/history_chat_model.dart';
-import 'package:dubli/feature/chat/data/repositories/chat_repo.dart';
+import 'package:dupli/core/networking/api_services.dart';
+import 'package:dupli/core/networking/end_boint.dart';
+import 'package:dupli/feature/chat/data/models/chat_model.dart';
+import 'package:dupli/feature/chat/data/models/history_chat_model.dart';
+import 'package:dupli/feature/chat/data/repositories/chat_repo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,8 +34,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-    final TextEditingController chatController = TextEditingController();
-
+  final TextEditingController chatController = TextEditingController();
 
   List<Map<String, dynamic>> messages = [];
 
@@ -44,17 +43,17 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   List<String> suggestionQuestions = [
-    "How can I help you today?",
-    "What are your operating hours?",
-    "Do you provide support for product X?",
-    "Can I return a product I bought?",
-    "How can I track my order?",
+    "what is the capital of france?",
+    "Could you please add a task for me?",
+    "Could you please add a event for me?",
+    "Who are you?",
+    "What is your name?",
   ];
 
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
 
-Future sendMessage(String message) async {
+  Future sendMessage(String message) async {
     try {
       var timestamp = DateTime.now();
 
@@ -75,6 +74,7 @@ Future sendMessage(String message) async {
           'user_id': '3',
         },
       );
+      suggestionQuestions = [];
 
       var data = ChatbotResponse.fromJson(response);
       timestamp = DateTime.now();

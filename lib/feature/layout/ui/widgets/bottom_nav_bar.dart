@@ -1,5 +1,5 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

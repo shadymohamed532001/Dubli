@@ -1,333 +1,313 @@
-// import 'package:dubli/core/helper/validators_helper.dart';
-// import 'package:dubli/core/widgets/app_text_formfield.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:dubli/core/utils/app_colors.dart';
-// import 'package:dubli/core/utils/app_styles.dart';
-// import 'package:dubli/core/widgets/app_bottom.dart';
-// import 'package:dubli/feature/reminder/logic/reminder_cubit.dart';
+import 'dart:async';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
+import 'package:dupli/feature/reminder/logic/reminder_cubit.dart';
+import 'package:dupli/feature/reminder/ui/widgets/daily_process_and_goal_hours.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import 'dart:async';
+class ReminderViewBody extends StatefulWidget {
+  const ReminderViewBody({super.key});
 
-// class ReminderViewBody extends StatefulWidget {
-//   const ReminderViewBody({
-//     super.key,
-//   });
+  @override
+  State<ReminderViewBody> createState() => _ReminderViewBodyState();
+}
 
-//   @override
-//   State<ReminderViewBody> createState() => _MyHomePageState();
-// }
+class _ReminderViewBodyState extends State<ReminderViewBody> {
+  @override
+  void initState() {
+    BlocProvider.of<ReminderCubit>(context).getFocus();
+    super.initState();
+  }
 
-// class _MyHomePageState extends State<ReminderViewBody> {
-//   late Timer _timer;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xff51647E),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  const FocusSessionAndTimer(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const DailyProcessAndGoalHours(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      context.navigateTo(
+                        routeName: Routes.tasksViewsDetailsRoute,
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: ColorManager.darkGreyColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/task.png',
+                            height: 35,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'View Today Tasks',
+                            style: AppStyle.font22Whitesemibold.copyWith(
+                              color: const Color(0xff072247),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class FocusSessionAndTimer extends StatefulWidget {
+  const FocusSessionAndTimer({super.key});
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-//       setState(() {});
-//     });
-//   }
+  @override
+  _FocusSessionAndTimerState createState() => _FocusSessionAndTimerState();
+}
 
-//   @override
-//   void dispose() {
-//     _timer.cancel();
-//     super.dispose();
-//   }
+class _FocusSessionAndTimerState extends State<FocusSessionAndTimer> {
+  Timer? _timer;
+  int _secondsRemaining = 0;
+  String _timeDisplay = "00:00";
+  bool _isWorking = false;
+  bool _isPaused = false;
+  int _sessionDurationMinutes = 45;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 16),
-//       child: SingleChildScrollView(
-//         child: BlocBuilder<ReminderCubit, ReminderState>(
-//           builder: (context, state) {
-//             var cubit = BlocProvider.of<ReminderCubit>(context);
-//             return Column(
-//               children: [
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     Text(
-//                       'Let’s get started',
-//                       style: AppStyle.font22Whitesemibold,
-//                     ),
-//                     CustomBottom(
-//                       bottomHeight: 40,
-//                       bottomWidth: 70,
-//                       bottomtext: 'Event',
-//                       backgroundColor: ColorManager.darkyellowColor,
-//                       textBottomStyle: const TextStyle(
-//                         fontSize: 13,
-//                         fontFamily: 'Raleway',
-//                         color: ColorManager.primaryColor,
-//                       ),
-//                       onPressed: () {
-//                         showDurationPicker(context, cubit: cubit);
-//                       },
-//                     )
-//                   ],
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 Container(
-//                     width: double.infinity,
-//                     height: 400,
-//                     decoration: BoxDecoration(
-//                       color: ColorManager.darkGreyColor.withOpacity(0.3),
-//                       borderRadius: BorderRadius.circular(16),
-//                     ),
-//                     child: Column(
-//                       children: [
-//                         Text(
-//                           '${cubit.digtalHour}:${cubit.digtalMinute}:${cubit.digtalSecond}',
-//                           style: AppStyle.font80Whitesemibold,
-//                         ),
-//                         Expanded(
-//                           child: ListView.builder(
-//                             itemCount: cubit.laps.length,
-//                             itemBuilder: (context, index) {
-//                               return Padding(
-//                                 padding: const EdgeInsets.all(16),
-//                                 child: Row(
-//                                   children: [
-//                                     Text(
-//                                       '${cubit.eventController.text} ${index + 1} :',
-//                                       style: AppStyle.font12Greymedium,
-//                                     ),
-//                                     const SizedBox(
-//                                       width: 10,
-//                                     ),
-//                                     Text(
-//                                       cubit.laps[index],
-//                                       style: AppStyle.font22Whitesemibold,
-//                                     ),
-//                                   ],
-//                                 ),
-//                               );
-//                             },
-//                           ),
-//                         ),
-//                       ],
-//                     )),
-//                 const SizedBox(
-//                   height: 40,
-//                 ),
-//                 ElevatedButton(
-//                   onPressed: () => showDurationPicker(context, cubit: cubit),
-//                   child: Text(
-//                     cubit.duration == Duration.zero
-//                         ? 'Pick Duration'
-//                         : 'Duration: ${cubit.duration.inHours.toString().padLeft(2, '0')}:${(cubit.duration.inMinutes % 60).toString().padLeft(2, '0')}:${(cubit.duration.inSeconds % 60).toString().padLeft(2, '0')}',
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                   children: [
-//                     CustomBottom(
-//                       onPressed: () {
-//                         if (cubit.start) {
-//                           if (cubit.duration != Duration.zero) {
-//                             cubit.startTimer(cubit.duration);
-//                           } else {
-//                             ScaffoldMessenger.of(context).showSnackBar(
-//                               const SnackBar(
-//                                 content: Text('Please pick a duration first'),
-//                               ),
-//                             );
-//                           }
-//                         } else {
-//                           cubit.stop();
-//                         }
-//                       },
-//                       bottomtext: (cubit.start) ? 'start' : 'stop',
-//                       bottomHeight: 50,
-//                       bottomWidth: 100,
-//                       backgroundColor: ColorManager.darkyellowColor,
-//                     ),
-//                     CustomBottom(
-//                       onPressed: () {
-//                         cubit.removeLaps();
-//                       },
-//                       bottomtext: 'remove laps',
-//                       bottomHeight: 50,
-//                       bottomWidth: 100,
-//                       backgroundColor: ColorManager.greyColor,
-//                     ),
-//                     CustomBottom(
-//                       onPressed: () {
-//                         cubit.reset();
-//                       },
-//                       bottomtext: 'reset',
-//                       bottomHeight: 50,
-//                       bottomWidth: 100,
-//                       backgroundColor: ColorManager.greyColor,
-//                     ),
-//                   ],
-//                 ),
-//               ],
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
+  void _showSessionDurationPicker() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+        hour: 0,
+        minute: _sessionDurationMinutes % 60,
+      ),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
+    ).then((selectedTime) {
+      if (selectedTime != null) {
+        setState(() {
+          _sessionDurationMinutes = selectedTime.minute;
+        });
+      }
+    });
+  }
 
-//   void showDurationPicker(BuildContext context,
-//       {required ReminderCubit cubit}) {
-//     int tempHour = 0;
-//     int tempMinute = 0;
-//     int tempSecond = 0;
+  void _startWorkSession() {
+    setState(() {
+      _isWorking = true;
+      _isPaused = false;
+      _secondsRemaining = _sessionDurationMinutes * 60; // Convert minutes to seconds
+      _updateTimerDisplay();
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          if (_secondsRemaining > 0) {
+            _secondsRemaining--;
+            _updateTimerDisplay();
+          } else {
+            _timer?.cancel();
+            _showBreakDialog();
+          }
+        });
+      });
+    });
+  }
 
-//     showModalBottomSheet(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return StatefulBuilder(
-//           builder: (BuildContext context, StateSetter setModalState) {
-//             return Padding(
-//               padding: EdgeInsets.only(
-//                 bottom: MediaQuery.of(context).viewInsets.bottom,
-//               ),
-//               child: SingleChildScrollView(
-//                 child: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: <Widget>[
-//                     const SizedBox(
-//                       height: 20,
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.only(left: 4, bottom: 4),
-//                       child: Align(
-//                         alignment: Alignment.centerLeft,
-//                         child: Text(
-//                           'Evant',
-//                           style: AppStyle.font18Primaryregular,
-//                         ),
-//                       ),
-//                     ),
-//                     CustomTextFormField(
-//                       obscureText: false,
-//                       hintText: 'Add your event',
-//                       keyboardType: TextInputType.emailAddress,
-//                       fillColor: Colors.transparent,
-//                       controller: cubit.eventController,
-//                       validator: (text) {
-//                         return MyValidatorsHelper.emailValidator(text);
-//                       },
-//                     ),
-//                     const SizedBox(
-//                       height: 20,
-//                     ),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: [
-//                         Column(
-//                           children: [
-//                             Text('Hours', style: AppStyle.font18Primaryregular),
-//                             DropdownButton<int>(
-//                               value: tempHour,
-//                               items: List.generate(24, (index) => index)
-//                                   .map((int value) {
-//                                 return DropdownMenuItem<int>(
-//                                   value: value,
-//                                   child: Text(value.toString()),
-//                                 );
-//                               }).toList(),
-//                               onChanged: (value) {
-//                                 setModalState(() {
-//                                   tempHour = value!;
-//                                 });
-//                               },
-//                             ),
-//                           ],
-//                         ),
-//                         const SizedBox(
-//                           width: 20,
-//                         ),
-//                         Column(
-//                           children: [
-//                             Text('Minutes',
-//                                 style: AppStyle.font18Primaryregular),
-//                             DropdownButton<int>(
-//                               value: tempMinute,
-//                               items: List.generate(60, (index) => index)
-//                                   .map((int value) {
-//                                 return DropdownMenuItem<int>(
-//                                   value: value,
-//                                   child: Text(value.toString()),
-//                                 );
-//                               }).toList(),
-//                               onChanged: (value) {
-//                                 setModalState(() {
-//                                   tempMinute = value!;
-//                                 });
-//                               },
-//                             ),
-//                           ],
-//                         ),
-//                         const SizedBox(
-//                           width: 20,
-//                         ),
-//                         Column(
-//                           children: [
-//                             Text('Seconds',
-//                                 style: AppStyle.font18Primaryregular),
-//                             DropdownButton<int>(
-//                               value: tempSecond,
-//                               items: List.generate(60, (index) => index)
-//                                   .map((int value) {
-//                                 return DropdownMenuItem<int>(
-//                                   value: value,
-//                                   child: Text(value.toString()),
-//                                 );
-//                               }).toList(),
-//                               onChanged: (value) {
-//                                 setModalState(() {
-//                                   tempSecond = value!;
-//                                 });
-//                               },
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                     const SizedBox(
-//                       height: 20,
-//                     ),
-//                     ElevatedButton(
-//                       onPressed: () {
-//                         setState(() {
-//                           cubit.duration = Duration(
-//                             hours: tempHour,
-//                             minutes: tempMinute,
-//                             seconds: tempSecond,
-//                           );
-//                         });
-//                         setState(() {
-//                           BlocProvider.of<ReminderCubit>(context).start = true;
-//                         });
-//                         cubit.startTimer(cubit.duration);
-//                         Navigator.pop(context);
-//                       },
-//                       child: Text(
-//                         'Set Duration',
-//                         style: AppStyle.font14Primarysemibold,
-//                       ),
-//                     ),
-//                     const SizedBox(
-//                       height: 40,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
+  void _resumeWorkSession() {
+    setState(() {
+      _isPaused = false;
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          if (_secondsRemaining > 0) {
+            _secondsRemaining--;
+            _updateTimerDisplay();
+          } else {
+            _timer?.cancel();
+            _showBreakDialog();
+          }
+        });
+      });
+    });
+  }
+
+  void _pauseWorkSession() {
+    setState(() {
+      _isPaused = true;
+      _timer?.cancel();
+    });
+  }
+
+  void _updateTimerDisplay() {
+    int minutes = _secondsRemaining ~/ 60;
+    int seconds = _secondsRemaining % 60;
+    _timeDisplay =
+        "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+  }
+
+  void _showBreakDialog() {
+    final completedMinutes = _sessionDurationMinutes - (_secondsRemaining ~/ 60);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Break Time!'),
+          content: const Text('Take a 5-minute break.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Start Break'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _startBreak();
+                _updateStreak(completedMinutes); // Call updateStreak with completed minutes
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateStreak(int minsToday) {
+    context.read<ReminderCubit>().updateStreak(minsToday);
+  }
+
+  void _startBreak() {
+    setState(() {
+      _isWorking = false;
+      _isPaused = false;
+      _secondsRemaining = 5 * 60;
+      _updateTimerDisplay();
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          if (_secondsRemaining > 0) {
+            _secondsRemaining--;
+            _updateTimerDisplay();
+          } else {
+            _timer?.cancel();
+          }
+        });
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xffBAC1CB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Focus Session',
+                      style: AppStyle.font16blackmedium.copyWith(
+                        fontWeight: FontWeightHelper.regular,
+                        fontSize: 20,
+                        color: const Color(0xff072247),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _showSessionDurationPicker,
+                      icon: const Icon(
+                        Icons.timer,
+                        color: Color(0xff51647E),
+                        size: 22,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(35),
+                  ),
+                  child: Text(
+                    _timeDisplay,
+                    style: AppStyle.font50blacksemibold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: CustomBottom(
+                backgroundColor: ColorManager.darkyellowColor,
+                bottomHeight: 50,
+                bottomWidth: 200,
+                onPressed: () {
+                  debugPrint(
+                      'Button pressed: ${_isWorking ? (_isPaused ? 'resume' : 'pause') : 'start'}');
+                  if (_isWorking) {
+                    if (_isPaused) {
+                      _resumeWorkSession();
+                    } else {
+                      _pauseWorkSession();
+                    }
+                  } else {
+                    _startWorkSession();
+                  }
+                },
+                bottomtext:
+                    _isWorking ? (_isPaused ? 'continue' : 'pause') : 'start',
+                textBottomStyle: AppStyle.font22Whitesemibold,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

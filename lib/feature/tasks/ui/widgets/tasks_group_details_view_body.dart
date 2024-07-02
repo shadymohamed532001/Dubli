@@ -1,9 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/feature/tasks/data/models/all_tasks_name_model.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
-import 'package:dubli/feature/tasks/ui/widgets/build_add_task.dart';
-import 'package:dubli/feature/tasks/ui/widgets/tasks_group_details_item.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/feature/tasks/data/models/all_tasks_name_model.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/ui/widgets/build_add_task.dart';
+import 'package:dupli/feature/tasks/ui/widgets/tasks_group_details_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

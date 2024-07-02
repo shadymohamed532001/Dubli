@@ -1,25 +1,26 @@
-import 'package:dubli/core/helper/helper_const.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
-import 'package:dubli/feature/chat/ui/views/chat_history.dart';
-import 'package:dubli/feature/gamae/ui/view/game_view.dart';
-import 'package:dubli/feature/intor/ui/views/intro_view.dart';
-import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
-import 'package:dubli/feature/layout/ui/views/layout_views.dart';
-import 'package:dubli/feature/login/logic/cubit/login_cubit.dart';
-import 'package:dubli/feature/login/ui/views/login_view.dart';
-import 'package:dubli/feature/setting/ui/views/edit_profile_view.dart';
-import 'package:dubli/feature/setting/ui/views/private_policy_view.dart';
-import 'package:dubli/feature/setting/ui/views/terms_and_conditions.dart';
-import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
-import 'package:dubli/feature/signup/ui/views/signup_view.dart';
-import 'package:dubli/feature/tasks/data/models/all_tasks_name_model.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
-import 'package:dubli/feature/tasks/ui/views/add_tasks_view.dart';
-import 'package:dubli/feature/tasks/ui/views/tasks_details_view.dart';
-import 'package:dubli/feature/tasks/ui/views/tasks_group_details_view.dart';
-import 'package:dubli/service_locator.dart';
+import 'package:dupli/core/helper/helper_const.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/chat/logic/cubit/chat_cubit.dart';
+import 'package:dupli/feature/chat/ui/views/chat_history.dart';
+import 'package:dupli/feature/gamae/ui/view/game_view.dart';
+import 'package:dupli/feature/intor/ui/views/intro_view.dart';
+import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
+import 'package:dupli/feature/layout/ui/views/layout_views.dart';
+import 'package:dupli/feature/login/logic/cubit/login_cubit.dart';
+import 'package:dupli/feature/login/ui/views/login_view.dart';
+import 'package:dupli/feature/setting/ui/views/edit_profile_view.dart';
+import 'package:dupli/feature/setting/ui/views/private_policy_view.dart';
+import 'package:dupli/feature/setting/ui/views/terms_and_conditions.dart';
+import 'package:dupli/feature/signup/logic/cubit/sign_up_cubit.dart';
+import 'package:dupli/feature/signup/ui/views/signup_view.dart';
+import 'package:dupli/feature/tasks/data/models/all_tasks_name_model.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/ui/views/add_tasks_view.dart';
+import 'package:dupli/feature/tasks/ui/views/tasks_details_view.dart';
+import 'package:dupli/feature/tasks/ui/views/tasks_group_details_view.dart';
+import 'package:dupli/feature/welcome/ui/views/welcome_view.dart';
+import 'package:dupli/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -95,6 +96,12 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (context) {
             return const PrivatePolicyView();
+          },
+        );
+      case Routes.welcomeViewsRoute:
+        return MaterialPageRoute(
+          builder: (context) {
+            return const WelcomeView();
           },
         );
       case Routes.tasksGroupViewsDetailsRoute:

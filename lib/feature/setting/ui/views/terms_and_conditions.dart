@@ -1,5 +1,5 @@
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/utils/app_colors.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class TermsAndConditionsView extends StatelessWidget {

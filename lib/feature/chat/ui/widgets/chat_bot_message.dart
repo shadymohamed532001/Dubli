@@ -1,4 +1,4 @@
-import 'package:dubli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ChatBotMessage extends StatelessWidget {

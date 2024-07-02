@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:dubli/core/networking/end_boint.dart';
+import 'package:dupli/core/networking/end_boint.dart';
 
 class ApiServices {
   static Dio? _dio;

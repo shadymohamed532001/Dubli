@@ -1,5 +1,5 @@
-// import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-// import 'package:dubli/feature/event/ui/widgets/add_event_view_body.dart';
+// import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+// import 'package:dupli/feature/event/ui/widgets/add_event_view_body.dart';
 // import 'package:flutter/material.dart';
 
 // class AddEventView extends StatelessWidget {

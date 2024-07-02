@@ -1,11 +1,11 @@
-import 'package:dubli/core/helper/local_services.dart';
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/feature/setting/ui/widgets/about_us_widget.dart';
-import 'package:dubli/feature/setting/ui/widgets/account_setting_widget.dart';
-import 'package:dubli/feature/setting/ui/widgets/user_image_and_name.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/feature/setting/ui/widgets/about_us_widget.dart';
+import 'package:dupli/feature/setting/ui/widgets/account_setting_widget.dart';
+import 'package:dupli/feature/setting/ui/widgets/user_image_and_name.dart';
 import 'package:flutter/material.dart';
 
 class SettingsViewBody extends StatelessWidget {
@@ -52,11 +52,18 @@ class SettingsViewBody extends StatelessWidget {
                       color: ColorManager.primaryColor.withOpacity(0.4),
                       height: 40,
                     ),
-                    const SizedBox(
-                      height: 30,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width / 8,
                     ),
                     TextButton(
                       onPressed: () {
+                        LocalServices.removeData(key: 'userName');
+                        LocalServices.removeData(key: 'userEmail');
+                        LocalServices.removeData(key: 'userPhone');
+                        LocalServices.removeData(key: 'userPassword');
+                        LocalServices.removeData(key: 'majorId');
+                        LocalServices.removeData(key: 'yearId');
+                        LocalServices.removeData(key: 'infoId');
                         LocalServices.removeData(key: 'userId').then((value) {
                           context.navigateAndRemoveUntil(
                               newRoute: Routes.intorViewsRoute);

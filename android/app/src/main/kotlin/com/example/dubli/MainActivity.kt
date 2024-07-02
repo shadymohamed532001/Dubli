@@ -1,4 +1,4 @@
-package com.example.dubli
+package com.example.dupli
 
 import io.flutter.embedding.android.FlutterActivity
 

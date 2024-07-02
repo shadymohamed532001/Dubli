@@ -1,11 +1,11 @@
 import 'dart:developer';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
-import 'package:dubli/feature/event/logic/event_cubit.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/chat/logic/cubit/chat_cubit.dart';
+import 'package:dupli/feature/event/logic/event_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
 
 class AddEventBottomSheet extends StatefulWidget {
   const AddEventBottomSheet({super.key});
@@ -23,7 +23,6 @@ class _AddEventBottomSheetState extends State<AddEventBottomSheet> {
   DateTime? endDate;
   String? selectedReminder = 'Never';
   final List<String> reminderItem = ["Daily", "Weekly", "Monthly", "Never"];
-
 
   String formatTime(TimeOfDay timeOfDay) {
     final now = DateTime.now();
@@ -101,7 +100,11 @@ class _AddEventBottomSheetState extends State<AddEventBottomSheet> {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          padding: EdgeInsets.only(
+              top: 8,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+              left: 16,
+              right: 16),
           child: SingleChildScrollView(
             child: SizedBox(
               height: MediaQuery.of(context).size.height,
@@ -458,10 +461,9 @@ class _AddEventBottomSheetState extends State<AddEventBottomSheet> {
                           BlocProvider.of<EventCubit>(context).addEvent(
                             endEventTime: endDateTime,
                             startEventTime: startDateTime,
-                            eventName:
-                                BlocProvider.of<ChatCubit>(context)
-                                    .titleController
-                                    .text,
+                            eventName: BlocProvider.of<ChatCubit>(context)
+                                .titleController
+                                .text,
                             eventDescription:
                                 BlocProvider.of<ChatCubit>(context)
                                     .descriptionController

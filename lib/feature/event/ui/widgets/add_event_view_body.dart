@@ -1,10 +1,10 @@
 // import 'dart:developer';
-// import 'package:dubli/core/helper/validators_helper.dart';
-// import 'package:dubli/core/utils/app_colors.dart';
-// import 'package:dubli/core/utils/app_styles.dart';
-// import 'package:dubli/core/widgets/app_bottom.dart';
-// import 'package:dubli/core/widgets/app_text_formfield.dart';
-// import 'package:dubli/feature/event/logic/event_cubit.dart';
+// import 'package:dupli/core/helper/validators_helper.dart';
+// import 'package:dupli/core/utils/app_colors.dart';
+// import 'package:dupli/core/utils/app_styles.dart';
+// import 'package:dupli/core/widgets/app_bottom.dart';
+// import 'package:dupli/core/widgets/app_text_formfield.dart';
+// import 'package:dupli/feature/event/logic/event_cubit.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:intl/intl.dart';

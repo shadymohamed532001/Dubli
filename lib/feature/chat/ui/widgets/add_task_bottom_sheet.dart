@@ -1,8 +1,8 @@
-import 'package:dubli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -53,81 +53,90 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: 'Task ',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: dateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: 'Select Date',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                onTap: () => _selectDate(context),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: timeController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  hintText: 'Select Time',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                onTap: () => _selectTime(context),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff072247)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  String taskDate = dateController.text.trim();
-                  String taskTime = timeController.text.trim();
-
-                  if (nameController.text.isNotEmpty &&
-                      taskDate.isNotEmpty &&
-                      taskTime.isNotEmpty) {
-                    final taskDateTime = '$taskDate $taskTime';
-                    BlocProvider.of<TasksCubit>(context).addTaskBychatbot(
-                      nameController.text,
-                      taskDateTime,
-                    );
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Task added successfully.'),
+          padding: EdgeInsets.only(
+            top: 20,
+            left: 16.0,
+            right: 16.0,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+          ),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: 330,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Task ',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    );
-
-                    nameController.clear();
-                    dateController.clear();
-                    timeController.clear();
-                  }
-                },
-                child: const Text(
-                  'Add Task',
-                  style: TextStyle(
-                    color: ColorManager.whiteColor,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: dateController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: 'Select Date',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onTap: () => _selectDate(context),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: timeController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: 'Select Time',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onTap: () => _selectTime(context),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff072247)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      String taskDate = dateController.text.trim();
+                      String taskTime = timeController.text.trim();
+
+                      if (nameController.text.isNotEmpty &&
+                          taskDate.isNotEmpty &&
+                          taskTime.isNotEmpty) {
+                        final taskDateTime = '$taskDate $taskTime';
+                        BlocProvider.of<TasksCubit>(context).addTaskBychatbot(
+                          nameController.text,
+                          taskDateTime,
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Task added successfully.'),
+                          ),
+                        );
+
+                        nameController.clear();
+                        dateController.clear();
+                        timeController.clear();
+                      }
+                    },
+                    child: const Text(
+                      'Add Task',
+                      style: TextStyle(
+                        color: ColorManager.whiteColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                ],
               ),
-              const SizedBox(height: 30),
-            ],
+            ),
           ),
         );
       },

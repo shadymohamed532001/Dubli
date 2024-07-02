@@ -1,4 +1,4 @@
-import 'package:dubli/feature/tasks/ui/widgets/tasks_details_view_body.dart';
+import 'package:dupli/feature/tasks/ui/widgets/tasks_details_view_body.dart';
 import 'package:flutter/material.dart';
 
 class TasksListView extends StatelessWidget {

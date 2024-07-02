@@ -1,5 +1,5 @@
-import 'package:dubli/core/widgets/app_logo_and_app_name.dart';
-import 'package:dubli/feature/intor/ui/widgets/login_or_signup_optional.dart';
+import 'package:dupli/core/widgets/app_logo_and_app_name.dart';
+import 'package:dupli/feature/intor/ui/widgets/login_or_signup_optional.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

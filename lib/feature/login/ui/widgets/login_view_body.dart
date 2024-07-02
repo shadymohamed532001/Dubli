@@ -1,15 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/core/widgets/app_logo_and_app_name.dart';
-import 'package:dubli/core/widgets/shows_toust_color.dart';
-import 'package:dubli/feature/login/logic/cubit/login_cubit.dart';
-import 'package:dubli/feature/login/ui/widgets/donot_have_acound_and_sign_up.dart';
-import 'package:dubli/feature/login/ui/widgets/login_form.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
+import 'package:dupli/core/widgets/app_logo_and_app_name.dart';
+import 'package:dupli/core/widgets/shows_toust_color.dart';
+import 'package:dupli/feature/login/logic/cubit/login_cubit.dart';
+import 'package:dupli/feature/login/ui/widgets/donot_have_acound_and_sign_up.dart';
+import 'package:dupli/feature/login/ui/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

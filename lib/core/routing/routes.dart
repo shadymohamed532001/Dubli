@@ -11,10 +11,10 @@ class Routes {
   static const String chatViewsRoute = '/chatViews';
   static const String privatepolicyViewsRoute = '/privatepolicyViews';
   static const String termsAndConditionsViewsRoute = '/termsAndConditionsViews';
-  
-
-static const String addtasksViewsRoute = '/tasksViews';
   static const String tasksViewsDetailsRoute = '/tasksViewsDetails';
+
+  static const String welcomeViewsRoute = '/WelcomeViews';
+  static const String addtasksViewsRoute = '/addtasksViewsRoute';
     static const String tasksGroupViewsDetailsRoute = '/tasksGroupViewsDetails';
 
   static const String gameViewsRoute = '/gameViews';

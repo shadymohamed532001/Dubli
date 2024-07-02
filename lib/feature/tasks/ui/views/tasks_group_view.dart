@@ -1,4 +1,4 @@
-import 'package:dubli/feature/tasks/ui/widgets/tasks_group_view_body.dart';
+import 'package:dupli/feature/tasks/ui/widgets/tasks_group_view_body.dart';
 import 'package:flutter/material.dart';
 
 class TasksGroupView extends StatelessWidget {

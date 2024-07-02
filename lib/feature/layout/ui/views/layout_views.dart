@@ -1,5 +1,5 @@
-import 'package:dubli/feature/layout/ui/widgets/bottom_nav_bar.dart';
-import 'package:dubli/feature/layout/ui/widgets/layout_view_body.dart';
+import 'package:dupli/feature/layout/ui/widgets/bottom_nav_bar.dart';
+import 'package:dupli/feature/layout/ui/widgets/layout_view_body.dart';
 import 'package:flutter/material.dart';
 
 

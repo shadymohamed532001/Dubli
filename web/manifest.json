@@ -1,6 +1,6 @@
 {
-    "name": "dubli",
-    "short_name": "dubli",
+    "name": "dupli",
+    "short_name": "dupli",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

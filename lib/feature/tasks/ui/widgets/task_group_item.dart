@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_image_assets.dart';
-import 'package:dubli/feature/tasks/data/models/all_tasks_name_model.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_image_assets.dart';
+import 'package:dupli/feature/tasks/data/models/all_tasks_name_model.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
 import '../../../../core/widgets/custom_list_tile.dart';
 
 class TaskGroupItem extends StatelessWidget {
@@ -28,10 +28,11 @@ class TaskGroupItem extends StatelessWidget {
       child: CustomListTile(
         onTap: () {
           context.navigateTo(
-              routeName: Routes.tasksGroupViewsDetailsRoute,
-              arguments: taskModel);
+            routeName: Routes.tasksGroupViewsDetailsRoute,
+            arguments: taskModel,
+          );
         },
-        imageAssetName: ImagesAssetsManager.applogoImage,
+        imageAssetName: getImageAsset(taskModel.name),
         subtitle: count.toString(),
         title: title,
         trailing: Column(
@@ -59,6 +60,16 @@ class TaskGroupItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getImageAsset(String taskName) {
+    if (taskName == 'Study Plan by Dupli') {
+      return ImagesAssetsManager.applogoImage;
+    } else if (taskName == 'Tasks added by chatbot') {
+      return ImagesAssetsManager.applogoImage;
+    } else {
+      return ImagesAssetsManager.clipboardImage;
+    }
   }
 
   void _showUpdateDialog(BuildContext context) {

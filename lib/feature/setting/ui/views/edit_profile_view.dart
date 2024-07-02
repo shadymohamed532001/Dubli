@@ -1,10 +1,13 @@
 import 'dart:io';
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/feature/setting/logic/cubit/settings_cubit.dart';
-import 'package:dubli/feature/setting/ui/widgets/update_user_form.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
+
+import 'package:dupli/feature/setting/logic/cubit/settings_cubit.dart';
+import 'package:dupli/feature/setting/ui/widgets/update_user_form.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +19,12 @@ class EditProfileView extends StatefulWidget {
   State<EditProfileView> createState() => _EditProfileViewState();
 }
 
+var userId = LocalServices.getData(key: 'userId');
+String userName = LocalServices.getData(key: 'userName');
+var userEmail = LocalServices.getData(key: 'userEmail');
+
 class _EditProfileViewState extends State<EditProfileView> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +35,7 @@ class _EditProfileViewState extends State<EditProfileView> {
             Icons.arrow_back_ios,
           ),
         ),
-        title: const Row(
-          children: [
-            Text(
-              'Edit Profile',
-            ),
-          ],
-        ),
+        title: const Text('Edit Profile'),
       ),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
@@ -67,7 +69,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Container(
                     width: double.infinity,
@@ -88,19 +90,29 @@ class _EditProfileViewState extends State<EditProfileView> {
                   ),
                   CustomBottom(
                     bottomHeight: 60,
-                    bottomtext: 'Update User',
+                    bottomtext: 'Update Info',
                     onPressed: () async {
                       if (context
                           .read<SettingsCubit>()
                           .formKey
                           .currentState!
                           .validate()) {
-                        // await cubit.signUpUser(
-                        //   email: cubit.emailController.text,
-                        //   password: cubit.passwordController.text,
-                        //   phone: cubit.phoneController.text,
-                        //   username: cubit.nameController.text,
-                        // );
+                        await settingsCubit.editUser(
+                          userId,
+                          settingsCubit.nameController.text,
+                          userEmail,
+                          settingsCubit.phoneController.text,
+                          settingsCubit.passwordController.text,
+                        );
+                        userName = settingsCubit.nameController.text;
+
+                        // Ensure the state is updated before popping
+                        settingsCubit.updateUserName(userName);
+
+                        // Add a short delay to ensure the UI updates before popping
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          Navigator.of(context).pop();
+                        });
                       } else {
                         context.read<SettingsCubit>().autovalidateMode =
                             AutovalidateMode.always;

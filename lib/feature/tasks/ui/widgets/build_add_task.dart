@@ -1,5 +1,5 @@
-import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -87,6 +87,7 @@ class _MyWidgetState extends State<BuildAddTasksDropdown> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 10),
                   TextField(
                     controller: _dateController,
                     readOnly: true,
@@ -98,6 +99,7 @@ class _MyWidgetState extends State<BuildAddTasksDropdown> {
                     ),
                     onTap: () => _selectDate(context),
                   ),
+                  const SizedBox(height: 10),
                   TextField(
                     controller: _timeController,
                     readOnly: true,
@@ -121,6 +123,7 @@ class _MyWidgetState extends State<BuildAddTasksDropdown> {
                       },
                       child: const Text('Cancel'),
                     ),
+                    const SizedBox(width: 60),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();

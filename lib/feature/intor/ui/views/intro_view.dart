@@ -1,4 +1,4 @@
-import 'package:dubli/feature/intor/ui/widgets/intro_view_body.dart';
+import 'package:dupli/feature/intor/ui/widgets/intro_view_body.dart';
 import 'package:flutter/material.dart';
 
 class IntroView extends StatelessWidget {

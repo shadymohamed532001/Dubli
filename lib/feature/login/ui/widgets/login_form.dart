@@ -1,8 +1,8 @@
-import 'package:dubli/core/helper/validators_helper.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_text_formfield.dart';
-import 'package:dubli/feature/login/logic/cubit/login_cubit.dart';
+import 'package:dupli/core/helper/validators_helper.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_text_formfield.dart';
+import 'package:dupli/feature/login/logic/cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +38,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             CustomTextFormField(
               obscureText: false,
-              hintText: 'please enter your email',
+              hintText: 'Email address',
               keyboardType: TextInputType.emailAddress,
               controller: logincubite.emailController,
               validator: (text) {
@@ -74,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                         color: ColorManager.primaryColor,
                       ),
               ),
-              hintText: 'please enter your password',
+              hintText: 'Password',
               keyboardType: TextInputType.visiblePassword,
               controller: logincubite.passwordController,
               validator: (text) {
@@ -88,7 +88,7 @@ class _LoginFormState extends State<LoginForm> {
               onTap: () {},
               child: Text(
                 textAlign: TextAlign.right,
-                'Forgot your password?',
+                '',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!

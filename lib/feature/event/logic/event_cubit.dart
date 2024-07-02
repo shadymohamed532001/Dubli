@@ -2,10 +2,10 @@
 
 import 'dart:developer';
 
-import 'package:dubli/core/helper/helper_const.dart';
-import 'package:dubli/core/helper/local_notification_services.dart';
-import 'package:dubli/core/helper/local_services.dart';
-import 'package:dubli/feature/event/data/models/get_all_event_model.dart';
+import 'package:dupli/core/helper/helper_const.dart';
+import 'package:dupli/core/helper/local_notification_services.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/feature/event/data/models/get_all_event_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -226,89 +226,90 @@ class EventCubit extends Cubit<EventState> {
   }
 
   DateTime today = DateTime.now();
+ Future<List<Event>> getEventsWithDate(String date) async {
+  emit(GetEventsLoading());
 
-  Future<List<Event>> getEventsWithDate(String date) async {
-    emit(GetEventsLoading());
+  final DateTime specifiedDate = DateTime.parse(date).toUtc();
+  final startOfDay = DateTime.utc(
+      specifiedDate.year, specifiedDate.month, specifiedDate.day);
+  final endOfDay = startOfDay.add(const Duration(days: 1));
 
-    final DateTime specifiedDate = DateTime.parse(date).toUtc();
-    final startOfDay = DateTime.utc(
-        specifiedDate.year, specifiedDate.month, specifiedDate.day);
-    final endOfDay = startOfDay.add(const Duration(days: 1));
+  final http.Response eventsResponse = await getAllEventsByResponse();
 
-    final http.Response eventsResponse = await getAllEventsByResponse();
-
-    if (eventsResponse.statusCode != 200) {
-      emit(GetEventsError(
-          error:
-              'Failed to fetch events. Status code: ${eventsResponse.statusCode}'));
-      return []; // Return an empty list in case of error
-    }
-
-    final List<dynamic> data = jsonDecode(eventsResponse.body)['documents'];
-
-    List<Event> events = [];
-
-    if (data.isNotEmpty) {
-      for (var event in data) {
-        final fields = event['fields'];
-        final startEventTime = fields['startTime']['timestampValue'] as String?;
-        final startEventTimestamp =
-            startEventTime != null ? DateTime.parse(startEventTime) : null;
-        final endEventTime = fields['endTime']['timestampValue'] as String?;
-        final endEventTimestamp =
-            endEventTime != null ? DateTime.parse(endEventTime) : null;
-
-        if ((startEventTimestamp != null &&
-                startEventTimestamp.isBefore(endOfDay) &&
-                (endEventTimestamp == null ||
-                    endEventTimestamp.isAfter(startOfDay))) ||
-            (endEventTimestamp != null &&
-                endEventTimestamp.isAfter(startOfDay) &&
-                (startEventTimestamp == null ||
-                    startEventTimestamp.isBefore(endOfDay)))) {
-          final eventId = event['name'].split('/').last;
-          final eventName = fields['name']['stringValue'] as String?;
-          final eventDescription = fields['description'] != null
-              ? fields['description']['stringValue'] as String
-              : null;
-          final reminder = fields['reminder'] != null
-              ? fields['reminder']['stringValue'] as String
-              : null;
-
-          if (eventId == null ||
-              eventName == null ||
-              startEventTimestamp == null ||
-              endEventTimestamp == null) {
-            continue;
-          }
-
-          Event newEvent = Event(
-            id: eventId,
-            name: eventName,
-            startTime: startEventTimestamp.toString(),
-            endTime: endEventTimestamp.toString(),
-            description: eventDescription ?? 'No description',
-            reminder: reminder ?? 'No reminder',
-          );
-
-          events.add(newEvent);
-        }
-      }
-    } else {
-      print('No documents found in the response.');
-    }
-
-    if (events.isNotEmpty) {
-      emit(GetEventsSuccess(events: events));
-      print('get event success');
-    } else {
-      emit(const GetEventsError(
-          error: 'No events found for the specified date.'));
-      print('No events found for the specified date.');
-    }
-
-    return events;
+  if (eventsResponse.statusCode != 200) {
+    emit(GetEventsError(
+        error:
+            'Failed to fetch events. Status code: ${eventsResponse.statusCode}'));
+    return []; // Return an empty list in case of error
   }
+
+  final List<dynamic>? data = jsonDecode(eventsResponse.body)['documents'];
+
+  if (data == null || data.isEmpty) {
+    emit(const GetEventsError(error: 'No events found for the specified date.'));
+    print('No events found for the specified date.');
+    return [];
+  }
+
+  List<Event> events = [];
+
+  for (var event in data) {
+    final fields = event['fields'];
+    final startEventTime = fields['startTime']['timestampValue'] as String?;
+    final startEventTimestamp =
+        startEventTime != null ? DateTime.parse(startEventTime) : null;
+    final endEventTime = fields['endTime']['timestampValue'] as String?;
+    final endEventTimestamp =
+        endEventTime != null ? DateTime.parse(endEventTime) : null;
+
+    if ((startEventTimestamp != null &&
+            startEventTimestamp.isBefore(endOfDay) &&
+            (endEventTimestamp == null ||
+                endEventTimestamp.isAfter(startOfDay))) ||
+        (endEventTimestamp != null &&
+            endEventTimestamp.isAfter(startOfDay) &&
+            (startEventTimestamp == null ||
+                startEventTimestamp.isBefore(endOfDay)))) {
+      final eventId = event['name'].split('/').last;
+      final eventName = fields['name']['stringValue'] as String?;
+      final eventDescription = fields['description'] != null
+          ? fields['description']['stringValue'] as String
+          : null;
+      final reminder = fields['reminder'] != null
+          ? fields['reminder']['stringValue'] as String
+          : null;
+
+      if (eventId == null ||
+          eventName == null ||
+          startEventTimestamp == null ||
+          endEventTimestamp == null) {
+        continue;
+      }
+
+      Event newEvent = Event(
+        id: eventId,
+        name: eventName,
+        startTime: startEventTimestamp.toString(),
+        endTime: endEventTimestamp.toString(),
+        description: eventDescription ?? 'No description',
+        reminder: reminder ?? 'No reminder',
+      );
+
+      events.add(newEvent);
+    }
+  }
+
+  if (events.isNotEmpty) {
+    emit(GetEventsSuccess(events: events));
+    print('get event success');
+  } else {
+    emit(const GetEventsError(
+        error: 'No events found for the specified date.'));
+    print('No events found for the specified date.');
+  }
+
+  return events;
+}
 
   Future<void> editEvent(
       {required String eventId,
@@ -375,7 +376,9 @@ class EventCubit extends Cubit<EventState> {
     }
 
     Future<List<Map<String, dynamic>>?> getSubjects(String day) async {
-      final subjectsCollectionUrl = getSubjectHelper(majorHelper, yearHelper);
+      var majorId = await LocalServices.getData(key: 'majorId');
+      var yearId = await LocalServices.getData(key: 'yearId');
+      final subjectsCollectionUrl = getSubjectHelper(majorId, yearId, day);
 
       final response = await http.get(Uri.parse(subjectsCollectionUrl));
 
@@ -434,7 +437,9 @@ class EventCubit extends Cubit<EventState> {
 //printing user schedule
   Future<void> fetchAndPrintSchedule() async {
     Future<List<String>> getDays() async {
-      final scheduleCollectionUrl = getScheduleHelper(majorHelper, yearHelper);
+      var majorId = await LocalServices.getData(key: 'majorId');
+      var yearId = await LocalServices.getData(key: 'yearId');
+      final scheduleCollectionUrl = getScheduleHelper(majorId, yearId);
       final response = await http.get(Uri.parse(scheduleCollectionUrl));
 
       if (response.statusCode == 200) {
@@ -450,7 +455,9 @@ class EventCubit extends Cubit<EventState> {
     }
 
     Future<List<Map<String, dynamic>>?> getSubjects(String day) async {
-      final subjectsCollectionUrl = getSubjectHelper(majorHelper, yearHelper);
+      var majorId = await LocalServices.getData(key: 'majorId');
+      var yearId = await LocalServices.getData(key: 'yearId');
+      final subjectsCollectionUrl = getSubjectHelper(majorId, yearId, day);
       final response = await http.get(Uri.parse(subjectsCollectionUrl));
 
       if (response.statusCode == 200) {
@@ -502,13 +509,14 @@ class EventCubit extends Cubit<EventState> {
     return today.add(Duration(days: daysToAdd));
   }
 
-// Function to fetch and add schedule to calendar
+  // Function to fetch and add schedule to calendar
   Future<void> fetchAndAddScheduleToCalendar() async {
-    final scheduleCollectionUrl = getScheduleHelper(majorHelper, yearHelper);
-    final endDate = DateTime(2024, 6, 10); // Specify the end date
+    var majorId = await LocalServices.getData(key: 'majorId');
+    var yearId = await LocalServices.getData(key: 'yearId');
 
     // Function to get the list of days in the schedule
     Future<List<String>> getDays() async {
+      final scheduleCollectionUrl = getScheduleHelper(majorId, yearId);
       final response = await http.get(Uri.parse(scheduleCollectionUrl));
 
       if (response.statusCode == 200) {
@@ -525,8 +533,8 @@ class EventCubit extends Cubit<EventState> {
 
     // Function to get the subjects for a specific day
     Future<List<Map<String, dynamic>>?> getSubjects(String day) async {
-      final subjectsCollectionUrl = getSubjectHelper(majorHelper, yearHelper);
-      final response = await http.get(Uri.parse(subjectsCollectionUrl));
+      final scheduleCollectionUrl = getSubjectHelper(majorId, yearId, day);
+      final response = await http.get(Uri.parse(scheduleCollectionUrl));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -539,43 +547,71 @@ class EventCubit extends Cubit<EventState> {
       return null;
     }
 
-    // Function to format time
-    String formatTime(int time) {
-      final hours = time ~/ 100;
-      final minutes = time % 100;
-      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
-    }
-
     // Function to add event to calendar
-    void addEventToCalendar(
-        String day, Map<String, dynamic> subject, DateTime eventDate) {
+    Future<void> addEventToCalendar(
+        String day, Map<String, dynamic> subject, DateTime eventDate) async {
       final fields = subject['fields'];
-      final from = fields['from']['integerValue'];
-      final to = fields['to']['integerValue'];
+      final from1 = fields['from']['integerValue'];
+      final to1 = fields['to']['integerValue'];
       final name = fields['name']['stringValue'];
+      final from = int.parse(from1);
+      final to = int.parse(to1);
 
-      final fromTime = int.parse(from);
-      final toTime = int.parse(to);
+      bool fromIsPM = from == 2 || from == 4 || from == 6;
+      bool toIsPM = to == 2 || to == 4 || to == 6;
+      if ((from == 10 && to == 12) ||
+          (from == 8 && to == 10) ||
+          (from == 8 && to == 12) ||
+          (from == 12 && to == 2) ||
+          (from == 10 && to == 4) ||
+          (from == 10 && to == 2) ||
+          (from == 12 && to == 4) ||
+          (from == 8 && to == 2) ||
+          (from == 8 && to == 4)) {
+        final fromHour = from;
+        final toHour = to;
 
-      final fromHour = fromTime ~/ 100;
-      final fromMinute = fromTime % 100;
-      final toHour = toTime ~/ 100;
-      final toMinute = toTime % 100;
+        final eventStart =
+            DateTime(eventDate.year, eventDate.month, eventDate.day, fromHour);
+        final eventEnd =
+            DateTime(eventDate.year, eventDate.month, eventDate.day, toHour);
+        await addEvent(
+          eventName: name,
+          startEventTime: eventStart.toString(),
+          endEventTime: eventEnd.toString(),
+          reminder: 'weekly',
+          eventDescription: 'Lecture: $name',
+        );
+      } else {
+        final fromHour = fromIsPM ? from + 12 : from;
+        final toHour = toIsPM ? to + 12 : to;
 
-      final eventStart = DateTime(
-          eventDate.year, eventDate.month, eventDate.day, fromHour, fromMinute);
-      final eventEnd = DateTime(
-          eventDate.year, eventDate.month, eventDate.day, toHour, toMinute);
-
-      addEvent(
-        eventName: name,
-        startEventTime: eventStart.toString(),
-        endEventTime: eventEnd.toString(),
-        reminder: 'weekly',
-        eventDescription:
-            'Subject: $name from ${formatTime(fromTime)} to ${formatTime(toTime)}',
-      );
+        final eventStart =
+            DateTime(eventDate.year, eventDate.month, eventDate.day, fromHour);
+        final eventEnd =
+            DateTime(eventDate.year, eventDate.month, eventDate.day, toHour);
+        await addEvent(
+          eventName: name,
+          startEventTime: eventStart.toString(),
+          endEventTime: eventEnd.toString(),
+          reminder: 'weekly',
+          eventDescription: 'Lecture: $name',
+        );
+      }
     }
+
+    // Function to get the next occurrence of a specific weekday
+    DateTime getNextOccurrence(DateTime startDate, int weekday) {
+      int daysToAdd = (weekday - startDate.weekday + 7) % 7;
+      if (daysToAdd == 0) {
+        daysToAdd = 7; // Ensures the next occurrence is always in the future
+      }
+      return startDate.add(Duration(days: daysToAdd));
+    }
+
+    // Define the date range
+    final startDate = DateTime.utc(2024, 10, 1);
+    final endDate = DateTime.utc(2024, 10, 10);
 
     // Get the list of days
     final days = await getDays();
@@ -584,9 +620,6 @@ class EventCubit extends Cubit<EventState> {
       return;
     }
 
-    final today = DateTime.now();
-
-    // Map to associate day names with DateTime.weekday integers
     final weekdayMap = {
       'monday': DateTime.monday,
       'tuesday': DateTime.tuesday,
@@ -605,25 +638,32 @@ class EventCubit extends Cubit<EventState> {
         continue;
       }
 
-      DateTime eventDate = getNextOccurrence(today, weekday);
+      DateTime eventDate = getNextOccurrence(startDate, weekday);
 
-      while (eventDate.isBefore(endDate)) {
+      while (
+          eventDate.isBefore(endDate) || eventDate.isAtSameMomentAs(endDate)) {
         final subjects = await getSubjects(day);
         if (subjects != null && subjects.isNotEmpty && day != 'saturday') {
           for (final subject in subjects) {
-            addEventToCalendar(day, subject, eventDate);
+            await addEventToCalendar(day, subject, eventDate);
           }
         } else {
           print('No subjects found for $day.');
         }
 
         // Move to the next occurrence of the same weekday
-        eventDate = getNextOccurrence(eventDate, weekday);
+        eventDate = eventDate.add(const Duration(days: 7));
       }
     }
   }
 
   Future<http.Response> getAllEventsByResponse() async {
+    var majorId = LocalServices.getData(key: 'majorId');
+    if (majorId != null) {
+      await fetchAndAddScheduleToCalendar();
+    }
+    // First, fetch and add the schedule to the calendar
+
     var userId = await LocalServices.getData(key: 'userId');
 
     final eventsCollectionUrl = constructUserEvents(userId);

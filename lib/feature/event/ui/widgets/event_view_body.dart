@@ -1,14 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'dart:developer';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_bottom.dart';
-import 'package:dubli/feature/event/data/models/get_all_event_model.dart';
-import 'package:dubli/feature/event/logic/event_cubit.dart';
-import 'package:dubli/feature/event/ui/widgets/add_event_dialog.dart';
-import 'package:dubli/feature/event/ui/widgets/event_item.dart';
-import 'package:dubli/feature/event/ui/widgets/update_event_dialog.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
+import 'package:dupli/feature/event/data/models/get_all_event_model.dart';
+import 'package:dupli/feature/event/logic/event_cubit.dart';
+import 'package:dupli/feature/event/ui/widgets/add_event_dialog.dart';
+import 'package:dupli/feature/event/ui/widgets/event_item.dart';
+import 'package:dupli/feature/event/ui/widgets/update_event_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -163,7 +163,7 @@ class _EventViewBodyState extends State<EventViewBody> {
                 _buildEventHeader(),
                 if (state is GetEventsLoading)
                   _buildLoadingIndicator()
-                else if (state is GetEventsSuccess)
+                else if (state is GetEventsSuccess && state.events.isNotEmpty)
                   _buildEventList(state.events)
                 else
                   _buildNoEventFound(),
@@ -278,7 +278,7 @@ class _EventViewBodyState extends State<EventViewBody> {
         ),
         child: const Center(
           child: Text(
-            'No events found, Please Add an event',
+            'Please Add an event',
             style: TextStyle(
               color: Colors.white,
             ),

@@ -1,5 +1,5 @@
-import 'package:dubli/feature/chat/ui/widgets/chat_bot_message.dart';
-import 'package:dubli/feature/chat/ui/widgets/user_massage.dart';
+import 'package:dupli/feature/chat/ui/widgets/chat_bot_message.dart';
+import 'package:dupli/feature/chat/ui/widgets/user_massage.dart';
 import 'package:flutter/material.dart';
 
 class MessagesWidget extends StatelessWidget {

@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
+import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

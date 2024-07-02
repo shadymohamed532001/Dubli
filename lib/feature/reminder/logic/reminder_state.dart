@@ -31,4 +31,19 @@ final class ReminderTick extends ReminderState {
     required this.digtalMinute,
     required this.digtalSecond,
   });
+
+  
+}
+
+class GetFocusLoading extends ReminderState {}
+
+class GetFocusSuccess extends ReminderState {
+  final   Map<String, dynamic> focus;
+  const GetFocusSuccess({required this.focus});
+}
+
+
+class GetFocusError extends ReminderState {
+  final String error;
+  const GetFocusError({required this.error});
 }

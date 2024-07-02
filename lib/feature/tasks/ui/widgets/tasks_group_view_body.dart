@@ -1,11 +1,11 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/tasks/ui/widgets/build_add_tasks_group_name.dart';
-import 'package:dubli/feature/tasks/ui/widgets/task_group_item.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/tasks/ui/widgets/build_add_tasks_group_name.dart';
+import 'package:dupli/feature/tasks/ui/widgets/task_group_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
-import 'package:dubli/feature/tasks/ui/widgets/task_completed_circle_indicator.dart';
-import 'package:dubli/core/utils/app_styles.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/ui/widgets/task_completed_circle_indicator.dart';
+import 'package:dupli/core/utils/app_styles.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class TasksGroupViewBody extends StatefulWidget {
@@ -19,9 +19,10 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
   @override
   void initState() {
     super.initState();
+
     BlocProvider.of<TasksCubit>(context).getTasksListName();
-    BlocProvider.of<TasksCubit>(context)
-        .calculateDoneTasksPercentage(DateTime.now().toString());
+    // BlocProvider.of<TasksCubit>(context)
+    //     .calculateDoneTasksPercentage(DateTime.now().toString());
   }
 
   @override
@@ -109,7 +110,7 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
                     ),
                     child: const Center(
                       child: Text(
-                        'NO Task Group Found',
+                        'Please Add Task List',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ColorManager.whiteColor,

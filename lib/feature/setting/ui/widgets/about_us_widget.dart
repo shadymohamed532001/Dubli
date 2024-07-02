@@ -1,7 +1,7 @@
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/feature/setting/ui/widgets/settings_option_item.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/feature/setting/ui/widgets/settings_option_item.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsWidget extends StatelessWidget {

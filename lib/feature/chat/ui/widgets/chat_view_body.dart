@@ -1,14 +1,14 @@
-import 'package:dubli/feature/chat/ui/widgets/add_event_bottom_sheet.dart';
+import 'package:dupli/feature/chat/ui/widgets/add_event_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
-import 'package:dubli/feature/chat/ui/widgets/chat_text_filed.dart';
-import 'package:dubli/feature/chat/ui/widgets/messages_widget.dart';
-import 'package:dubli/feature/chat/ui/widgets/add_task_bottom_sheet.dart'; // Import the AddTaskBottomSheet widget
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/chat/logic/cubit/chat_cubit.dart';
+import 'package:dupli/feature/chat/ui/widgets/chat_text_filed.dart';
+import 'package:dupli/feature/chat/ui/widgets/messages_widget.dart';
+import 'package:dupli/feature/chat/ui/widgets/add_task_bottom_sheet.dart'; // Import the AddTaskBottomSheet widget
 
 class ChatViewBody extends StatefulWidget {
   const ChatViewBody({super.key});
@@ -72,17 +72,28 @@ class _ChatViewBodyState extends State<ChatViewBody> {
                           ),
                           onPressed: () {
                             if (cubit.chatController.text.isNotEmpty) {
+                              cubit.suggestionQuestions = [];
+
                               String userMessage =
                                   cubit.chatController.text.toLowerCase();
-                              bool containsTaskKeyword =
-                                  userMessage.contains('tasks') ||
-                                      userMessage.contains('make a task') ||
-                                      userMessage.contains('generate task') ||
-                                      userMessage.contains('task');
-                              bool containsEventKeyword =
-                                  userMessage.contains('event') ||
-                                      userMessage.contains('create event') ||
-                                      userMessage.contains('schedule event');
+                              bool containsTaskKeyword = userMessage
+                                      .contains('make a task') ||
+                                  userMessage.contains('generate task') ||
+                                  userMessage.contains('add task') ||
+                                  userMessage.contains(
+                                      'Could you please add a task for me?v') ||
+                                  userMessage.contains('task');
+                              bool containsEventKeyword = userMessage
+                                      .contains('event') ||
+                                  userMessage.contains('create an event') ||
+                                  userMessage.contains('create event') ||
+                                  userMessage.contains('add an event') ||
+                                  userMessage.contains('add event') ||
+                                  userMessage
+                                      .contains('create event in calender') ||
+                                  userMessage.contains(
+                                      'Could you please add a event for me?') ||
+                                  userMessage.contains('schedule event');
 
                               if (!containsTaskKeyword &&
                                   !containsEventKeyword &&

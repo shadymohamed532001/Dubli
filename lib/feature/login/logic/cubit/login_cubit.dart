@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:dubli/core/helper/helper_const.dart';
-import 'package:dubli/core/helper/local_services.dart';
+import 'package:dupli/core/helper/helper_const.dart';
+import 'package:dupli/core/helper/local_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -38,7 +38,34 @@ class LoginCubit extends Cubit<LoginState> {
         key: 'userId',
         value: responseData['localId'],
       );
+      LocalServices.saveData(
+        key: 'userEmail',
+        value: email,
+      );
+      LocalServices.saveData(
+        key: 'tokenId',
+        value: responseData['idToken'],
+      );
 
+      var userId = await LocalServices.getData(key: 'userId');
+      var userEmail = await LocalServices.getData(key: 'userEmail');
+      await checkUserEmailInUniHelper(userId, userEmail);
+      final userDetails = await getUserNameById(userId, userEmail);
+
+      if (userDetails != null) {
+        LocalServices.saveData(
+          key: 'userName',
+          value: userDetails['name'],
+        );
+        LocalServices.saveData(
+          key: 'userPhone',
+          value: userDetails['phone'],
+        );
+        LocalServices.saveData(
+          key: 'userPassword',
+          value: userDetails['password'],
+        );
+      }
       emit(LoginSuccess());
     } else {
       if (responseData['error']['message'] == "INVALID_LOGIN_CREDENTIALS") {
@@ -49,4 +76,3 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 }
-

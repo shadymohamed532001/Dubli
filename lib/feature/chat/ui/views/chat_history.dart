@@ -1,5 +1,5 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/chat/ui/widgets/chat_history_body.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/chat/ui/widgets/chat_history_body.dart';
 import 'package:flutter/material.dart';
 
 class ChatHistory extends StatelessWidget {

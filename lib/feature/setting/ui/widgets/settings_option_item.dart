@@ -1,4 +1,4 @@
-import 'package:dubli/core/utils/app_styles.dart';
+import 'package:dupli/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';

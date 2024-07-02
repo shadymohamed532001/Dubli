@@ -1,5 +1,5 @@
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/feature/tasks/ui/widgets/add_task_view_body.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/feature/tasks/ui/widgets/add_task_view_body.dart';
 import 'package:flutter/material.dart';
 
 class AddTasksView extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:dubli/feature/splash/ui/widgets/splash_view_body.dart';
+import 'package:dupli/feature/splash/ui/widgets/splash_view_body.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatelessWidget {

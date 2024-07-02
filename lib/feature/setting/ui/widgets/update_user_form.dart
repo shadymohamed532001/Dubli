@@ -1,10 +1,14 @@
-import 'package:dubli/core/helper/helper_const.dart';
-import 'package:dubli/core/helper/validators_helper.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_text_formfield.dart';
-import 'package:dubli/feature/setting/logic/cubit/settings_cubit.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/core/helper/validators_helper.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_text_formfield.dart';
+import 'package:dupli/feature/setting/logic/cubit/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+var userName = LocalServices.getData(key: 'userName');
+var userEmail = LocalServices.getData(key: 'userEmail');
+var userPhone = LocalServices.getData(key: 'userPhone');
 
 class UpdateUserForm extends StatefulWidget {
   const UpdateUserForm({super.key});
@@ -37,7 +41,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
             ),
             CustomTextFormField(
               obscureText: false,
-              hintText: nameHelper,
+              hintText: userName,
               keyboardType: TextInputType.text,
               controller: settingsCubit.nameController,
               validator: (text) {
@@ -45,21 +49,6 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                   return 'Please enter your name';
                 }
                 return null;
-              },
-            ),
-            Padding(
-                padding: const EdgeInsets.only(left: 4.0, bottom: 4),
-                child: Text(
-                  'Email',
-                  style: AppStyle.font18Primaryregular,
-                )),
-            CustomTextFormField(
-              obscureText: false,
-              hintText: useremailHelper,
-              keyboardType: TextInputType.emailAddress,
-              controller: settingsCubit.emailController,
-              validator: (text) {
-                return MyValidatorsHelper.emailValidator(text);
               },
             ),
             Padding(
@@ -98,7 +87,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
             ),
             CustomTextFormField(
               obscureText: false,
-              hintText: phoneHelper,
+              hintText: userPhone,
               keyboardType: TextInputType.phone,
               controller: settingsCubit.phoneController,
               validator: (text) {

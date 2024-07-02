@@ -1,4 +1,4 @@
-import 'package:dubli/feature/signup/ui/widgets/sign_up_view_body.dart';
+import 'package:dupli/feature/signup/ui/widgets/sign_up_view_body.dart';
 import 'package:flutter/material.dart';
 
 class SignUpView extends StatelessWidget {

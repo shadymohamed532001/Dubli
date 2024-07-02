@@ -2,10 +2,12 @@
 
 import 'dart:async';
 import 'dart:math';
-
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/feature/reminder/logic/reminder_cubit.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FocusGame extends StatelessWidget {
   const FocusGame({super.key});
@@ -36,24 +38,32 @@ class _GameScreenState extends State<GameScreen> {
   bool showSequence = true;
   int currentStep = 0;
   Random random = Random();
+  final int maxLevel = 5;
 
   void generateSequence() {
     colorSequence = [];
     for (int i = 0; i < level; i++) {
-      colorSequence
-          .add(Colors.primaries[random.nextInt(Colors.primaries.length)]);
+      colorSequence.add(
+        Colors.primaries[random.nextInt(
+          Colors.primaries.length,
+        )],
+      );
     }
   }
 
   void startNewLevel() {
-    setState(() {
-      userSequence = [];
-      currentStep = 0;
-      level++;
-      showSequence = true;
-      generateSequence();
-      showColorSequence();
-    });
+    if (level < maxLevel) {
+      setState(() {
+        userSequence = [];
+        currentStep = 0;
+        level++;
+        showSequence = true;
+        generateSequence();
+        showColorSequence();
+      });
+    } else {
+      showGameCompletedDialog();
+    }
   }
 
   void showColorSequence() {
@@ -101,7 +111,37 @@ class _GameScreenState extends State<GameScreen> {
             TextButton(
               child: const Text("Home"),
               onPressed: () {
-                // Fucntion send to firebase
+                String userAge = LocalServices.getData(key: 'userAge');
+                String gender = LocalServices.getData(key: 'userGender');
+                BlocProvider.of<ReminderCubit>(context)
+                    .setFoucsLevel(level, gender, userAge);
+
+                context.navigateAndRemoveUntil(
+                  newRoute: Routes.layOutViewsRoute,
+                );
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void showGameCompletedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Congratulations!"),
+          content: const Text("You have completed all levels."),
+          actions: [
+            TextButton(
+              child: const Text("Home"),
+              onPressed: () {
+                String userAge = LocalServices.getData(key: 'userAge');
+                String gender = LocalServices.getData(key: 'userGender');
+                BlocProvider.of<ReminderCubit>(context)
+                    .setFoucsLevel(level, gender, userAge);
                 context.navigateAndRemoveUntil(
                   newRoute: Routes.layOutViewsRoute,
                 );

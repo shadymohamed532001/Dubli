@@ -1,5 +1,5 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/widgets/app_bottom.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/widgets/app_bottom.dart';
 import 'package:flutter/material.dart';
 
 class BuildAddTasksGroupNameDropdown extends StatelessWidget {

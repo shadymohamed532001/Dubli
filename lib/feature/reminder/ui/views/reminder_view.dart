@@ -1,4 +1,4 @@
-import 'package:dubli/feature/reminder/ui/widgets/reminder2_view_body.dart';
+import 'package:dupli/feature/reminder/ui/widgets/reminder_view_body.dart';
 import 'package:flutter/material.dart';
 
 class ReminderView extends StatelessWidget {

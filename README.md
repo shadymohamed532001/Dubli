@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://github.com/shadymohamed532001/Dubli/assets/126605393/8c96af35-7b4f-4434-b241-a8a7d8259628" alt="Logo" width="250" height="250">
+    <img src="https://github.com/shadymohamed532001/dupli/assets/126605393/8c96af35-7b4f-4434-b241-a8a7d8259628" alt="Logo" width="250" height="250">
   </a>  
   
 # 👋 Welcome! Dupli App README.md
@@ -57,7 +57,7 @@ Once the Roome app is installed and launched, follow these steps to utilize its 
 
 ## Features
 
-Dubli offers the following features:
+dupli offers the following features:
 
 - `Clean architecture`: The app follows the principles of clean architecture, which promotes separation of concerns and maintainability.
 - `Cubit state management`: Agri-tech360 utilizes Cubit as a state management solution to efficiently handle and update the UI based on the app's internal state.

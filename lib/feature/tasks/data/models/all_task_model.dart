@@ -20,7 +20,8 @@ class AllTaskModel {
       id: id,
       name: json['fields']['name']['stringValue'] as String,
       done: json['fields']['done']['booleanValue'] as bool,
-      date: DateTime.parse(json['fields']['date']['timestampValue'] as String),
+      date: DateTime.parse(json['fields']['date']['timestampValue'] as String)
+          .add(const Duration(hours: 2)),
       createTime: DateTime.parse(json['createTime'] as String),
       updateTime: DateTime.parse(json['updateTime'] as String),
     );

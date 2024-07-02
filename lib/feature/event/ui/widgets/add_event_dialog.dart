@@ -2,8 +2,8 @@
 
 import 'dart:developer';
 
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/event/logic/event_cubit.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/event/logic/event_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

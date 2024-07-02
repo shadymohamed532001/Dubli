@@ -1,7 +1,8 @@
-import 'package:dubli/core/helper/validators_helper.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/core/widgets/app_text_formfield.dart';
-import 'package:dubli/feature/signup/logic/cubit/sign_up_cubit.dart';
+import 'package:dupli/core/helper/validators_helper.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/core/widgets/app_text_formfield.dart';
+import 'package:dupli/feature/signup/logic/cubit/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,7 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   String errorMessage = '';
   bool isPasswordShow = true;
+  String? selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +42,22 @@ class _SignUpFormState extends State<SignUpForm> {
               keyboardType: TextInputType.text,
               controller: signUpCubit.nameController,
               validator: (text) {
-                if (text == null || text.trim().isEmpty || text.length < 20) {
+                if (text == null || text.trim().isEmpty || text.length > 20) {
                   return 'Please enter your name';
                 }
                 return null;
               },
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 4.0, bottom: 4),
-                child: Text(
-                  'Email',
-                  style: AppStyle.font18Primaryregular,
-                )),
+              padding: const EdgeInsets.only(left: 4.0, bottom: 4),
+              child: Text(
+                'Email',
+                style: AppStyle.font18Primaryregular,
+              ),
+            ),
             CustomTextFormField(
               obscureText: false,
-              hintText: 'Patient@self.com',
+              hintText: 'Username@address.com',
               keyboardType: TextInputType.emailAddress,
               controller: signUpCubit.emailController,
               validator: (text) {
@@ -81,7 +84,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ? const Icon(Icons.visibility_off)
                     : const Icon(Icons.visibility),
               ),
-              hintText: 'Min 8 Cyfr',
+              hintText: 'Password',
               keyboardType: TextInputType.visiblePassword,
               controller: signUpCubit.passwordController,
               validator: (text) {
@@ -102,6 +105,78 @@ class _SignUpFormState extends State<SignUpForm> {
               controller: signUpCubit.phoneController,
               validator: (text) {
                 return MyValidatorsHelper.phoneValidator(text);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0, bottom: 4),
+              child: Text(
+                'Age',
+                style: AppStyle.font18Primaryregular,
+              ),
+            ),
+            CustomTextFormField(
+              obscureText: false,
+              hintText: 'Age',
+              keyboardType: TextInputType.number,
+              controller: signUpCubit.ageController,
+              validator: (text) {
+                if (text == null || text.trim().isEmpty) {
+                  return 'Please enter your age';
+                }
+                return null;
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0, bottom: 4),
+              child: Text(
+                'Gender',
+                style: AppStyle.font18Primaryregular,
+              ),
+            ),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                hoverColor: ColorManager.primaryColor,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(
+                    color: ColorManager.primaryColor,
+                    width: 1,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(
+                    color: ColorManager.primaryColor,
+                    width: 1,
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(
+                    color: ColorManager.primaryColor,
+                    width: 1,
+                  ),
+                ),
+              ),
+              hint: const Text('Gender'),
+              value: selectedGender,
+              items: ['Male', 'Female'].map((gender) {
+                return DropdownMenuItem<String>(
+                  value: gender,
+                  child: Text(gender),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedGender = value;
+                  signUpCubit.genderController.text = value ?? '';
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select your gender';
+                }
+                return null;
               },
             ),
           ],

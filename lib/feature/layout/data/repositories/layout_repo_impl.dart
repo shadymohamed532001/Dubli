@@ -1,12 +1,12 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/chat/ui/views/chat_view.dart';
-import 'package:dubli/feature/event/ui/views/event_view.dart';
-import 'package:dubli/feature/tasks/ui/views/tasks_group_view.dart';
-import 'package:dubli/feature/layout/data/models/change_index_params.dart';
-import 'package:dubli/feature/layout/data/repositories/layout_repo.dart';
-import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
-import 'package:dubli/feature/setting/ui/views/settiings_view.dart';
-import 'package:dubli/feature/reminder/ui/views/reminder_view.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/chat/ui/views/chat_view.dart';
+import 'package:dupli/feature/event/ui/views/event_view.dart';
+import 'package:dupli/feature/tasks/ui/views/tasks_group_view.dart';
+import 'package:dupli/feature/layout/data/models/change_index_params.dart';
+import 'package:dupli/feature/layout/data/repositories/layout_repo.dart';
+import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
+import 'package:dupli/feature/setting/ui/views/settiings_view.dart';
+import 'package:dupli/feature/reminder/ui/views/reminder_view.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

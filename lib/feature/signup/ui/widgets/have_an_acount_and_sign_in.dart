@@ -1,7 +1,6 @@
-
-import 'package:dubli/core/helper/naviagtion_extentaions.dart';
-import 'package:dubli/core/routing/routes.dart';
-import 'package:dubli/core/utils/app_styles.dart';
+import 'package:dupli/core/helper/naviagtion_extentaions.dart';
+import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class HaveAnAcountAndSignIn extends StatelessWidget {
@@ -20,8 +19,7 @@ class HaveAnAcountAndSignIn extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            context.navigateAndRemoveUntil(
-                newRoute: Routes.loginViewsRoute);
+            context.navigateTo(routeName: Routes.loginViewsRoute);
           },
           child: Text(
             'Sign In',

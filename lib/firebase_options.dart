@@ -67,7 +67,7 @@ class DefaultFirebaseOptions {
     projectId: 'firsttrialdupli',
     databaseURL: 'https://firsttrialdupli-default-rtdb.firebaseio.com',
     storageBucket: 'firsttrialdupli.appspot.com',
-    iosBundleId: 'com.example.dubli',
+    iosBundleId: 'com.example.dupli',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
     projectId: 'firsttrialdupli',
     databaseURL: 'https://firsttrialdupli-default-rtdb.firebaseio.com',
     storageBucket: 'firsttrialdupli.appspot.com',
-    iosBundleId: 'com.example.dubli',
+    iosBundleId: 'com.example.dupli',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

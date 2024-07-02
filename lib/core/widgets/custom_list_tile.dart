@@ -1,5 +1,5 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -15,7 +15,7 @@ class CustomListTile extends StatelessWidget {
   final String imageAssetName;
   final String title, subtitle;
   final void Function()? onTap;
-  final Widget? trailing; 
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,11 @@ class CustomListTile extends StatelessWidget {
         elevation: 0,
         color: ColorManager.darkGreyColor,
         child: ListTile(
-          leading: Image.asset(imageAssetName),
+          leading: Image.asset(
+            imageAssetName,
+            height: 50,
+            width: 50,
+          ),
           title: Text(
             title,
             style: AppStyle.font15Whiteregular,

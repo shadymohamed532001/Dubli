@@ -1,8 +1,8 @@
-import 'package:dubli/feature/chat/data/repositories/chat_repo.dart';
-import 'package:dubli/feature/chat/logic/cubit/chat_cubit.dart';
-import 'package:dubli/feature/layout/data/repositories/layout_repo.dart';
-import 'package:dubli/feature/layout/logic/cubit/layout_cubit.dart';
-import 'package:dubli/service_locator.dart';
+import 'package:dupli/feature/chat/data/repositories/chat_repo.dart';
+import 'package:dupli/feature/chat/logic/cubit/chat_cubit.dart';
+import 'package:dupli/feature/layout/data/repositories/layout_repo.dart';
+import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
+import 'package:dupli/service_locator.dart';
 
 class SetupForCubits {
   void setUpForCubits() {

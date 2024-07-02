@@ -1,4 +1,4 @@
-import 'package:dubli/feature/login/ui/widgets/login_view_body.dart';
+import 'package:dupli/feature/login/ui/widgets/login_view_body.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {

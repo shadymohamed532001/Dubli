@@ -1,18 +1,13 @@
-// ignore_for_file: avoid_print
-
 import 'package:date_picker_timeline/date_picker_widget.dart';
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/core/utils/app_styles.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
-import 'package:dubli/feature/tasks/ui/views/all_tasks_view.dart';
-import 'package:dubli/feature/tasks/ui/views/done_tasks_view.dart';
-import 'package:dubli/feature/tasks/ui/views/todo_tasks_view.dart';
-import 'package:dubli/feature/tasks/ui/widgets/list_of_all_and_todo_and_done.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/core/utils/app_styles.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/ui/views/all_tasks_view.dart';
+import 'package:dupli/feature/tasks/ui/views/done_tasks_view.dart';
+import 'package:dupli/feature/tasks/ui/views/todo_tasks_view.dart';
+import 'package:dupli/feature/tasks/ui/widgets/list_of_all_and_todo_and_done.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart'; // Import for date formatting
 
 class TasksDetailsViewBody extends StatefulWidget {
   const TasksDetailsViewBody({super.key});
@@ -40,30 +35,43 @@ class _TasksDetailsViewBodyState extends State<TasksDetailsViewBody> {
 
     List<Map<String, dynamic>> fetchedTasks;
 
-    DateTime adjustedDate = today.subtract(const Duration(days: 2));
-    String dateString = DateFormat('yyyy-MM-dd').format(adjustedDate.toUtc());
+    DateTime adjustedDate = today.add(
+      const Duration(
+        hours: 2,
+      ),
+    );
+    String dateString = adjustedDate.toUtc().toIso8601String();
 
-    switch (currentIndex) {
-      case 0:
-        fetchedTasks = await BlocProvider.of<TasksCubit>(context)
-            .getTasksByDate(dateString);
-        break;
-      case 1:
-        fetchedTasks = await BlocProvider.of<TasksCubit>(context)
-            .getTasksByDateUndone(dateString);
-        break;
-      case 2:
-        fetchedTasks = await BlocProvider.of<TasksCubit>(context)
-            .getTasksByDateDone(dateString);
-        break;
-      default:
-        fetchedTasks = [];
+    try {
+      switch (currentIndex) {
+        case 0:
+          fetchedTasks = await BlocProvider.of<TasksCubit>(context)
+              .getTasksByDate(dateString);
+          break;
+        case 1:
+          fetchedTasks = await BlocProvider.of<TasksCubit>(context)
+              .getTasksByDateUndone(dateString);
+          break;
+        case 2:
+          fetchedTasks = await BlocProvider.of<TasksCubit>(context)
+              .getTasksByDateDone(dateString);
+          break;
+        default:
+          fetchedTasks = [];
+      }
+
+      setState(() {
+        tasks = fetchedTasks;
+
+        print(tasks);
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print("Error fetching tasks: $e");
     }
-
-    setState(() {
-      tasks = fetchedTasks;
-      isLoading = false;
-    });
   }
 
   @override
@@ -84,10 +92,8 @@ class _TasksDetailsViewBodyState extends State<TasksDetailsViewBody> {
             onDateChange: (selectedDate) {
               setState(() {
                 today = selectedDate;
-
-                print(today);
-                
                 fetchTasksForCurrentIndex();
+                
               });
             },
           ),
@@ -109,14 +115,22 @@ class _TasksDetailsViewBodyState extends State<TasksDetailsViewBody> {
                       fetchTasksForCurrentIndex();
                     });
                   },
-                  loading: isLoading,
                 ),
               ),
             ],
           ),
         ),
+        const SizedBox(
+          height: 10,
+        ),
         Expanded(
-          child: getCurrentView(),
+          child: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: ColorManager.darkyellowColor,
+                  ),
+                )
+              : getCurrentView(),
         ),
       ],
     );

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:dubli/core/error/servier_failure.dart';
-import 'package:dubli/core/networking/api_services.dart';
-import 'package:dubli/core/networking/end_boint.dart';
-import 'package:dubli/feature/chat/data/models/history_chat_model.dart';
-import 'package:dubli/feature/chat/data/repositories/chat_repo.dart';
+import 'package:dupli/core/error/servier_failure.dart';
+import 'package:dupli/core/networking/api_services.dart';
+import 'package:dupli/core/networking/end_boint.dart';
+import 'package:dupli/feature/chat/data/models/history_chat_model.dart';
+import 'package:dupli/feature/chat/data/repositories/chat_repo.dart';
 
 class ChatRepoImpl extends ChatRepo {
   @override

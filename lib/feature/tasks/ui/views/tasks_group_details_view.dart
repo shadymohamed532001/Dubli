@@ -1,7 +1,7 @@
-import 'package:dubli/core/utils/app_colors.dart';
-import 'package:dubli/feature/tasks/data/models/all_tasks_name_model.dart';
-import 'package:dubli/feature/tasks/logic/tasks_cubit.dart';
-import 'package:dubli/feature/tasks/ui/widgets/tasks_group_details_view_body.dart';
+import 'package:dupli/core/utils/app_colors.dart';
+import 'package:dupli/feature/tasks/data/models/all_tasks_name_model.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
+import 'package:dupli/feature/tasks/ui/widgets/tasks_group_details_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

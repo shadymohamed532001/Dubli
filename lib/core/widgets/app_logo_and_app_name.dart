@@ -1,5 +1,5 @@
-import 'package:dubli/core/utils/app_image_assets.dart';
-import 'package:dubli/core/utils/app_styles.dart';
+import 'package:dupli/core/utils/app_image_assets.dart';
+import 'package:dupli/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class AppLogoAndAppName extends StatelessWidget {

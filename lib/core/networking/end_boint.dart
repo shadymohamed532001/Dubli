@@ -1,2 +1,3 @@
-const baseUrl = 'https://91d1-156-203-182-32.ngrok-free.app';
+const baseUrl = 'https://15f3-156-203-135-200.ngrok-free.app';
 const chatendpoint = '/chatbot';
+const focuspoint = '/predict_focus';

@@ -2,7 +2,9 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'package:dubli/core/helper/local_services.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/feature/event/logic/event_cubit.dart';
+import 'package:dupli/feature/tasks/logic/tasks_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,23 +19,17 @@ const String firebaseAuthUrl =
     'https://identitytoolkit.googleapis.com/v1/accounts';
 
 //info helper
-dynamic useridHelper;
-dynamic useremailHelper = 'dupli@gmail.com';
-dynamic majorHelper;
-dynamic yearHelper;
-dynamic eventIdHelper;
-dynamic phoneHelper = '01010284536';
-dynamic passwordHelper;
-dynamic infoHelper;
-dynamic nameHelper = 'Dupli';
+var userId = LocalServices.getData(key: 'userId');
+var userEmail = LocalServices.getData(key: 'userEmail');
+
 String constructUserInfoURL(String userId, String email) {
-  useridHelper = userId;
-  useremailHelper = email;
+  userId = userId;
+  userEmail = email;
   return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/users/$userId/info';
 }
 
-String getUserInfoURL(String userId, String infoId) {
-  useridHelper = userId;
+String getUserInfoURL(String userID, String infoId) {
+  userId = userID;
   return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/users/$userId/info/$infoId';
 }
 
@@ -47,9 +43,13 @@ Future<Map<String, String>?> getUserNameById(
     final data = jsonDecode(response.body);
     print('Response data: $data'); // Debugging information
     final responseData = json.decode(response.body);
-    dynamic infoId = responseData.toString().split('/').last.split(',').first;
-    infoHelper = infoId;
-    print('this is info url helper$infoHelper');
+    dynamic infoId2 = responseData.toString().split('/').last.split(',').first;
+
+    LocalServices.saveData(
+      key: 'infoId',
+      value: infoId2,
+    );
+    print('this is info url helper$infoId2');
     if (data != null && data['documents'] != null) {
       final documents = data['documents'];
 
@@ -112,13 +112,22 @@ Future<void> checkUserEmailInUniHelper(String userId, String email) async {
           for (var doc in data['documents']) {
             final docData = doc['fields'];
             if (docData['email']['stringValue'] == email) {
-              final String year = docData['year']['integerValue'] ?? 'Unknown';
+              final String year = docData['grade']['integerValue'] ?? 'Unknown';
               final String name = docData['name']['stringValue'] ?? 'Unknown';
               final String gpa = docData['gpa']['integerValue'] ?? 'Unknown';
-              majorHelper = major;
-              yearHelper = year;
-
-              print(majorHelper + yearHelper);
+              LocalServices.saveData(
+                key: 'majorId',
+                value: major,
+              );
+              LocalServices.saveData(
+                key: 'yearId',
+                value: year,
+              );
+              var majorId = await LocalServices.getData(key: 'majorId');
+              var yearId = await LocalServices.getData(key: 'yearId');
+              await EventCubit().fetchAndAddScheduleToCalendar();
+              await TasksCubit().studyPlan();
+              print(majorId + yearId);
             }
           }
         }
@@ -135,8 +144,8 @@ String getScheduleHelper(String major, String year) {
   return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/universities/$major/grades/grade+$year/schedule';
 }
 
-String getSubjectHelper(String major, String year) {
-  return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/universities/$major/grades/grade+$year/schedule/subjects';
+String getSubjectHelper(String major, String year, String day) {
+  return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/universities/$major/grades/grade+$year/schedule/$day/subjects';
 }
 
 String getStudentsHelper(String major) {
@@ -173,6 +182,21 @@ Future<Map<String, dynamic>> fetchDataFromLocalStorage() async {
   usertoken = await LocalServices.getData(key: 'userId');
   log('UserToken : $usertoken');
   return {'token': usertoken};
+}
+
+String constructUserEmail() {
+  String studentMajor = LocalServices.getData(key: 'majorId');
+  return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/universities/$studentMajor/students';
+}
+
+String constructUserDays(String grade) {
+  String studentMajor = LocalServices.getData(key: 'majorId');
+  return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/universities/$studentMajor/grades/grade$grade/schedule';
+}
+
+String constructUserClasses(grade, day) {
+  String studentMajor = LocalServices.getData(key: 'majorId');
+  return 'https://firestore.googleapis.com/v1/projects/firsttrialdupli/databases/(default)/documents/universities/$studentMajor/grades/grade$grade/schedule/$day/subjects';
 }
 
 void showCustomSnackBar(BuildContext context, String message) {

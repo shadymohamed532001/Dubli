@@ -1,11 +1,11 @@
-import 'package:dubli/bloc_observer.dart.dart';
-import 'package:dubli/core/helper/helper_const.dart';
-import 'package:dubli/core/helper/local_notification_services.dart';
-import 'package:dubli/core/networking/api_services.dart';
-import 'package:dubli/core/helper/local_services.dart';
-import 'package:dubli/dubli_app.dart';
-import 'package:dubli/firebase_options.dart';
-import 'package:dubli/service_locator.dart';
+import 'package:dupli/bloc_observer.dart.dart';
+import 'package:dupli/core/helper/helper_const.dart';
+import 'package:dupli/core/helper/local_notification_services.dart';
+import 'package:dupli/core/networking/api_services.dart';
+import 'package:dupli/core/helper/local_services.dart';
+import 'package:dupli/dupli_app.dart';
+import 'package:dupli/firebase_options.dart';
+import 'package:dupli/service_locator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,5 +21,5 @@ void main() async {
   await LocalServices.init();
   await fetchDataFromLocalStorage();
   ApiServices.init();
-  runApp(const DubliApp());
+  runApp(const DupliApp());
 }

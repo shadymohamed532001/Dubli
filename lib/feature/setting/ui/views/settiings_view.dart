@@ -1,4 +1,4 @@
-import 'package:dubli/feature/setting/ui/widgets/settings_view_body.dart';
+import 'package:dupli/feature/setting/ui/widgets/settings_view_body.dart';
 import 'package:flutter/material.dart';
 
 class SettingsView extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:dubli/feature/layout/data/models/change_index_params.dart';
-import 'package:dubli/feature/layout/data/repositories/layout_repo.dart';
+import 'package:dupli/feature/layout/data/models/change_index_params.dart';
+import 'package:dupli/feature/layout/data/repositories/layout_repo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

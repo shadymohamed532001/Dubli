@@ -1,4 +1,4 @@
-import 'package:dubli/feature/chat/ui/widgets/chat_view_body.dart';
+import 'package:dupli/feature/chat/ui/widgets/chat_view_body.dart';
 import 'package:flutter/material.dart';
 
 class ChatView extends StatelessWidget {
