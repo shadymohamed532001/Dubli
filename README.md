@@ -31,6 +31,9 @@
     │   ├── service_locator.dart
     └── └── main.dart
 ## Preview
+
+[Click here to see the video of the app](https://www.linkedin.com/feed/update/urn:li:activity:7215411287051141120/)
+
   
 ![image 6](https://github.com/shadymohamed532001/Dubli/assets/126605393/34dc6f13-256e-4652-8ce1-c872996ce6ba)
 
