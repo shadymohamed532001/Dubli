@@ -12,6 +12,14 @@
         {
             "user": "do you know shady steha",
             "assistant": "Yes, I am familiar with shady Steha. He is an Australian professional surfer and one of the most successful surfers of all time. He has won numerous awards for his surfing skills and has become a cultural icon in Australia and around the world.\nSteha started surfing as a teenager and quickly gained national recognition for his skills. He has also appeared in numerous films and television shows, including \"Sailboat 13\" and \"The Shining.\"\nHowever, it is important to note that Steha's personal life and actions have been the subject of controversy and criticism over the years. In recent years, he has faced legal charges for fraud and manipulation of online accounts. Despite these controversies, Steha remains an important figure in the surfing community and continues to compete at a high level on the international stage."
+        },
+        {
+            "user": "what is the capital of france?",
+            "assistant": "Paris"
+        },
+        {
+            "user": "can you help me to fix my car",
+            "assistant": "Of course! Can you please describe the problem with your car so that I can provide more specific advice on how to fix it?"
         }
     ]
 }

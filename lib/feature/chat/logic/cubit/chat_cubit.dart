@@ -94,39 +94,5 @@ class ChatCubit extends Cubit<ChatState> {
       emit(GetResposeMessage(message: e.toString()));
     }
   }
-  // Future sendMessage(String message) async {
-  //   try {
-  //     var timestamp = DateTime.now();
 
-  //     messages.add({
-  //       "sender": "user",
-  //       "message": message,
-  //       "timestamp": formatTimestamp(timestamp)
-  //     });
-
-  //     emit(SendUserMassMessage());
-
-  //     var response = await ApiServices.postData(
-  //       endpoint: chatendpoint,
-  //       data: {
-  //         'message': message,
-  //         'user_id': '3',
-  //       },
-  //     );
-
-  //     var data = ChatbotResponse.fromJson(response);
-  //     timestamp = DateTime.now();
-
-  //     messages.add({
-  //       "sender": "bot",
-  //       "message": data.message,
-  //       "timestamp": formatTimestamp(timestamp)
-  //     });
-  //     emit(GetResposeMessage(message: data.message));
-
-  //     return data.message;
-  //   } catch (e) {
-  //     return emit(GetResposeMessage(message: e.toString()));
-  //   }
-  // }
 }

@@ -50,7 +50,7 @@ class AppRoutes {
       case Routes.loginViewsRoute:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
-            create: (context) => LoginCubit(),
+            create: (context) => serviceLocator.get<LoginCubit>(),
             child: const LoginView(),
           ),
         );

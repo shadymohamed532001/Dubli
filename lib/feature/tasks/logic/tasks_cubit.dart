@@ -1,14 +1,14 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:dupli/core/helper/helper_const.dart';
 import 'package:dupli/core/helper/local_services.dart';
 import 'package:dupli/feature/tasks/data/models/all_task_model.dart';
 import 'package:dupli/feature/tasks/data/models/all_tasks_name_model.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:intl/intl.dart';
 part 'tasks_state.dart';
 
