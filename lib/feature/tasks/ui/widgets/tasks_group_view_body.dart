@@ -19,10 +19,8 @@ class _TasksGroupViewBodyState extends State<TasksGroupViewBody> {
   @override
   void initState() {
     super.initState();
-
     BlocProvider.of<TasksCubit>(context).getTasksListName();
-    // BlocProvider.of<TasksCubit>(context)
-    //     .calculateDoneTasksPercentage(DateTime.now().toString());
+
   }
 
   @override

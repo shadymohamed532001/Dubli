@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:dupli/core/helper/helper_const.dart';
 import 'package:dupli/core/helper/local_services.dart';

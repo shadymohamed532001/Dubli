@@ -4,14 +4,17 @@ import 'package:dupli/feature/layout/data/repositories/layout_repo.dart';
 import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dupli/feature/login/data/repositories/login_repo.dart';
 import 'package:dupli/feature/login/logic/cubit/login_cubit.dart';
+import 'package:dupli/feature/signup/data/repositories/sign_up_repo.dart';
 import 'package:dupli/service_locator.dart';
+
+import '../../feature/signup/logic/cubit/sign_up_cubit.dart';
 
 class SetupForCubits {
   void setUpForCubits() {
     serviceLocator.registerFactory<LoginCubit>(
         () => LoginCubit(loginRepo: serviceLocator.get<LoginRepo>()));
-    // serviceLocator.registerFactory<SignUpCubit>(
-    //     () => SignUpCubit(signUpRepo: serviceLocator.get<SignUpRepo>()));
+    serviceLocator.registerFactory<SignUpCubit>(
+        () => SignUpCubit(signUpRepo: serviceLocator.get<SignUpRepo>()));
     serviceLocator.registerFactory<LayoutCubit>(
         () => LayoutCubit(layOutRepo: serviceLocator.get<LayOutRepo>()));
     serviceLocator.registerFactory<ChatCubit>(
