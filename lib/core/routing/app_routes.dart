@@ -3,7 +3,7 @@ import 'package:dupli/core/routing/routes.dart';
 import 'package:dupli/core/utils/app_colors.dart';
 import 'package:dupli/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:dupli/feature/chat/ui/views/chat_history.dart';
-import 'package:dupli/feature/gamae/ui/view/game_view.dart';
+import 'package:dupli/feature/gamae/ui/widgets/game_view.dart';
 import 'package:dupli/feature/intor/ui/views/intro_view.dart';
 import 'package:dupli/feature/layout/logic/cubit/layout_cubit.dart';
 import 'package:dupli/feature/layout/ui/views/layout_views.dart';

@@ -1,28 +1,12 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:async';
 import 'dart:math';
+
 import 'package:dupli/core/helper/local_services.dart';
-import 'package:dupli/feature/reminder/logic/reminder_cubit.dart';
 import 'package:dupli/core/helper/naviagtion_extentaions.dart';
 import 'package:dupli/core/routing/routes.dart';
+import 'package:dupli/feature/reminder/logic/reminder_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-class FocusGame extends StatelessWidget {
-  const FocusGame({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Focus Game',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const GameScreen(),
-    );
-  }
-}
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
