@@ -57,14 +57,12 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       var timestamp = DateTime.now();
 
-      // Add the user message to the list
       messages.add({
         "sender": "user",
         "message": message,
         "timestamp": formatTimestamp(timestamp),
       });
 
-      // Emit loading state for sending message
       emit(SendUserMassMessageLoading());
 
       var response = await ApiServices.postData(
@@ -79,18 +77,15 @@ class ChatCubit extends Cubit<ChatState> {
       var data = ChatbotResponse.fromJson(response);
       timestamp = DateTime.now();
 
-      // Add the bot response message to the list
       messages.add({
         "sender": "bot",
         "message": data.message,
         "timestamp": formatTimestamp(timestamp),
       });
 
-      // Emit success state with the bot response
       emit(GetResposeMessage(message: data.message));
       return data.message;
     } catch (e) {
-      // Emit error state with the error message
       emit(GetResposeMessage(message: e.toString()));
     }
   }
